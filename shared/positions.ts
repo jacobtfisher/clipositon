@@ -48,6 +48,8 @@ const moneyIn = "https://abdulforsenate.com/priority/money-in-your-pocket/";
 const medicare = "https://abdulforsenate.com/priority/medicare-for-all-the-path-to-a-healthier-america/";
 /** WOOD TV8 Democratic primary debate (El-Sayed vs Stevens), 2026-07-07. */
 const woodDebateId = "9_R3JHg26qU";
+/** Mackinac Policy Conference three-way debate (El-Sayed, Stevens, McMorrow), 2026-05-28 — WDIV Local 4. */
+const mackinacDebateId = "d5L9FFdEQe8";
 
 function woodDebateClip(
   startSeconds: number,
@@ -56,6 +58,15 @@ function woodDebateClip(
   quote: string
 ): PositionClip {
   return youtubeClip(woodDebateId, duration, title, quote, undefined, startSeconds);
+}
+
+function mackinacDebateClip(
+  startSeconds: number,
+  duration: string,
+  title: string,
+  quote: string
+): PositionClip {
+  return youtubeClip(mackinacDebateId, duration, title, quote, undefined, startSeconds);
 }
 
 function youtubeClip(
@@ -130,9 +141,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Healthcare",
     summary: "El-Sayed supports automatic health coverage for every American, without premiums, copays, or deductibles.",
     points: [
-      "He would expand Medicare to cover necessary care plus vision, dental, and hearing for every American.",
-      "Coverage would be automatic from cradle to grave, while additional union or employer insurance could still exist.",
-      "He supports abolishing medical debt for every American."
+      "He would expand Medicare to cover necessary care plus vision, dental, and hearing for every American from cradle to grave, without premiums, copays, or deductibles.",
+      "Coverage would be automatic and accepted everywhere; additional union or employer insurance could still exist, though Medicare for All should make those choices redundant.",
+      "He supports abolishing medical debt for every American, as he did for more than 300,000 Michiganders in Wayne County.",
+      "He categorically opposes privatizing Medicare, cutting Medicaid, or destroying the ACA market by cutting subsidies, and would repeal those cuts from the “One Big Beautiful Bill” Act.",
+      "He categorically opposes using AI to let any health insurer second-guess decisions made by a patient’s doctor."
     ],
     tags: ["healthcare", "health insurance", "universal coverage", "medical debt", "copays", "deductibles"],
     clip: socialClip(
@@ -189,6 +202,12 @@ export const positionIssues: PositionIssue[] = [
         "1:05",
         "Debate: Medicare for All without deductibles",
         "We need to tackle healthcare by guaranteeing everybody healthcare without a deductible, a premium, or a co-pay through Medicare for All."
+      ),
+      mackinacDebateClip(
+        2521,
+        "1:15",
+        "Mackinac debate: Fight for guaranteed healthcare",
+        "Revolution is definitely not coming if we're not fighting for it… I think we really can fight for a world where everybody can be guaranteed healthcare."
       )
     ],
     relatedIssueIds: [
@@ -208,7 +227,9 @@ export const positionIssues: PositionIssue[] = [
     summary: "El-Sayed supports expanding Medicare drug-price negotiation and ending pharmacy benefit managers that raise costs without providing essential care.",
     points: [
       "He supports empowering Medicare to negotiate prices for every prescription drug, and earlier after drugs hit the market.",
+      "He wants those negotiated prices extended to all patients, not only people on Medicare.",
       "He supports public manufacturing of essential medicines such as insulin.",
+      "He supports ending excessive drug-patent tactics that let Big Pharma prolong monopolies.",
       "He supports banning pharmacy benefit managers that price-gouge patients without providing an essential benefit."
     ],
     tags: ["seniors", "medicare advantage", "prescriptions", "insulin", "drug prices", "big pharma", "pbm"],
@@ -235,8 +256,9 @@ export const positionIssues: PositionIssue[] = [
     category: "Healthcare",
     summary: "El-Sayed opposes Medicaid and ACA subsidy cuts, supports expanding public clinics and hospitals, and wants science-led public-health leadership.",
     points: [
-      "He categorically opposes cutting Medicaid or destroying the ACA market by cutting subsidies, and would repeal those cuts.",
+      "He categorically opposes cutting Medicaid or destroying the ACA market by cutting subsidies, and would immediately repeal those cuts from the “One Big Beautiful Bill” Act.",
       "He supports expanding public healthcare by investing more in federally qualified health centers and public clinics and hospitals.",
+      "He categorically opposes privatizing Medicare or selling guaranteed coverage off to corporations.",
       "He wants public-health leadership grounded in science and protected from political meddling."
     ],
     tags: ["rural", "medicaid", "hospitals", "aca", "public health", "up north"],
@@ -310,6 +332,14 @@ export const positionIssues: PositionIssue[] = [
       "Holding RFK Jr. accountable",
       "As the first Democratic doctor in the U.S. Senate since 1969, you bet I’m going to hold him accountable for his dangerous lies."
     ),
+    moreClips: [
+      mackinacDebateClip(
+        2699,
+        "1:10",
+        "Mackinac debate: First public health official in the Senate",
+        "If I was elected, I'd be the first Democratic doctor elected to the U.S. Senate since 1969. First ever public health official elected to the U.S. Senate."
+      )
+    ],
     relatedIssueIds: ["medicare-for-all", "rural-healthcare"],
     source: campaignSource(`${medicare}#h-public-health`)
   },
@@ -320,9 +350,10 @@ export const positionIssues: PositionIssue[] = [
     category: "Community",
     summary: "El-Sayed supports abolishing ICE and replacing it with an immigration system that enforces the law while respecting dignity and due process.",
     points: [
-      "He supports a safe, secure border and immigration enforcement under a new structure grounded in human dignity and the rule of law.",
-      "He wants ICE funding redirected to immigration courts and a clear pathway to citizenship.",
-      "He supports ending ICE as currently structured and building a clearer, fairer immigration system in its place."
+      "He says ICE has become a tool for autocracy whose culture of aggression, impunity, and disregard for the rule of law cannot be reformed or retrained, and must be abolished.",
+      "He supports a safe, secure border and immigration enforcement under a new organizational structure grounded in human dignity and deference to the rule of law.",
+      "He wants ICE funds repurposed to build out immigration courts and a clear pathway to citizenship for people stuck in limbo.",
+      "He frames immigration as people coming to build in America, and calls for replacing today’s broken, unpredictable system with a clear, comprehensive, and fair one."
     ],
     tags: ["immigration", "ice", "border", "deportation", "citizenship", "due process"],
     clip: socialClip(
@@ -382,7 +413,9 @@ export const positionIssues: PositionIssue[] = [
     points: [
       "He believes every worker deserves the right to join a union and to earn a fair wage.",
       "He believes that one good job should pay enough to raise a family.",
-      "He believes unions must have a significant voice at the tables where decisions about the future of the economy are made."
+      "He believes unions must have a significant voice at the tables where decisions about the future of the economy are made.",
+      "He supports targeted, smart tariffs to protect Michigan manufacturing and incubate future industries with unions at the forefront, rather than reckless blanket tariffs.",
+      "He supports workplace protections and laws that stop Wall Street speculation from wrecking good companies and killing good jobs."
     ],
     tags: ["labor", "union", "workers", "wages", "uaw", "middle class"],
     clip: socialClip(
@@ -427,6 +460,12 @@ export const positionIssues: PositionIssue[] = [
         "1:00",
         "Debate: UAW endorsement and working people",
         "I'm proud to have been endorsed by the UAW. And the reason that they've endorsed me is because they understand that I am a fighter for working people."
+      ),
+      mackinacDebateClip(
+        2986,
+        "0:45",
+        "Mackinac debate: Labor on corporate boards",
+        "Number one, we need to ban stock buybacks entirely. Number two, we need to put labor on corporate boards."
       )
     ],
     relatedIssueIds: ["education", "break-up-big-healthcare", "cost-of-living"],
@@ -475,6 +514,12 @@ export const positionIssues: PositionIssue[] = [
         "1:05",
         "Debate: Politicians bought off by corporations",
         "We also don't need politicians bought off by corporations in this race."
+      ),
+      mackinacDebateClip(
+        559,
+        "0:50",
+        "Mackinac debate: Never taken corporate money",
+        "I'm the only candidate on the stage who has never taken a dime from a corporation to run a campaign and never will."
       )
     ],
     relatedIssueIds: ["aipac-and-dark-money", "cost-of-living", "corporate-consolidation"],
@@ -498,6 +543,14 @@ export const positionIssues: PositionIssue[] = [
       "Racial gerrymandering and equal representation",
       "The SCOTUS decision today guts the prohibition on racial gerrymandering, effectively using the redlining of the past to rob Black folks of equal representation in the future."
     ),
+    moreClips: [
+      mackinacDebateClip(
+        1549,
+        "0:40",
+        "Mackinac debate: Districts, Court, and democracy reform",
+        "Whether it's the Supreme Court or it's the filibuster or it's the way we cut our districts apart, we've got to really rethink democracy to make it work for the people again."
+      )
+    ],
     relatedIssueIds: [
       "making-voting-easier",
       "voting-rights",
@@ -513,6 +566,7 @@ export const positionIssues: PositionIssue[] = [
     category: "Democracy",
     summary: "El-Sayed supports reforming the Supreme Court by ending lifetime appointments, imposing limited terms, and equalizing appointments across presidential terms.",
     points: [
+      "He says the Roberts Court has moved to limit voting rights, civil rights, and reproductive rights while expanding Trump’s power, making the Court itself a major impediment to democracy.",
       "He supports ending lifetime appointments to the Supreme Court.",
       "He supports imposing limited terms for justices.",
       "He supports allowing the same number of appointments for each presidential term."
@@ -524,6 +578,14 @@ export const positionIssues: PositionIssue[] = [
       "Supreme Court reform",
       "Supreme Court reform? I'm down."
     ),
+    moreClips: [
+      mackinacDebateClip(
+        1549,
+        "0:35",
+        "Mackinac debate: Biggest assault on the Voting Rights Act",
+        "We've just seen the biggest assault from the Supreme Court on the Voting Rights Act in our history."
+      )
+    ],
     relatedIssueIds: [
       "making-voting-easier",
       "voting-rights",
@@ -549,6 +611,14 @@ export const positionIssues: PositionIssue[] = [
       "Abolish the filibuster",
       "Abolish the filibuster."
     ),
+    moreClips: [
+      mackinacDebateClip(
+        1508,
+        "0:55",
+        "Mackinac debate: Abolish the filibuster",
+        "I believe we have to abolish the filibuster. We have to expose senators to democracy again so that they have to answer to their voting public."
+      )
+    ],
     relatedIssueIds: [
       "making-voting-easier",
       "voting-rights",
@@ -565,8 +635,10 @@ export const positionIssues: PositionIssue[] = [
     summary: "El-Sayed argues that working people are being priced out, and that taxing billionaire wealth can fund schools, healthcare, and infrastructure.",
     points: [
       "He supports a cost-of-living exemption on federal taxes for the first $50,000 of income.",
-      "He supports a billionaire tax on wealth over $1 billion and higher rates on top-end earnings.",
-      "He supports taxing capital gains over $1 million at the same rate as ordinary income."
+      "He supports a billionaire tax on wealth over $1 billion and raising the marginal tax rate on earnings over $1 million.",
+      "He supports taxing capital gains over $1 million at the same rate as ordinary income and closing the stepped-up basis loophole.",
+      "He supports taxing inheritances greater than $1 million like ordinary income and imposing a progressive tax on wealth held by trusts.",
+      "He supports closing the Social Security payroll-tax cap so high earners pay their fair share and Social Security stays solvent."
     ],
     tags: ["affordability", "inflation", "groceries", "prices", "family budget", "monopoly", "taxes", "billionaire tax"],
     clip: socialClip(
@@ -600,6 +672,12 @@ export const positionIssues: PositionIssue[] = [
         "1:10",
         "Debate: Michiganders can't afford to live here",
         "No matter where I go, people say the same thing. I just can't afford to live here anymore."
+      ),
+      mackinacDebateClip(
+        741,
+        "0:40",
+        "Mackinac debate: Seven percent billionaire wealth tax",
+        "I would like to see us tax billionaires at seven percent of their wealth… you know what they still are? Still a billionaire."
       )
     ],
     relatedIssueIds: ["housing", "corporate-consolidation", "money-out-of-politics"],
@@ -628,12 +706,22 @@ export const positionIssues: PositionIssue[] = [
     category: "Economy",
     summary: "El-Sayed’s Terms of Engagement would require data centers to cover their own energy costs, deliver promised local jobs, and protect community water resources.",
     points: [
-      "His Terms of Engagement require data centers to pay for their own energy demand so costs are not passed onto ratepayers.",
-      "Data centers must create the local jobs they promise or face penalties, and be built by Michigan contractors with registered apprenticeship programs.",
-      "Projects must commit to closed-loop cooling and binding community benefits for local infrastructure."
+      "Data centers must pay for their own energy demand so costs are not passed onto ratepayers.",
+      "Energy reliability cannot worsen because of data-center projects; utilities must make enforceable reliability improvements funded by data-center revenues.",
+      "Data centers must create the local jobs they promise or face penalties, and be built by Michigan contractors with DOL-registered apprenticeship programs.",
+      "Projects must use closed-loop cooling, give communities a meaningful say in approvals, and include binding community-benefits agreements for local infrastructure.",
+      "Utilities cannot use data-center projects to weaken or sidestep clean-energy laws, and all agreements must be enforceable through actionable penalties."
     ],
     tags: ["data center", "dte", "electric bills", "technology", "jobs", "water", "energy"],
     clip: youtubeClip("oNFAVuNPdsk", "1:47", "Terms of engagement for data centers", "If you promise jobs, deliver those jobs."),
+    moreClips: [
+      mackinacDebateClip(
+        2333,
+        "0:50",
+        "Mackinac debate: Don't give data centers tax breaks",
+        "You voted to give data centers tax breaks, our tax dollars, to build data centers… I think we need to regulate AI and AI corporations as public utilities."
+      )
+    ],
     relatedIssueIds: ["artificial-intelligence"],
     source: campaignSource("https://abdulforsenate.com/2026/01/datacenters/")
   },
@@ -644,9 +732,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Economy",
     summary: "El-Sayed’s AI Under Democracy plan would put frontier AI under public-benefit governance, public ownership stakes, and hard safety guardrails.",
     points: [
-      "He supports mandatory public-benefit charters for frontier AI labs and majority public or democratically elected board control.",
-      "He supports public ownership stakes in the largest AI companies, including an annual AI dividend funded by returns and an automation levy reinvested in workers.",
-      "He supports an FDA-style independent safety-testing agency and bans AI from denying medical care, making hiring or firing decisions, or replacing human oversight in life-or-death decisions."
+      "He supports mandatory public-benefit charters for frontier AI labs, majority public or democratically elected board control, and requiring major platform companies to divest controlling interests in frontier AI.",
+      "He supports public ownership stakes in the largest AI companies, an annual AI dividend funded by returns, and an automation levy reinvested in workers through education, wage insurance, and small-business loans.",
+      "He supports an FDA-style independent safety-testing agency with interpretability standards, red-teaming, incident reporting, and compute “know your customer” controls.",
+      "He would ban AI from denying medical care, making hiring or firing decisions, conducting warrantless surveillance, or replacing human oversight in life-or-death decisions.",
+      "He supports democracy protections including a federal ban on deceptive AI-generated political media, mandatory disclosure of AI-generated political ads, and a federal task force on algorithmic disinformation with real enforcement power."
     ],
     tags: ["artificial intelligence", "ai", "automation", "big tech", "jobs", "safety", "democracy"],
     clip: socialClip(
@@ -655,6 +745,14 @@ export const positionIssues: PositionIssue[] = [
       "Real AI regulation and guardrails",
       "We need real AI regulation to create guardrails and protect the ability for young people to have a job."
     ),
+    moreClips: [
+      mackinacDebateClip(
+        2198,
+        "1:10",
+        "Mackinac debate: AI is the oncoming tsunami",
+        "AI is the oncoming tsunami. We need legislation… We need leaders who understand the technology and are willing to stand up on it and protect humanity."
+      )
+    ],
     relatedIssueIds: ["data-centers-and-ai", "cost-of-living", "corporate-consolidation"],
     source: campaignSource("https://abdulforsenate.com/2026/06/first-do-no-harm-ai-under-democracy/")
   },
@@ -665,9 +763,10 @@ export const positionIssues: PositionIssue[] = [
     category: "Economy",
     summary: "El-Sayed supports redirecting farm subsidies toward family farms, specialty crops, and diversified agriculture.",
     points: [
-      "He proposes capping individual subsidy payments at $250,000 per year.",
-      "He supports targeted trade protections rather than blanket tariffs that raise farmers’ costs.",
-      "He backs a federal right-to-repair law for farm equipment."
+      "He proposes capping individual subsidy payments at $250,000 per year and redirecting dollars toward specialty crops, diversified agriculture, and regenerative farming.",
+      "He supports targeted, negotiated trade protections for Michigan specialty crops rather than blanket tariffs that raise farmers’ costs and invite retaliation.",
+      "He backs reforming the H-2A guest-worker program through the Farm Workforce Modernization Act, with pathways to legal status for immigrant farmworkers.",
+      "He champions a federal right-to-repair law for farm equipment."
     ],
     tags: ["agriculture", "farm", "cherries", "subsidies", "right to repair", "rural", "tariffs"],
     clip: youtubeClip("BT54YJt5ess", "2:56", "How to help Michigan family farms", "We don’t want to see agriculture be corporatized."),
@@ -681,9 +780,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Community",
     summary: "El-Sayed supports a transition to renewable energy built around union jobs and stronger protection for communities facing pollution and extreme weather.",
     points: [
-      "He supports a pathway to 100% renewable energy with investment in solar, wind, storage, and the electrical grid.",
-      "He wants environmental standards to account for the combined burden of multiple pollutants.",
-      "He connects climate instability directly to the future of Michigan agriculture."
+      "He supports a pathway to 100% renewable energy with massive investment in solar, wind, battery storage, a modernized smart grid, and energy-efficiency upgrades built on good union jobs.",
+      "He wants to codify the Endangerment Finding into law so no administration can strip EPA authority to regulate greenhouse gases by executive order.",
+      "He supports strengthening air-quality standards for cumulative pollution burdens and strengthening NEPA so communities have a meaningful voice before fossil-fuel projects are permitted.",
+      "He supports making environmental justice an explicit mandate of every federal agency with authority over air and water.",
+      "He supports shutting down Line 5 to protect the Great Lakes while making the line safer in the meantime without destroying sensitive environmental or tribal sites."
     ],
     tags: ["climate", "renewable energy", "pollution", "environment", "farm", "solar", "wind"],
     clip: youtubeClip("6I_5VJNLqiw", "2:26", "Agriculture, climate, immigration, and trade", "When you talk about agriculture, you’re also talking about climate change and immigration and tariffs."),
@@ -695,13 +796,35 @@ export const positionIssues: PositionIssue[] = [
     title: "War & foreign policy",
     eyebrow: "Diplomacy before war",
     category: "Foreign policy",
-    summary: "El-Sayed favors a foreign policy centered on diplomacy, human rights, and limits on blank-check military funding abroad.",
+    summary:
+      "El-Sayed favors a foreign policy centered on diplomacy, human rights, democratic allies, and ending blank-check military funding abroad.",
     points: [
-      "He opposes the Iran war and argues diplomacy is more effective than hostilities at preventing a nuclear-armed Iran.",
-      "He opposes blank-check funding to foreign militaries and supports an arms embargo on Israel.",
-      "He argues that Michigan taxpayer dollars should be spent here in Michigan rather than being used to fund violence abroad."
+      "He supports a foreign policy that centers diplomacy, cooperation, and human rights, and that stands with democratic allies.",
+      "He supports Ukraine against Russia’s invasion as acting in the interest of human rights and democracy, and criticizes past rule-breaking interventions such as Vietnam, Iraq, and Palestine.",
+      "He opposes the Iran war, demands an immediate end to hostilities, and argues diplomacy (as under the JCPOA) is more effective than war at preventing a nuclear-armed Iran.",
+      "He opposes a warlike pathway with China, favoring competition through research, development, and economic power rather than a zero-sum arms race, while insisting China play by trade and intellectual-property rules.",
+      "He says Taiwan’s future should be chosen by the Taiwanese through democratic means, and supports onshoring critical national-security assets such as chip manufacturing.",
+      "He opposes blank-check funding to foreign militaries, including Egypt, Israel, Saudi Arabia, and the UAE, arguing taxpayer dollars should be spent at home on schools and healthcare.",
+      "He says U.S. tax dollars and weapons are being used in a genocide in Gaza, illegal settlements in the West Bank and Jerusalem, and the attempted annexation of southern Lebanon, and that must end.",
+      "He supports immediate enforcement of U.S. laws that condition military aid and sales, an immediate arms embargo on Israel, and rejects distinguishing “offensive” from “defensive” weapons.",
+      "He supports reinvestment in foreign aid, including to UNRWA, and meaningful U.S. engagement in the WHO, the Conference of the Parties, and the Paris Agreement on global health and climate threats."
     ],
-    tags: ["iran", "war", "foreign policy", "military", "diplomacy", "gaza", "israel", "palestine", "aid"],
+    tags: [
+      "iran",
+      "war",
+      "foreign policy",
+      "military",
+      "diplomacy",
+      "ukraine",
+      "china",
+      "taiwan",
+      "gaza",
+      "israel",
+      "palestine",
+      "arms embargo",
+      "unrwa",
+      "aid"
+    ],
     clip: socialClip(
       "Instagram",
       "https://www.instagram.com/reel/DXURjD5ADfV/",
@@ -721,9 +844,15 @@ export const positionIssues: PositionIssue[] = [
         "1:10",
         "Debate: AIPAC and wars Michiganders shouldn't fight",
         "And so long as our politicians continue to be bought off by AIPAC, do not be surprised when we fight wars that are in their best interest."
+      ),
+      mackinacDebateClip(
+        932,
+        "1:05",
+        "Mackinac debate: International law, not AIPAC money",
+        "It's AIPAC money which is being spent already in this race… I believe international law ought to guide how we engage with our allies and our opponents."
       )
     ],
-    relatedIssueIds: ["jewish-community-and-antisemitism", "aipac-and-dark-money"],
+    relatedIssueIds: ["jewish-community-and-antisemitism", "aipac-and-dark-money", "public-health"],
     source: campaignSource(`${moneyOut}#h-sensible-foreign-policy`)
   },
   {
@@ -734,8 +863,9 @@ export const positionIssues: PositionIssue[] = [
     summary: "El-Sayed supports stronger federal antitrust enforcement so corporations cannot price-gouge families or hollow out good jobs.",
     points: [
       "He supports a muscular Federal Trade Commission that enforces anti-monopoly laws against corporate price-gouging.",
-      "He wants laws that stop Wall Street speculators from wrecking good companies and killing good jobs.",
-      "He supports rules that make publicly traded corporations more accountable to their workers."
+      "He wants laws that stop Wall Street speculators from wrecking good companies and killing good jobs, and that force publicly traded corporations to be accountable to their workers.",
+      "He supports protecting workers on the job and keeping unions at the table as manufacturing and trade policy are set.",
+      "He supports investing more and faster in research agencies like NSF and NIH, and argues taxpayers who fund research should earn back returns on that investment."
     ],
     tags: ["antitrust", "monopoly", "mergers", "ftc", "corporations", "price gouging", "competition"],
     clip: socialClip(
@@ -757,6 +887,12 @@ export const positionIssues: PositionIssue[] = [
         "0:55",
         "Debate: Stand up to monopolies",
         "We need to stand up to the monopolies and oligopolies that are picking our pockets."
+      ),
+      mackinacDebateClip(
+        2941,
+        "1:20",
+        "Mackinac debate: Ban stock buybacks, put labor on boards",
+        "Number one, we need to ban stock buybacks entirely. Number two, we need to put labor on corporate boards."
       )
     ],
     relatedIssueIds: ["cost-of-living", "unions-and-worker-power", "money-out-of-politics"],
@@ -769,9 +905,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Economy",
     summary: "El-Sayed supports a large increase in housing construction, a federal renters’ bill of rights, and restrictions on corporate speculation in homes.",
     points: [
-      "He wants local barriers to new housing streamlined.",
-      "He supports banning algorithmic rental price-fixing and limiting large corporate ownership of homes.",
-      "He favors housing-dislocation fees for large short-term-rental platforms."
+      "He calls for a building boom through massive investment in new housing and streamlining local regulations that make it too hard to build.",
+      "He wants to ban large corporations that speculate on housing stock from owning homes at all.",
+      "He supports federal legislation banning algorithmic rental price-fixing software that lets corporate landlords collude to raise rent.",
+      "He wants Big Tech short-term rental platforms like Airbnb and VRBO to pay special housing-dislocation fees for the stock they occupy.",
+      "He supports a federal renter bill of rights that protects renters from exploitation and unfair evictions and clarifies landlord obligations nationwide."
     ],
     tags: ["housing", "rent", "renters", "homelessness", "landlords", "airbnb", "homes", "big tech", "algorithmic rent"],
     clip: socialClip(
@@ -812,9 +950,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Community",
     summary: "El-Sayed supports universal childcare and pre-K, stronger public-school funding, and tuition-free pathways through college, trades, or apprenticeships.",
     points: [
-      "He supports raising the minimum teacher salary to at least $60,000 a year.",
+      "He supports universal childcare, universal pre-K, and comprehensive public K–12 education, plus massive investment in school infrastructure.",
+      "He supports raising the minimum teacher salary to at least $60,000 a year and investing more in nurses, psychologists, social workers, and other wraparound staff.",
       "He opposes privatizing public education through vouchers and supports fully funding the Individuals with Disabilities Education Act.",
-      "He backs a debt-free and tuition-free pathway through a two-year apprenticeship, a four-year college education, or beyond."
+      "He proposes tying any percentage increase in national education funding to any equivalent increase in the national defense budget.",
+      "He backs debt-free and tuition-free pathways through apprenticeships or college, expanded funding for HBCUs, community colleges, and trade schools, and caps on administrative overhead at federally funded institutions."
     ],
     tags: ["schools", "teachers", "childcare", "pre-k", "college", "student debt", "trades", "apprenticeship"],
     clip: socialClip(
@@ -837,9 +977,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Community",
     summary: "El-Sayed supports a federal clean-water guarantee, faster lead-pipe replacement, stronger PFAS enforcement, and shutting down Line 5.",
     points: [
-      "His proposal guarantees a basic daily amount of clean water and caps household water bills at 2% of income.",
-      "He wants every lead pipe in Michigan removed by 2030.",
-      "He supports holding polluters responsible for PFAS and agricultural runoff, and shutting down Line 5 to protect the Great Lakes."
+      "He supports a federal water guarantee of at least 50 gallons of clean water per person per day, with bills capped at 2% of household income and protections against shutoffs for families who cannot pay.",
+      "He wants every lead pipe in Michigan’s water systems removed by 2030 — seven years ahead of the current federal deadline.",
+      "He supports holding polluters accountable for PFAS contamination and ensuring corporate farms taking federal dollars are accountable for agricultural runoff.",
+      "He supports federal funding to modernize aging drainage and purification systems.",
+      "He supports shutting down Line 5 to protect the Great Lakes, while making the line safer in the meantime without destroying sensitive environmental or tribal sites."
     ],
     tags: ["water", "great lakes", "line 5", "pfas", "lead pipes", "flint", "water bills"],
     clip: socialClip(
@@ -858,9 +1000,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Healthcare",
     summary: "El-Sayed’s Aging Affordably in America plan would end Medicare cost-sharing, strengthen Social Security, and expand support for aging at home.",
     points: [
-      "He proposes ending Medicare premiums, deductibles, and co-pays so seniors get first-dollar coverage.",
-      "He supports lifting the Social Security payroll-tax cap for high earners and ending federal taxes on Social Security benefits.",
-      "He proposes property-tax relief for seniors, expanded home- and community-based services, and greater support for family caregivers."
+      "He proposes ending Medicare premiums, deductibles, and co-pays so seniors get first-dollar coverage, and expanding coverage for vision, dental, and hearing.",
+      "He supports expanding Medicare drug-price negotiation to all drugs paid by Medicare and banning AI-based prior authorization that overrides physician judgment.",
+      "He supports repealing the Windfall Elimination Provision and Government Pension Offset that cut Social Security for many public employees.",
+      "He supports lifting the Social Security payroll-tax cap and ending federal taxes on Social Security benefits.",
+      "He proposes a federal framework for state property-tax freezes for homeowners 65+, expanded Medicaid home- and community-based services, ending institutional bias in long-term care financing, and a federal caregiver tax credit with respite care."
     ],
     tags: ["seniors", "aging", "medicare", "social security", "property tax", "caregivers", "long-term care"],
     clip: socialClip(
@@ -916,6 +1060,14 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2053135720387055734" }
       ]
     ),
+    moreClips: [
+      mackinacDebateClip(
+        1549,
+        "0:35",
+        "Mackinac debate: Assault on the Voting Rights Act",
+        "We've just seen the biggest assault from the Supreme Court on the Voting Rights Act in our history."
+      )
+    ],
     relatedIssueIds: [
       "making-voting-easier",
       "ending-gerrymandering",
@@ -953,6 +1105,12 @@ export const positionIssues: PositionIssue[] = [
         "1:10",
         "Debate: Bought off by AIPAC",
         "And so long as our politicians continue to be bought off by AIPAC, do not be surprised when we fight wars that are in their best interest."
+      ),
+      mackinacDebateClip(
+        932,
+        "0:55",
+        "Mackinac debate: Didn't ask AIPAC for support",
+        "It's AIPAC money which is being spent already in this race to pump up one of my colleagues on this stage. I'm the only candidate who didn't ask AIPAC for their support."
       )
     ],
     relatedIssueIds: [
@@ -998,6 +1156,12 @@ export const positionIssues: PositionIssue[] = [
           { platform: "X", url: "https://x.com/AbdulElSayed/status/2045876168469995621" },
           { platform: "YouTube", url: "https://www.youtube.com/watch?v=ZthabYiMQ-g" }
         ]
+      ),
+      mackinacDebateClip(
+        1382,
+        "1:05",
+        "Mackinac debate: Antisemitism and Islamophobia",
+        "I know that antisemitism and Islamophobia tend to go hand in hand. And the real issue when it comes to either of them is the scourge of white supremacy."
       )
     ],
     relatedIssueIds: ["foreign-policy", "aipac-and-dark-money"],
@@ -1010,9 +1174,10 @@ export const positionIssues: PositionIssue[] = [
     category: "Healthcare",
     summary: "El-Sayed supports codifying federal reproductive rights and restoring the protections formerly provided under Roe v. Wade.",
     points: [
-      "He supports codifying the rights formerly protected by Roe v. Wade.",
+      "He supports codifying the rights formerly protected by Roe v. Wade into federal law.",
+      "He says reproductive-care decisions should be made by a patient (and their parents if a minor) and their doctor—no one else.",
       "He opposes criminalizing medications used in reproductive care.",
-      "He supports privacy protections for reproductive-health data."
+      "He opposes lawfare or funding cuts used to stop providers from offering full-spectrum healthcare that meets the needs of diverse communities."
     ],
     tags: ["abortion", "roe", "reproductive rights", "contraception", "privacy", "gender equity"],
     clip: socialClip(
@@ -1028,20 +1193,20 @@ export const positionIssues: PositionIssue[] = [
       ]
     ),
     relatedIssueIds: ["lgbtq-rights-and-care"],
-    source: campaignSource(medicare)
+    source: campaignSource(`${medicare}#h-healthcare-freedom-for-women-and-lgbtq-americans`)
   },
   {
     id: "lgbtq-rights-and-care",
     title: "LGBTQ+ rights & healthcare",
     eyebrow: "Rights are not negotiable",
     category: "Community",
-    summary: "El-Sayed supports protecting LGBTQ+ people from discrimination and preserving access to gender-affirming care and HIV prevention.",
+    summary: "El-Sayed supports protecting LGBTQ+ people from discrimination and preserving access to gender-affirming care as a patient–doctor decision.",
     points: [
-      "He says he will not back down when LGBTQ+ rights are at risk.",
-      "He opposes federal attacks on access to PrEP.",
-      "He supports healthcare decisions remaining with patients, families, and clinicians."
+      "He says everyone has the right to make personal healthcare decisions, including gender-affirming care, with a patient (and parents if a minor) and their doctor—no one else.",
+      "He opposes criminalizing medications and the use of lawfare or funding cuts to stop providers from offering full-spectrum care for diverse communities.",
+      "He affirms constitutional protections regardless of sexual orientation or gender identity, and freedom of self-expression."
     ],
-    tags: ["lgbtq", "transgender", "gender affirming care", "prep", "civil rights", "discrimination"],
+    tags: ["lgbtq", "transgender", "gender affirming care", "civil rights", "discrimination", "healthcare freedom"],
     clip: socialClip(
       "Instagram",
       "https://www.instagram.com/reel/DXhfg2IgOU1/",
@@ -1055,7 +1220,7 @@ export const positionIssues: PositionIssue[] = [
       ]
     ),
     relatedIssueIds: ["reproductive-rights", "rule-of-law-and-accountability"],
-    source: campaignSource(medicare)
+    source: campaignSource(`${medicare}#h-healthcare-freedom-for-women-and-lgbtq-americans`)
   },
   {
     id: "black-community-equity",
@@ -1121,6 +1286,12 @@ export const positionIssues: PositionIssue[] = [
         "1:05",
         "Debate week: Trump as symptom, not the disease",
         "Donald Trump is not himself the disease of our politics. He's just the worst symptom of the disease."
+      ),
+      mackinacDebateClip(
+        1779,
+        "1:00",
+        "Mackinac debate: Sand in the gears",
+        "For the next two years, we are going to have to put as much sand in the gears of the Trump administration as possible."
       )
     ],
     relatedIssueIds: ["money-out-of-politics", "rule-of-law-and-accountability"],
@@ -1133,9 +1304,11 @@ export const positionIssues: PositionIssue[] = [
     category: "Democracy",
     summary: "El-Sayed argues that constitutional rights apply to everyone, that peaceful protest is sacrosanct, and that the state must not be weaponized to intimidate dissent.",
     points: [
-      "He says he will protect the rights of all Americans under the Constitution, regardless of background, belief, identity, age, or wealth.",
-      "He treats the right to speak against government actions and to protest peacefully as sacrosanct.",
-      "He stands against the weaponization of the state to stamp out or intimidate peaceful protest, including the freedom to boycott."
+      "He says he will protect the rights of all Americans under the Constitution, regardless of where they live, where their parents came from, how or if they pray, sexual orientation, gender identity, age, or wealth.",
+      "He affirms freedom of speech, assembly, religion and from religion, and self-expression.",
+      "He treats the right to speak against government actions and to protest peacefully as sacrosanct, and stands against weaponizing the state to intimidate peaceful protest, including the freedom to boycott.",
+      "He says healthcare decisions should stay between an individual and their doctor, and that healthcare data must remain private unless used to provide care.",
+      "He says healthcare providers should be protected from undue government coercion to provide data or to provide—or withhold—care they deem necessary."
     ],
     tags: ["rule of law", "accountability", "civil rights", "public safety", "abuse of power", "justice"],
     clip: socialClip(
