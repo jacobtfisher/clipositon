@@ -4,7 +4,7 @@ import { defineConfig, type Plugin } from "vite";
 
 const repoRoot = import.meta.dirname;
 const siteBase = "/cliposition/";
-const customDomain = "volunteers4abdul.com";
+const customDomain = "tools4abdul.com";
 
 function githubPagesRootFiles(): Plugin {
   return {
@@ -22,7 +22,7 @@ function githubPagesRootFiles(): Plugin {
     <meta charset="utf-8" />
     <meta http-equiv="refresh" content="0; url=${siteBase}" />
     <link rel="canonical" href="${siteBase}" />
-    <title>Volunteers for Abdul</title>
+    <title>Tools for Abdul</title>
   </head>
   <body>
     <p><a href="${siteBase}">Continue to Where Abdul Stands</a></p>
