@@ -225,15 +225,43 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .libraryFooter p { margin: 0; color: var(--muted); font-size: .75rem; line-height: 1.45; }
 .libraryFooter a { display: flex; align-items: center; gap: 6px; color: var(--navy); font-size: .78rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
 
-.detailLayer { position: fixed; inset: 0; z-index: 50; display: flex; justify-content: flex-end; }
+.detailLayer { position: fixed; inset: 0; z-index: 50; display: flex; justify-content: center; align-items: center; padding: 28px; }
 .detailBackdrop { position: absolute; inset: 0; width: 100%; border: 0; background: rgba(13, 18, 43, .57); backdrop-filter: blur(3px); cursor: default; }
-.detailPanel { width: min(680px, 94vw); height: 100%; overflow-y: auto; position: relative; z-index: 1; background: var(--paper); box-shadow: -22px 0 70px rgba(9, 13, 34, .25); animation: slideIn .22s ease-out; }
-@keyframes slideIn { from { transform: translateX(35px); opacity: .7; } }
+.detailPanel {
+  width: min(680px, 94vw);
+  height: auto;
+  max-height: min(920px, calc(100vh - 56px));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  background: var(--paper);
+  border-radius: 10px;
+  box-shadow: 0 28px 70px rgba(9, 13, 34, .28);
+  animation: popIn .22s ease-out;
+}
+@keyframes popIn { from { transform: translateY(14px) scale(.985); opacity: .7; } }
 
-.detailHeader { height: 70px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 3; background: rgba(255, 253, 247, .94); backdrop-filter: blur(12px); }
+.detailHeader {
+  height: 70px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+  z-index: 3;
+  background: var(--paper);
+}
 .backButton, .shareButton { border: 0; background: transparent; color: var(--navy); display: flex; align-items: center; gap: 8px; font-size: .8rem; font-weight: 800; cursor: pointer; }
 .shareButton { min-width: 82px; justify-content: center; padding: 9px 12px; border: 1px solid var(--line); border-radius: 4px; }
-.detailBody { padding: 38px 38px 50px; }
+.detailBody {
+  padding: 38px 38px 50px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
 .detailTitle > span { color: var(--red); font: 800 .69rem/1 "Manrope", sans-serif; text-transform: uppercase; letter-spacing: .12em; }
 .detailTitle h2 { margin: 15px 0 15px; font: 800 clamp(2.2rem, 6vw, 3.65rem)/.95 "Manrope", sans-serif; letter-spacing: -.065em; }
 .detailTitle > p { margin: 0; color: #555b70; font-size: 1.04rem; line-height: 1.58; }
@@ -422,12 +450,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .cardAction { padding-top: 9px; font-size: .7rem; }
   .libraryFooter { margin-top: 38px; display: block; }
   .libraryFooter a { margin-top: 18px; }
-  .detailLayer { align-items: flex-end; }
+  .detailLayer { align-items: center; padding: 16px; }
   .detailBackdrop { background: rgba(13, 18, 43, .62); }
-  .detailPanel { width: 100%; height: calc(100% - 18px); border-radius: 14px 14px 0 0; animation: sheetIn .24s ease-out; }
-  @keyframes sheetIn { from { transform: translateY(50px); opacity: .75; } }
+  .detailPanel {
+    width: 100%;
+    height: auto;
+    max-height: calc(100% - 32px);
+    border-radius: 14px;
+    animation: popIn .24s ease-out;
+  }
   .detailHeader { height: 61px; padding: 0 17px; }
-  .detailHeader::before { content: ""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 38px; height: 4px; border-radius: 5px; background: #d3cec4; }
   .detailBody { padding: 27px 18px 38px; }
   .detailTitle h2 { font-size: 2.45rem; }
   .detailTitle > p { font-size: .94rem; }

@@ -307,7 +307,7 @@ function IssueDetail({
   const [copied, setCopied] = React.useState(false);
   const [activeClipUrl, setActiveClipUrl] = React.useState(issue.clip?.url ?? "");
   const shareUrl = `${window.location.origin}${window.location.pathname}#${issue.id}`;
-  const panelRef = React.useRef<HTMLElement>(null);
+  const bodyRef = React.useRef<HTMLDivElement>(null);
   const clipOptions = React.useMemo(
     () => [issue.clip, ...(issue.moreClips ?? [])].filter((clip): clip is NonNullable<typeof clip> => Boolean(clip)),
     [issue.clip, issue.moreClips]
@@ -323,7 +323,7 @@ function IssueDetail({
 
   React.useEffect(() => {
     setActiveClipUrl(issue.clip?.url ?? "");
-    panelRef.current?.scrollTo({ top: 0 });
+    bodyRef.current?.scrollTo({ top: 0 });
   }, [issue.id, issue.clip?.url]);
 
   const share = async () => {
@@ -345,7 +345,7 @@ function IssueDetail({
   return (
     <div className="detailLayer" role="dialog" aria-modal="true" aria-labelledby="detail-title">
       <button type="button" className="detailBackdrop" onClick={onClose} aria-label="Close details" />
-      <article className="detailPanel" ref={panelRef}>
+      <article className="detailPanel">
         <header className="detailHeader">
           <button type="button" className="backButton" onClick={onClose}>
             <ArrowLeft size={19} /> Back to issues
@@ -356,7 +356,7 @@ function IssueDetail({
           </button>
         </header>
 
-        <div className="detailBody">
+        <div className="detailBody" ref={bodyRef}>
           <div className="detailTitle">
             <span>{issue.category} · {issue.eyebrow}</span>
             <h2 id="detail-title">{issue.title}</h2>
