@@ -1,0 +1,38 @@
+{
+  "name": "clipositon",
+  "version": "1.0.0",
+  "description": "Public dashboard for tracking campaign spending and outside spending around Abdul El-Sayed, Diop Harris, and their 2026 opponents.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "rm -rf dist && vite build",
+    "preview": "vite preview",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "test": "tsx --test shared/*.test.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ringleader/clipositon.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ringleader/clipositon/issues"
+  },
+  "homepage": "https://volunteers4abdul.com/cliposition/",
+  "dependencies": {
+    "date-fns": "^4.4.0",
+    "lucide-react": "^1.26.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "playwright-core": "^1.61.1",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5"
+  }
+}
