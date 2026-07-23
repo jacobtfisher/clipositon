@@ -7,11 +7,21 @@ export type PositionSource = {
   kind: "Official video" | "Campaign position";
 };
 
+export type ClipPlatform = "YouTube" | "Instagram" | "TikTok" | "Facebook" | "Bluesky" | "X";
+
+export type ClipOption = {
+  platform: ClipPlatform;
+  url: string;
+};
+
 export type PositionClip = {
-  youtubeId: string;
-  duration: string;
   title: string;
   quote: string;
+  url: string;
+  platform: ClipPlatform;
+  alternates?: ClipOption[];
+  duration?: string;
+  youtubeId?: string;
 };
 
 export type PositionIssue = {
@@ -31,6 +41,34 @@ const moneyOut = "https://abdulforsenate.com/priority/money-out-of-politics/";
 const moneyIn = "https://abdulforsenate.com/priority/money-in-your-pocket/";
 const medicare = "https://abdulforsenate.com/priority/medicare-for-all-the-path-to-a-healthier-america/";
 
+function youtubeClip(
+  youtubeId: string,
+  duration: string,
+  title: string,
+  quote: string,
+  alternates?: ClipOption[]
+): PositionClip {
+  return {
+    youtubeId,
+    duration,
+    title,
+    quote,
+    url: `https://www.youtube.com/watch?v=${youtubeId}`,
+    platform: "YouTube",
+    alternates
+  };
+}
+
+function socialClip(
+  platform: Exclude<PositionClip["platform"], "YouTube">,
+  url: string,
+  title: string,
+  quote: string,
+  alternates?: ClipOption[]
+): PositionClip {
+  return { platform, url, title, quote, alternates };
+}
+
 function videoSource(youtubeId: string): PositionSource {
   return {
     label: "Watch the original video",
@@ -49,6 +87,15 @@ function campaignSource(url: string): PositionSource {
   };
 }
 
+function socialVideoSource(platform: Exclude<PositionClip["platform"], "YouTube">, url: string): PositionSource {
+  return {
+    label: "Watch the original video",
+    url,
+    publisher: `Abdul El-Sayed on ${platform}`,
+    kind: "Official video"
+  };
+}
+
 export const positionIssues: PositionIssue[] = [
   {
     id: "medicare-for-all",
@@ -62,12 +109,13 @@ export const positionIssues: PositionIssue[] = [
       "He also supports abolishing medical debt."
     ],
     tags: ["healthcare", "health insurance", "universal coverage", "medical debt", "copays", "deductibles"],
-    clip: {
-      youtubeId: "BjZLGRlwIpc",
-      duration: "1:29",
-      title: "What Medicare for All would feel like",
-      quote: "A Medicare card ... given to me the day I was born and that wouldn’t expire until the day I expired."
-    },
+    clip: youtubeClip("BjZLGRlwIpc", "1:29", "What Medicare for All would feel like", "A Medicare card ... given to me the day I was born and that wouldn’t expire until the day I expired.", [
+      { platform: "Instagram", url: "https://www.instagram.com/reel/DXb9aYYgIIW/" },
+      { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7631623625879162125" },
+      { platform: "Facebook", url: "https://www.facebook.com/share/r/1KVTqMm8FU/" },
+      { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mk3owsem5c2q" },
+      { platform: "X", url: "https://x.com/AbdulElSayed/status/2046956319584780297" }
+    ]),
     source: videoSource("BjZLGRlwIpc")
   },
   {
@@ -82,12 +130,7 @@ export const positionIssues: PositionIssue[] = [
       "He argues that vision, hearing, and dental should be part of public Medicare itself."
     ],
     tags: ["seniors", "medicare advantage", "prescriptions", "insulin", "drug prices", "big pharma"],
-    clip: {
-      youtubeId: "lrn2M2kBG9M",
-      duration: "0:55",
-      title: "Medicare Advantage and public Medicare",
-      quote: "Medicare Advantage is privatized Medicare."
-    },
+    clip: youtubeClip("lrn2M2kBG9M", "0:55", "Medicare Advantage and public Medicare", "Medicare Advantage is privatized Medicare."),
     source: videoSource("lrn2M2kBG9M")
   },
   {
@@ -102,12 +145,7 @@ export const positionIssues: PositionIssue[] = [
       "He favors greater support for local and state public-health systems."
     ],
     tags: ["rural", "medicaid", "hospitals", "aca", "public health", "up north"],
-    clip: {
-      youtubeId: "W9C0q1cFQFQ",
-      duration: "2:08",
-      title: "What federal healthcare cuts mean up north",
-      quote: "When they gut Medicaid, you’re going to have to pay the costs."
-    },
+    clip: youtubeClip("W9C0q1cFQFQ", "2:08", "What federal healthcare cuts mean up north", "When they gut Medicaid, you’re going to have to pay the costs."),
     source: videoSource("W9C0q1cFQFQ")
   },
   {
@@ -122,12 +160,13 @@ export const positionIssues: PositionIssue[] = [
       "He describes immigration as a source of American growth, not a threat to it."
     ],
     tags: ["immigration", "ice", "border", "deportation", "citizenship", "due process"],
-    clip: {
-      youtubeId: "U4m9EcFK4pE",
-      duration: "0:17",
-      title: "Abolish ICE",
-      quote: "Our government spends billions on an agency that operates outside of the law to terrorize our neighbors."
-    },
+    clip: youtubeClip("U4m9EcFK4pE", "0:17", "Abolish ICE", "Our government spends billions on an agency that operates outside of the law to terrorize our neighbors.", [
+      { platform: "Instagram", url: "https://www.instagram.com/reel/DXDWiAojJ_f/" },
+      { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7628042770430692621" },
+      { platform: "Facebook", url: "https://www.facebook.com/share/r/18U3BT6CPL/" },
+      { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mjdnxoacxk2l" },
+      { platform: "X", url: "https://x.com/AbdulElSayed/status/2044104880143401401" }
+    ]),
     source: videoSource("U4m9EcFK4pE")
   },
   {
@@ -142,12 +181,13 @@ export const positionIssues: PositionIssue[] = [
       "He wants unions represented in decisions about the future of work and new technology."
     ],
     tags: ["labor", "union", "pro act", "workers", "wages", "uaw", "middle class"],
-    clip: {
-      youtubeId: "se_vMjOl_yI",
-      duration: "1:16",
-      title: "Union remarks in Grand Rapids",
-      quote: "We’ve got to pass the PRO Act."
-    },
+    clip: youtubeClip("se_vMjOl_yI", "1:16", "Union remarks in Grand Rapids", "We’ve got to pass the PRO Act.", [
+      { platform: "Instagram", url: "https://www.instagram.com/reel/DXuhKbUDwee/" },
+      { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7634267373230460173" },
+      { platform: "Facebook", url: "https://www.facebook.com/share/r/1E4DLEvQPg/" },
+      { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mknsqn3jo22j" },
+      { platform: "X", url: "https://x.com/AbdulElSayed/status/2049567998927589583" }
+    ]),
     source: videoSource("se_vMjOl_yI")
   },
   {
@@ -162,12 +202,13 @@ export const positionIssues: PositionIssue[] = [
       "He frames campaign-finance reform as necessary before government can reliably serve ordinary people."
     ],
     tags: ["campaign finance", "citizens united", "super pac", "dark money", "corporate pac", "aipac"],
-    clip: {
-      youtubeId: "VghjCiLxyLU",
-      duration: "0:16",
-      title: "A very short message about money",
-      quote: "I’m ... the only candidate for Senate who hasn’t taken a corporate check."
-    },
+    clip: youtubeClip("VghjCiLxyLU", "0:16", "A very short message about money", "I’m ... the only candidate for Senate who hasn’t taken a corporate check.", [
+      { platform: "Instagram", url: "https://www.instagram.com/reel/DYUnOe_AXIP" },
+      { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7639753398316698893" },
+      { platform: "Facebook", url: "https://www.facebook.com/share/r/1EAbm65xbm/" },
+      { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlsz5u5zk22l" },
+      { platform: "X", url: "https://x.com/AbdulElSayed/status/2054930026752045127" }
+    ]),
     source: videoSource("VghjCiLxyLU")
   },
   {
@@ -182,12 +223,13 @@ export const positionIssues: PositionIssue[] = [
       "His economic platform emphasizes wages, healthcare costs, housing, groceries, and family expenses."
     ],
     tags: ["affordability", "inflation", "groceries", "prices", "family budget", "monopoly", "taxes"],
-    clip: {
-      youtubeId: "RNXI7_U9ZPQ",
-      duration: "2:04",
-      title: "Affordability at the Cherry Festival",
-      quote: "It’s just way too expensive to afford anything."
-    },
+    clip: youtubeClip("RNXI7_U9ZPQ", "2:04", "Affordability at the Cherry Festival", "It’s just way too expensive to afford anything.", [
+      { platform: "Instagram", url: "https://www.instagram.com/reel/DYIN7oruB_m/" },
+      { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7637966262533950733" },
+      { platform: "Facebook", url: "https://www.facebook.com/share/r/187P4YLwQh/" },
+      { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlgvugrqak2i" },
+      { platform: "X", url: "https://x.com/AbdulElSayed/status/2053184829273845847" }
+    ]),
     source: videoSource("RNXI7_U9ZPQ")
   },
   {
@@ -202,12 +244,7 @@ export const positionIssues: PositionIssue[] = [
       "He supports revolving loan funds and other investment in small businesses."
     ],
     tags: ["small business", "entrepreneur", "employer insurance", "restaurant", "health benefits"],
-    clip: {
-      youtubeId: "TvfEHzT9wnI",
-      duration: "1:25",
-      title: "Healthcare and a Detroit small business",
-      quote: "It’s so hard for us to even offer the health insurance to people."
-    },
+    clip: youtubeClip("TvfEHzT9wnI", "1:25", "Healthcare and a Detroit small business", "It’s so hard for us to even offer the health insurance to people."),
     source: videoSource("TvfEHzT9wnI")
   },
   {
@@ -222,12 +259,7 @@ export const positionIssues: PositionIssue[] = [
       "He opposes blocking states from acting on AI before strong federal protections exist."
     ],
     tags: ["artificial intelligence", "ai", "data center", "dte", "electric bills", "technology", "automation"],
-    clip: {
-      youtubeId: "oNFAVuNPdsk",
-      duration: "1:47",
-      title: "Terms of engagement for data centers",
-      quote: "If you promise jobs, deliver those jobs."
-    },
+    clip: youtubeClip("oNFAVuNPdsk", "1:47", "Terms of engagement for data centers", "If you promise jobs, deliver those jobs."),
     source: videoSource("oNFAVuNPdsk")
   },
   {
@@ -242,12 +274,7 @@ export const positionIssues: PositionIssue[] = [
       "He backs a federal right-to-repair law for farm equipment."
     ],
     tags: ["agriculture", "farm", "cherries", "subsidies", "right to repair", "rural", "tariffs"],
-    clip: {
-      youtubeId: "BT54YJt5ess",
-      duration: "2:56",
-      title: "How to help Michigan family farms",
-      quote: "We don’t want to see agriculture be corporatized."
-    },
+    clip: youtubeClip("BT54YJt5ess", "2:56", "How to help Michigan family farms", "We don’t want to see agriculture be corporatized."),
     source: videoSource("BT54YJt5ess")
   },
   {
@@ -262,12 +289,7 @@ export const positionIssues: PositionIssue[] = [
       "He connects climate instability directly to the future of Michigan agriculture."
     ],
     tags: ["climate", "renewable energy", "pollution", "environment", "farm", "solar", "wind"],
-    clip: {
-      youtubeId: "6I_5VJNLqiw",
-      duration: "2:26",
-      title: "Agriculture, climate, immigration, and trade",
-      quote: "When you talk about agriculture, you’re also talking about climate change and immigration and tariffs."
-    },
+    clip: youtubeClip("6I_5VJNLqiw", "2:26", "Agriculture, climate, immigration, and trade", "When you talk about agriculture, you’re also talking about climate change and immigration and tariffs."),
     source: videoSource("6I_5VJNLqiw")
   },
   {
@@ -282,12 +304,7 @@ export const positionIssues: PositionIssue[] = [
       "He supports international cooperation on pandemics and climate change."
     ],
     tags: ["iran", "war", "foreign policy", "military", "diplomacy", "gaza", "israel", "palestine", "aid"],
-    clip: {
-      youtubeId: "ZthabYiMQ-g",
-      duration: "2:26",
-      title: "Who is the Iran war really for?",
-      quote: "Who’s this war really for?"
-    },
+    clip: youtubeClip("ZthabYiMQ-g", "2:26", "Who is the Iran war really for?", "Who’s this war really for?"),
     source: videoSource("ZthabYiMQ-g")
   },
   {
@@ -302,12 +319,7 @@ export const positionIssues: PositionIssue[] = [
       "He opposes consolidation that rewards executives while cutting workers and consumer choice."
     ],
     tags: ["antitrust", "monopoly", "mergers", "ftc", "corporations", "price gouging", "competition"],
-    clip: {
-      youtubeId: "v1_0UVF3T68",
-      duration: "1:15",
-      title: "Why corporate consolidation matters",
-      quote: "They’ve raised the prices on the things we have to buy. They’ve reduced the choices that we have."
-    },
+    clip: youtubeClip("v1_0UVF3T68", "1:15", "Why corporate consolidation matters", "They’ve raised the prices on the things we have to buy. They’ve reduced the choices that we have."),
     source: videoSource("v1_0UVF3T68")
   },
   {
@@ -321,7 +333,17 @@ export const positionIssues: PositionIssue[] = [
       "He supports banning algorithmic rental price-fixing and limiting large corporate ownership of homes.",
       "He favors housing-dislocation fees for large short-term-rental platforms."
     ],
-    tags: ["housing", "rent", "renters", "homelessness", "landlords", "airbnb", "homes"],
+    tags: ["housing", "rent", "renters", "homelessness", "landlords", "airbnb", "homes", "big tech", "algorithmic rent"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DYXmsEbuVG-/",
+      "Abdul’s plan for housing",
+      "We’ve got to stop the Big Techification of our housing.",
+      [
+        { platform: "Facebook", url: "https://www.facebook.com/share/r/1BCXr2fuPy/" },
+        { platform: "X", url: "https://x.com/AbdulElSayed/status/2055350302610522521" }
+      ]
+    ),
     source: campaignSource(moneyIn)
   },
   {
@@ -353,19 +375,215 @@ export const positionIssues: PositionIssue[] = [
     source: campaignSource(moneyOut)
   },
   {
-    id: "reproductive-and-lgbtq-care",
-    title: "Reproductive & LGBTQ+ healthcare",
-    eyebrow: "Decisions belong with patients",
+    id: "seniors-aging-affordably",
+    title: "Seniors & aging affordably",
+    eyebrow: "Lower costs; support independence",
     category: "Healthcare",
-    summary: "El-Sayed supports federal protection for reproductive and gender-affirming care and says healthcare decisions belong with patients, families, and doctors.",
+    summary: "El-Sayed’s Aging Affordably in America plan would reduce Medicare and prescription costs, strengthen Social Security, and expand support for aging at home.",
+    points: [
+      "He proposes ending Medicare cost-sharing and adding vision, dental, and hearing coverage.",
+      "He supports lifting the Social Security payroll-tax cap for high earners and ending federal taxes on seniors’ Social Security benefits.",
+      "He proposes property-tax relief, expanded home- and community-based services, and greater support for family caregivers."
+    ],
+    tags: ["seniors", "aging", "medicare", "social security", "property tax", "caregivers", "long-term care"],
+    source: campaignSource("https://abdulforsenate.com/2026/06/the-aaa-plan-for-seniors-aging-affordably-in-america")
+  },
+  {
+    id: "voting-rights",
+    title: "Voting rights",
+    eyebrow: "Protect equal access to the ballot",
+    category: "Democracy",
+    summary: "El-Sayed supports federal voting-rights protections, including passage of the John Lewis Voting Rights Advancement Act.",
+    points: [
+      "He supports passage of the John Lewis Voting Rights Advancement Act.",
+      "He has tied that legislation to the need to respond to a recent Supreme Court voting-rights decision.",
+      "He contrasts segregation with real equity in discussing voting rights."
+    ],
+    tags: ["voting rights", "john lewis", "elections", "ballot access", "supreme court", "democracy"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/p/DYH3ATfgMEF/",
+      "Pass the John Lewis Voting Rights Act",
+      "Congress needs to pass the John Lewis Voting Rights Act.",
+      [
+        { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7637915655546752269" },
+        { platform: "Facebook", url: "https://www.facebook.com/share/r/18pJaK17EY/" },
+        { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlgkramruc2i" },
+        { platform: "X", url: "https://x.com/AbdulElSayed/status/2053135720387055734" }
+      ]
+    ),
+    source: socialVideoSource("Instagram", "https://www.instagram.com/p/DYH3ATfgMEF/")
+  },
+  {
+    id: "aipac-and-dark-money",
+    title: "AIPAC & dark money",
+    eyebrow: "Voters, not outside spenders",
+    category: "Democracy",
+    summary: "El-Sayed opposes AIPAC-backed outside spending and argues that large political expenditures should not determine who represents Michigan.",
+    points: [
+      "He has criticized millions of dollars in AIPAC-linked spending supporting an opponent.",
+      "He supports removing dark money and corporate influence from elections.",
+      "He distinguishes criticism of AIPAC and the Israeli government from hostility toward Jewish people."
+    ],
+    tags: ["aipac", "dark money", "campaign finance", "outside spending", "super pac", "elections"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DYGZfXAsUwb",
+      "AIPAC spending in Michigan’s Senate race",
+      "Outside groups should not be able to buy an election.",
+      [
+        { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7637962134743256334" },
+        { platform: "Facebook", url: "https://www.facebook.com/share/v/16iGcwaqKX/" },
+        { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlgvbf2vks2g" },
+        { platform: "X", url: "https://x.com/AbdulElSayed/status/2052888884342575323" }
+      ]
+    ),
+    source: campaignSource(moneyOut)
+  },
+  {
+    id: "jewish-community-and-antisemitism",
+    title: "Jewish community & antisemitism",
+    eyebrow: "Condemn hate; protect open debate",
+    category: "Community",
+    summary: "El-Sayed condemns antisemitism while arguing that criticism of a government or political organization should not be conflated with hatred of Jewish people.",
+    points: [
+      "He says Judaism and Jewish people are distinct from AIPAC, the Israeli government, and its leaders.",
+      "He opposes definitions of antisemitism that automatically encompass criticism of a foreign government.",
+      "He says Israelis and Palestinians have equal rights to peace, dignity, and self-determination."
+    ],
+    tags: ["antisemitism", "jewish community", "judaism", "israel", "palestine", "civil rights"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DYAvEZPv3eR/",
+      "Standing up against antisemitism",
+      "Antisemitism has no place in our politics or our communities.",
+      [
+        { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7636888624251817230" },
+        { platform: "Facebook", url: "https://www.facebook.com/share/v/1BUKo4BV8o/" },
+        { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3ml7m2e5nzs2b" }
+      ]
+    ),
+    source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DYAvEZPv3eR/")
+  },
+  {
+    id: "reproductive-rights",
+    title: "Reproductive rights",
+    eyebrow: "Restore federal protections",
+    category: "Healthcare",
+    summary: "El-Sayed supports codifying federal reproductive rights and restoring the protections formerly provided under Roe v. Wade.",
     points: [
       "He supports codifying the rights formerly protected by Roe v. Wade.",
       "He opposes criminalizing medications used in reproductive care.",
-      "He supports privacy protections for healthcare data."
+      "He supports privacy protections for reproductive-health data."
     ],
-    tags: ["abortion", "roe", "reproductive rights", "lgbtq", "transgender", "gender affirming care", "privacy"],
+    tags: ["abortion", "roe", "reproductive rights", "contraception", "privacy", "gender equity"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DXiPeFhjH0U/",
+      "Roe and gender equity",
+      "The standard set by Roe v. Wade is the foundation for gender equity.",
+      [
+        { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7632492473461329165" },
+        { platform: "Facebook", url: "https://www.facebook.com/share/r/18FE8RxXby/" },
+        { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mkbszohr7s2l" },
+        { platform: "X", url: "https://x.com/AbdulElSayed/status/2047839160933740888" }
+      ]
+    ),
     source: campaignSource(medicare)
+  },
+  {
+    id: "lgbtq-rights-and-care",
+    title: "LGBTQ+ rights & healthcare",
+    eyebrow: "Rights are not negotiable",
+    category: "Community",
+    summary: "El-Sayed supports protecting LGBTQ+ people from discrimination and preserving access to gender-affirming care and HIV prevention.",
+    points: [
+      "He says he will not back down when LGBTQ+ rights are at risk.",
+      "He opposes federal attacks on access to PrEP.",
+      "He supports healthcare decisions remaining with patients, families, and clinicians."
+    ],
+    tags: ["lgbtq", "transgender", "gender affirming care", "prep", "civil rights", "discrimination"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DXhfg2IgOU1/",
+      "I will never back down when rights are at risk",
+      "I will never back down when somebody’s rights are at risk.",
+      [
+        { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7632387310570491150" },
+        { platform: "Facebook", url: "https://www.facebook.com/share/r/1GtVePQdXC/" },
+        { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mkb43a6bns2v" },
+        { platform: "X", url: "https://x.com/AbdulElSayed/status/2047735621628698779" }
+      ]
+    ),
+    source: campaignSource(medicare)
+  },
+  {
+    id: "black-community-equity",
+    title: "Black community & racial equity",
+    eyebrow: "Close structural gaps",
+    category: "Community",
+    summary: "El-Sayed identifies racial inequality in healthcare and public institutions as a structural problem requiring deliberate public action.",
+    points: [
+      "He has highlighted racial inequality in access to healthcare and health outcomes.",
+      "He supports universal healthcare as a tool for reducing inequitable access to care.",
+      "His campaign has emphasized representation and accountability to Black communities across Michigan."
+    ],
+    tags: ["black community", "racial equity", "health disparities", "civil rights", "representation", "healthcare"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DXZzYMPEZJa/",
+      "Racial inequality in healthcare",
+      "Racial inequality is built into who gets care and who gets left behind."
+    ),
+    source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXZzYMPEZJa/")
+  },
+  {
+    id: "democratic-party-strategy",
+    title: "Democratic Party strategy",
+    eyebrow: "No business as usual",
+    category: "Democracy",
+    summary: "El-Sayed argues that Democrats should confront concentrated power directly and use every available institutional tool rather than return to business as usual.",
+    points: [
+      "He has called for Democrats to obstruct harmful actions rather than normalize them.",
+      "He argues the party must focus on material improvements in people’s lives.",
+      "He criticizes political strategies centered on donors, consultants, and incrementalism."
+    ],
+    tags: ["democratic party", "senate", "opposition", "political strategy", "working class", "accountability"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DXKMIxDAN8l/",
+      "No business as usual in the Senate",
+      "The only reasonable response is to throw sand in the gears at every turn.",
+      [
+        { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7629026610347265310" },
+        { platform: "Facebook", url: "https://www.facebook.com/share/r/1CRK8b2y1X/" },
+        { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mjkdgt3onk2g" },
+        { platform: "X", url: "https://x.com/AbdulElSayed/status/2044456330727997946" }
+      ]
+    ),
+    source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXKMIxDAN8l/")
+  },
+  {
+    id: "rule-of-law-and-accountability",
+    title: "Rule of law & accountability",
+    eyebrow: "Hold power to account",
+    category: "Democracy",
+    summary: "El-Sayed argues that public officials and institutions must be held accountable when they abuse power or make marginalized communities less safe.",
+    points: [
+      "He supports holding powerful officials and institutions accountable under the law.",
+      "He connects accountability to the safety of women and marginalized communities.",
+      "He rejects selective enforcement that protects powerful people while targeting vulnerable communities."
+    ],
+    tags: ["rule of law", "accountability", "civil rights", "public safety", "abuse of power", "justice"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DXuavVpCUHF/",
+      "Hold power to account",
+      "We have to hold power to account and make sure marginalized communities feel safe."
+    ),
+    source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXuavVpCUHF/")
   }
+
 ];
 
 export const positionCategories: Array<"All" | PositionCategory> = [

@@ -26,6 +26,18 @@ import "./styles.css";
 type CategoryFilter = "All" | PositionCategory;
 type SourceFilter = "all" | "clips";
 
+declare global {
+  interface Window {
+    instgrm?: {
+      Embeds?: { process: () => void };
+    };
+  }
+}
+
+const isInstagramClip = (platform: string) => platform === "Instagram";
+const isEmbeddableClip = (issue: PositionIssue) =>
+  Boolean(issue.clip?.youtubeId || (issue.clip && isInstagramClip(issue.clip.platform)));
+
 const normalize = (value: string) =>
   value
     .toLowerCase()
@@ -108,8 +120,8 @@ function App() {
             </div>
             <i />
             <div>
-              <strong>{positionIssues.filter((issue) => issue.clip).length}</strong>
-              <span>direct clips</span>
+              <strong>{positionIssues.filter(isEmbeddableClip).length}</strong>
+              <span>embedded clips</span>
             </div>
           </div>
         </section>
@@ -158,7 +170,7 @@ function App() {
             <SlidersHorizontal size={15} />
             <span>{filtered.length} {filtered.length === 1 ? "result" : "results"}</span>
           </div>
-          <p>Last reviewed July 22, 2026</p>
+          <p>Last reviewed July 23, 2026</p>
         </section>
 
         {filtered.length ? (
@@ -201,9 +213,19 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
     <article className={`issueCard ${index < 3 ? "featured" : ""}`}>
       <button type="button" className="cardButton" onClick={onOpen} aria-label={`Open ${issue.title}`}>
         {issue.clip ? (
-          <div className="cardMedia">
-            <img src={`https://i.ytimg.com/vi/${issue.clip.youtubeId}/hqdefault.jpg`} alt="" loading="lazy" />
-            <span className="playBadge"><Play size={15} fill="currentColor" /> {issue.clip.duration}</span>
+          <div className={`cardMedia ${issue.clip.youtubeId ? "" : "socialMedia"}`}>
+            {issue.clip.youtubeId ? (
+              <img src={`https://i.ytimg.com/vi/${issue.clip.youtubeId}/hqdefault.jpg`} alt="" loading="lazy" />
+            ) : (
+              <div className="socialMediaLabel">
+                <Film size={28} />
+                <span>{issue.clip.platform}</span>
+                <strong>RECENT CAMPAIGN CLIP</strong>
+              </div>
+            )}
+            <span className="playBadge">
+              <Play size={15} fill="currentColor" /> {issue.clip.duration ?? issue.clip.platform}
+            </span>
           </div>
         ) : (
           <div className="cardMedia textSource">
@@ -271,17 +293,45 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
 
           {issue.clip ? (
             <section className="videoSection">
-              <div className="videoFrame">
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${issue.clip.youtubeId}?rel=0`}
-                  title={issue.clip.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              </div>
+              {issue.clip.youtubeId ? (
+                <div className="videoFrame">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${issue.clip.youtubeId}?rel=0`}
+                    title={issue.clip.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              ) : isInstagramClip(issue.clip.platform) ? (
+                <InstagramEmbed url={issue.clip.url} title={issue.clip.title} />
+              ) : (
+                <a className="externalClip" href={issue.clip.url} target="_blank" rel="noreferrer">
+                  <span className="externalClipIcon"><Play size={27} fill="currentColor" /></span>
+                  <span>
+                    <small>WATCH ON {issue.clip.platform.toUpperCase()}</small>
+                    <strong>{issue.clip.title}</strong>
+                  </span>
+                  <ExternalLink size={20} />
+                </a>
+              )}
               <div className="clipCaption">
-                <div><Film size={16} /><span>IN HIS OWN WORDS · {issue.clip.duration}</span></div>
+                <div>
+                  <Film size={16} />
+                  <span>IN HIS OWN WORDS · {issue.clip.duration ?? issue.clip.platform}</span>
+                </div>
                 <blockquote>“{issue.clip.quote}”</blockquote>
+                {issue.clip.alternates?.length ? (
+                  <div className="alternateClips" aria-label="Alternate places to watch this clip">
+                    <span>Also watch on</span>
+                    <div>
+                      {issue.clip.alternates.map((option) => (
+                        <a href={option.url} target="_blank" rel="noreferrer" key={`${option.platform}-${option.url}`}>
+                          {option.platform} <ExternalLink size={12} />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </section>
           ) : (
@@ -319,6 +369,57 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
           </p>
         </div>
       </article>
+    </div>
+  );
+}
+
+function InstagramEmbed({ url, title }: { url: string; title: string }) {
+  const [timedOut, setTimedOut] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimedOut(false);
+
+    const processEmbeds = () => window.instgrm?.Embeds?.process();
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      'script[src="https://www.instagram.com/embed.js"]'
+    );
+
+    if (existingScript) {
+      if (window.instgrm?.Embeds) processEmbeds();
+      else existingScript.addEventListener("load", processEmbeds, { once: true });
+    } else {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.instagram.com/embed.js";
+      script.addEventListener("load", processEmbeds, { once: true });
+      document.body.appendChild(script);
+    }
+
+    const timeoutId = window.setTimeout(() => setTimedOut(true), 6500);
+    return () => window.clearTimeout(timeoutId);
+  }, [url]);
+
+  return (
+    <div className="instagramEmbedShell">
+      <blockquote
+        className="instagram-media"
+        data-instgrm-captioned="false"
+        data-instgrm-permalink={url}
+        data-instgrm-version="14"
+        aria-label={`Instagram video: ${title}`}
+      >
+        <a href={url} target="_blank" rel="noreferrer">
+          Watch {title} on Instagram
+        </a>
+      </blockquote>
+      {timedOut ? (
+        <div className="instagramFallback">
+          <p>Instagram may be blocked by privacy settings or a content blocker.</p>
+          <a href={url} target="_blank" rel="noreferrer">
+            Watch on Instagram <ExternalLink size={14} />
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 }
