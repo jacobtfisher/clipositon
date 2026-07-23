@@ -224,7 +224,9 @@ function App() {
           <div>
             <LogoMark />
             <p>
-              This guide organizes statements published by Abdul for U.S. Senate. It is not independent fact-checking and never generates a position.
+              Created by volunteers, not the official campaign. This guide organizes
+              statements published by Abdul for U.S. Senate. It is not independent
+              fact-checking and never generates a position.
             </p>
           </div>
           <a href={positionLibrarySource.url} target="_blank" rel="noreferrer">
