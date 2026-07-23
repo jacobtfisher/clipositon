@@ -22,6 +22,8 @@ export type PositionClip = {
   alternates?: ClipOption[];
   duration?: string;
   youtubeId?: string;
+  /** Optional start offset for YouTube embeds (seconds from the beginning). */
+  startSeconds?: number;
 };
 
 export type PositionIssue = {
@@ -50,16 +52,25 @@ function youtubeClip(
   duration: string,
   title: string,
   quote: string,
-  alternates?: ClipOption[]
+  alternates?: ClipOption[],
+  startSeconds?: number
 ): PositionClip {
+  const start =
+    typeof startSeconds === "number" && Number.isFinite(startSeconds) && startSeconds > 0
+      ? Math.floor(startSeconds)
+      : undefined;
+  const url = new URL(`https://www.youtube.com/watch?v=${youtubeId}`);
+  if (start) url.searchParams.set("t", `${start}s`);
+
   return {
     youtubeId,
     duration,
     title,
     quote,
-    url: `https://www.youtube.com/watch?v=${youtubeId}`,
+    url: url.toString(),
     platform: "YouTube",
-    alternates
+    alternates,
+    startSeconds: start
   };
 }
 
@@ -228,6 +239,12 @@ export const positionIssues: PositionIssue[] = [
       "He supports vastly expanding VA services to include those housing, job, and education supports."
     ],
     tags: ["veterans", "va", "housing", "jobs", "education", "military families"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3moqj67ra2c2y",
+      "Keep the VA open for veterans",
+      "There should be no such thing as an indigent veteran in America."
+    ),
     relatedIssueIds: ["medicare-for-all", "housing"],
     source: campaignSource(`${medicare}#h-veterans-affairs`)
   },
@@ -270,6 +287,12 @@ export const positionIssues: PositionIssue[] = [
       "He supports reinvesting in and reforming CDC, FDA, and HRSA, and vastly increasing funding for local and state health departments."
     ],
     tags: ["public health", "cdc", "fda", "nih", "vaccines", "science", "local health departments"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mja7fkizyc2k",
+      "Holding RFK Jr. accountable",
+      "As the first Democratic doctor in the U.S. Senate since 1969, you bet I’m going to hold him accountable for his dangerous lies."
+    ),
     relatedIssueIds: ["medicare-for-all", "rural-healthcare"],
     source: campaignSource(`${medicare}#h-public-health`)
   },
@@ -434,6 +457,12 @@ export const positionIssues: PositionIssue[] = [
       "He frames that structure as the closest practical way to eliminate partisan gerrymandering tied to state apportionment."
     ],
     tags: ["gerrymandering", "redistricting", "voting maps", "census", "democracy", "elections"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mknsvnjhsc2p",
+      "Racial gerrymandering and equal representation",
+      "The SCOTUS decision today guts the prohibition on racial gerrymandering, effectively using the redlining of the past to rob Black folks of equal representation in the future."
+    ),
     relatedIssueIds: [
       "making-voting-easier",
       "voting-rights",
@@ -454,6 +483,12 @@ export const positionIssues: PositionIssue[] = [
       "He supports allowing the same number of appointments for each presidential term."
     ],
     tags: ["supreme court", "term limits", "judiciary", "democracy", "voting rights", "civil rights"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3m6uhi37m5s25",
+      "Supreme Court reform",
+      "Supreme Court reform? I'm down."
+    ),
     relatedIssueIds: [
       "making-voting-easier",
       "voting-rights",
@@ -473,6 +508,12 @@ export const positionIssues: PositionIssue[] = [
       "He believes the filibuster is antidemocratic and should be abolished."
     ],
     tags: ["filibuster", "senate", "majority rule", "democracy", "legislative process"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mmwrnljp6s2q",
+      "Abolish the filibuster",
+      "Abolish the filibuster."
+    ),
     relatedIssueIds: [
       "making-voting-easier",
       "voting-rights",
@@ -567,6 +608,12 @@ export const positionIssues: PositionIssue[] = [
       "He supports an FDA-style independent safety-testing agency and bans AI from denying medical care, making hiring or firing decisions, or replacing human oversight in life-or-death decisions."
     ],
     tags: ["artificial intelligence", "ai", "automation", "big tech", "jobs", "safety", "democracy"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mnbcugonkk2w",
+      "Real AI regulation and guardrails",
+      "We need real AI regulation to create guardrails and protect the ability for young people to have a job."
+    ),
     relatedIssueIds: ["data-centers-and-ai", "cost-of-living", "corporate-consolidation"],
     source: campaignSource("https://abdulforsenate.com/2026/06/first-do-no-harm-ai-under-democracy/")
   },
@@ -732,6 +779,12 @@ export const positionIssues: PositionIssue[] = [
       "He supports holding polluters responsible for PFAS and agricultural runoff, and shutting down Line 5 to protect the Great Lakes."
     ],
     tags: ["water", "great lakes", "line 5", "pfas", "lead pipes", "flint", "water bills"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mom54aph2s2v",
+      "Clean water to drink, cook, and bathe",
+      "Shouldn't be this hard to have clean water to drink, clean, cook, and bathe."
+    ),
     relatedIssueIds: ["climate-and-agriculture"],
     source: campaignSource(`${moneyOut}#h-water`)
   },
@@ -747,6 +800,12 @@ export const positionIssues: PositionIssue[] = [
       "He proposes property-tax relief for seniors, expanded home- and community-based services, and greater support for family caregivers."
     ],
     tags: ["seniors", "aging", "medicare", "social security", "property tax", "caregivers", "long-term care"],
+    clip: socialClip(
+      "Bluesky",
+      "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mnfc4c3cmc2r",
+      "Aging Affordably in America",
+      "They deserve Medicare that covers all their health needs, Social Security they can live on, and a home they can afford to stay in."
+    ),
     relatedIssueIds: ["medicare-for-all", "medicare-advantage"],
     source: campaignSource("https://abdulforsenate.com/2026/06/the-aaa-plan-for-seniors-aging-affordably-in-america")
   },

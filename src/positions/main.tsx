@@ -29,8 +29,31 @@ type CategoryFilter = "All" | PositionCategory;
 type SourceFilter = "all" | "clips";
 
 const isInstagramClip = (platform: string) => platform === "Instagram";
+const isBlueskyClip = (platform: string) => platform === "Bluesky";
 const isEmbeddableClip = (issue: PositionIssue) =>
-  Boolean(issue.clip?.youtubeId || (issue.clip && isInstagramClip(issue.clip.platform)));
+  Boolean(
+    issue.clip?.youtubeId ||
+      (issue.clip && (isInstagramClip(issue.clip.platform) || isBlueskyClip(issue.clip.platform)))
+  );
+
+const displayClipPlatform = (clip: NonNullable<PositionIssue["clip"]>) => {
+  if (isBlueskyClip(clip.platform)) return "Bluesky";
+  if (
+    isInstagramClip(clip.platform) &&
+    clip.alternates?.some((option) => option.platform === "Bluesky")
+  ) {
+    return "Bluesky";
+  }
+  return clip.platform;
+};
+
+const preferredBlueskyUrl = (clip: NonNullable<PositionIssue["clip"]>) => {
+  if (isBlueskyClip(clip.platform)) return clip.url;
+  if (isInstagramClip(clip.platform)) {
+    return clip.alternates?.find((option) => option.platform === "Bluesky")?.url;
+  }
+  return undefined;
+};
 const socialThumbnails = import.meta.glob<string>("./thumbnails/*.webp", {
   eager: true,
   import: "default",
@@ -247,11 +270,7 @@ function App() {
 }
 
 function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: number; onOpen: () => void }) {
-  const displayPlatform =
-    issue.clip?.platform === "Instagram" &&
-    issue.clip.alternates?.some((option) => option.platform === "Bluesky")
-      ? "Bluesky"
-      : issue.clip?.platform;
+  const displayPlatform = issue.clip ? displayClipPlatform(issue.clip) : undefined;
   const socialThumbnail = socialThumbnails[`./thumbnails/${issue.id}.webp`];
 
   return (
@@ -315,10 +334,9 @@ function IssueDetail({
     [issue.clip, issue.moreClips]
   );
   const activeClip = clipOptions.find((clip) => clip.url === activeClipUrl) ?? issue.clip;
-  const blueskyOption =
-    activeClip?.platform === "Instagram"
-      ? activeClip.alternates?.find((option) => option.platform === "Bluesky")
-      : undefined;
+  const blueskyUrl = activeClip ? preferredBlueskyUrl(activeClip) : undefined;
+  const instagramFallbackUrl =
+    activeClip && isInstagramClip(activeClip.platform) ? activeClip.url : undefined;
   const relatedIssues = (issue.relatedIssueIds ?? [])
     .map((id) => positionIssues.find((candidate) => candidate.id === id))
     .filter((candidate): candidate is PositionIssue => Boolean(candidate));
@@ -370,18 +388,22 @@ function IssueDetail({
               {activeClip.youtubeId ? (
                 <div className="videoFrame">
                   <iframe
-                    key={activeClip.youtubeId}
-                    src={`https://www.youtube-nocookie.com/embed/${activeClip.youtubeId}?rel=0`}
+                    key={`${activeClip.youtubeId}-${activeClip.startSeconds ?? 0}`}
+                    src={`https://www.youtube-nocookie.com/embed/${activeClip.youtubeId}?rel=0${
+                      activeClip.startSeconds && activeClip.startSeconds > 0
+                        ? `&start=${Math.floor(activeClip.startSeconds)}`
+                        : ""
+                    }`}
                     title={activeClip.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   />
                 </div>
-              ) : isInstagramClip(activeClip.platform) && blueskyOption ? (
+              ) : blueskyUrl ? (
                 <BlueskyEmbed
-                  key={blueskyOption.url}
-                  url={blueskyOption.url}
-                  instagramUrl={activeClip.url}
+                  key={blueskyUrl}
+                  url={blueskyUrl}
+                  fallbackInstagramUrl={instagramFallbackUrl}
                   title={activeClip.title}
                 />
               ) : isInstagramClip(activeClip.platform) ? (
@@ -400,7 +422,7 @@ function IssueDetail({
                 <div>
                   <Film size={16} />
                   <span>
-                    IN HIS OWN WORDS · {activeClip.duration ?? (blueskyOption ? "Bluesky" : activeClip.platform)}
+                    IN HIS OWN WORDS · {activeClip.duration ?? displayClipPlatform(activeClip)}
                   </span>
                 </div>
                 <blockquote>“{activeClip.quote}”</blockquote>
@@ -427,11 +449,7 @@ function IssueDetail({
                 {clipOptions.map((clip) => {
                   const selected = clip.url === activeClip?.url;
                   const thumb = clipThumbnailUrl(clip, issue);
-                  const label =
-                    clip.platform === "Instagram" &&
-                    clip.alternates?.some((option) => option.platform === "Bluesky")
-                      ? "Bluesky"
-                      : clip.platform;
+                  const label = displayClipPlatform(clip);
                   return (
                     <button
                       type="button"
@@ -517,11 +535,11 @@ function IssueDetail({
 
 function BlueskyEmbed({
   url,
-  instagramUrl,
+  fallbackInstagramUrl,
   title
 }: {
   url: string;
-  instagramUrl: string;
+  fallbackInstagramUrl?: string;
   title: string;
 }) {
   const frameId = React.useId().replaceAll(":", "");
@@ -595,7 +613,20 @@ function BlueskyEmbed({
   }, [frameId]);
 
   if (status === "unavailable") {
-    return <InstagramEmbed url={instagramUrl} title={title} />;
+    if (fallbackInstagramUrl) {
+      return <InstagramEmbed url={fallbackInstagramUrl} title={title} />;
+    }
+
+    return (
+      <a className="externalClip" href={url} target="_blank" rel="noreferrer">
+        <span className="externalClipIcon"><Play size={27} fill="currentColor" /></span>
+        <span>
+          <small>WATCH ON BLUESKY</small>
+          <strong>{title}</strong>
+        </span>
+        <ExternalLink size={20} />
+      </a>
+    );
   }
 
   return (
