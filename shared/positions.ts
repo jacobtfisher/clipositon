@@ -33,6 +33,10 @@ export type PositionIssue = {
   points: string[];
   tags: string[];
   clip?: PositionClip;
+  /** Extra illustrative clips shown under the hero; do not invent policy bullets from these. */
+  moreClips?: PositionClip[];
+  /** Peer issue ids for the related-positions rail. */
+  relatedIssueIds?: string[];
   source: PositionSource;
 };
 
@@ -122,6 +126,50 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=BjZLGRlwIpc" }
       ]
     ),
+    moreClips: [
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DXb9aYYgIIW/",
+        "A guarantee, not another option",
+        "People want to sell you on an “option.” We don’t need another insurance option. We need a GUARANTEE. That’s what Medicare for All is.",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mk3owsem5c2q" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7631623625879162125" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/1KVTqMm8FU/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2046956319584780297" }
+        ]
+      ),
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DYM2So4t9-L/",
+        "Protect nurses; pass Medicare for All",
+        "Protect nurses. Stand with nurses. Pass Medicare for All.",
+        [
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7638634085694311711" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/1Fdr5S963K/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2053836498529653188" }
+        ]
+      ),
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DXC-ZmsjnvL/",
+        "Public trust and Medicare for All",
+        "Public trust is hard to earn and easy to lose. It’s not enough to push back on RFK Jr. if we’re not fixing the reason people lost trust in the system in the first place: that it’s motivated by greed. That’s why I fight for Medicare for All.",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mjdc4layvc25" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7627988677448174862" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/1DwNkmYE59/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2043440274823577947" }
+        ]
+      )
+    ],
+    relatedIssueIds: [
+      "medicare-advantage",
+      "break-up-big-healthcare",
+      "public-health",
+      "rural-healthcare",
+      "veterans-affairs"
+    ],
     source: campaignSource(medicare)
   },
   {
@@ -149,6 +197,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=lrn2M2kBG9M" }
       ]
     ),
+    relatedIssueIds: ["medicare-for-all", "seniors-aging-affordably"],
     source: campaignSource(`${medicare}#h-prescription-drugs`)
   },
   {
@@ -164,7 +213,65 @@ export const positionIssues: PositionIssue[] = [
     ],
     tags: ["rural", "medicaid", "hospitals", "aca", "public health", "up north"],
     clip: youtubeClip("W9C0q1cFQFQ", "2:08", "What federal healthcare cuts mean up north", "When they gut Medicaid, you’re going to have to pay the costs."),
+    relatedIssueIds: ["medicare-for-all", "public-health"],
     source: campaignSource(medicare)
+  },
+  {
+    id: "veterans-affairs",
+    title: "Veterans Affairs",
+    eyebrow: "Expand the VA, don’t cut it",
+    category: "Healthcare",
+    summary: "As a former Wayne County veterans services director, El-Sayed supports expanding and improving the VA so veterans have housing, jobs, and education support.",
+    points: [
+      "He supports expanding and improving the VA, not cutting it.",
+      "He says no veteran should go without housing, a good job, and an education.",
+      "He supports vastly expanding VA services to include those housing, job, and education supports."
+    ],
+    tags: ["veterans", "va", "housing", "jobs", "education", "military families"],
+    relatedIssueIds: ["medicare-for-all", "housing"],
+    source: campaignSource(`${medicare}#h-veterans-affairs`)
+  },
+  {
+    id: "break-up-big-healthcare",
+    title: "Break up Big Healthcare",
+    eyebrow: "More choices, more worker power",
+    category: "Healthcare",
+    summary: "El-Sayed opposes hospital consolidation that shrinks patient choice and worker power, and supports giving the FTC authority to break up healthcare monopolies.",
+    points: [
+      "He opposes hospital mergers and acquisitions that leave patients with fewer choices and nurses, hospital workers, and doctors with less workplace power.",
+      "He wants the FTC empowered to retrospectively review healthcare mergers and break up monopolies, and he supports the Break Up Big Medicine Act.",
+      "He supports expanding public healthcare by investing more in federally qualified health centers and public clinics and hospitals."
+    ],
+    tags: ["hospitals", "mergers", "antitrust", "ftc", "nurses", "fqhc", "monopoly"],
+    clip: socialClip(
+      "Instagram",
+      "https://www.instagram.com/reel/DYSLDs9Avva/",
+      "Hospital consolidation and monopoly",
+      "Do you ever wonder why your hospital keeps changing its name?",
+      [
+        { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlqn52f3pk2h" },
+        { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7639407438898187534" },
+        { platform: "Facebook", url: "https://www.facebook.com/share/v/1aQSuE8fve/" },
+        { platform: "X", url: "https://x.com/AbdulElSayed/status/2054592873878663366" }
+      ]
+    ),
+    relatedIssueIds: ["medicare-for-all", "unions-and-worker-power"],
+    source: campaignSource(`${medicare}#h-break-up-big-healthcare`)
+  },
+  {
+    id: "public-health",
+    title: "Public health",
+    eyebrow: "Science-led, protected institutions",
+    category: "Healthcare",
+    summary: "El-Sayed supports insulating public-health leadership from political removal, confirming key advisors with Senate consent, and reinvesting in federal and local health agencies.",
+    points: [
+      "He supports fixed-term appointments for CDC Director, FDA Commissioner, and NIH Director that cannot be removed except under specific circumstances.",
+      "He supports requiring Senate consent for appointments to critical public-health bodies such as the Advisory Committee on Immunization Practices.",
+      "He supports reinvesting in and reforming CDC, FDA, and HRSA, and vastly increasing funding for local and state health departments."
+    ],
+    tags: ["public health", "cdc", "fda", "nih", "vaccines", "science", "local health departments"],
+    relatedIssueIds: ["medicare-for-all", "rural-healthcare"],
+    source: campaignSource(`${medicare}#h-public-health`)
   },
   {
     id: "immigration-and-ice",
@@ -191,6 +298,33 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=U4m9EcFK4pE" }
       ]
     ),
+    moreClips: [
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DXDWiAojJ_f/",
+        "ICE cannot be reformed",
+        "ICE cannot be reformed or retrained. ICE must be abolished.",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mjdnxoacxk2l" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7628042770430692621" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/18U3BT6CPL/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2044104880143401401" }
+        ]
+      ),
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DXiJPJVjDfF/",
+        "Better uses for ICE’s budget",
+        "I can think of a few better things we could do with ICE’s 185 billion dollar budget to keep us safe in our communities.",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mkbpy5zr3s2l" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7632478020183362830" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/1DM5GgxfVY/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2047828804819624401" }
+        ]
+      )
+    ],
+    relatedIssueIds: ["rule-of-law-and-accountability", "foreign-policy"],
     source: campaignSource(`${moneyOut}#h-immigration`)
   },
   {
@@ -218,6 +352,32 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=se_vMjOl_yI" }
       ]
     ),
+    moreClips: [
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DYSLDs9Avva/",
+        "Hospital consolidation and monopoly",
+        "Do you ever wonder why your hospital keeps changing its name?",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlqn52f3pk2h" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7639407438898187534" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/v/1aQSuE8fve/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2054592873878663366" }
+        ]
+      ),
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DYM2So4t9-L/",
+        "Protect nurses",
+        "Protect nurses. Stand with nurses. Pass Medicare for All.",
+        [
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7638634085694311711" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/1Fdr5S963K/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2053836498529653188" }
+        ]
+      )
+    ],
+    relatedIssueIds: ["education", "break-up-big-healthcare", "cost-of-living"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
   {
@@ -245,7 +405,81 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=VghjCiLxyLU" }
       ]
     ),
+    moreClips: [
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DYQjYHasKfD/",
+        "Spirit Airlines and monopoly power",
+        "Spirit just shut down. That’s just a small part of a much bigger problem. Here’s how it works…",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlp2eftchk2r" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7639168332951784718" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/183RX5zvbz/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2054358077428613280" }
+        ]
+      )
+    ],
+    relatedIssueIds: ["aipac-and-dark-money", "cost-of-living", "corporate-consolidation"],
     source: campaignSource(`${moneyOut}#h-banning-corporate-money-in-politics`)
+  },
+  {
+    id: "ending-gerrymandering",
+    title: "Ending gerrymandering",
+    eyebrow: "Nonpartisan maps",
+    category: "Democracy",
+    summary: "El-Sayed supports drawing congressional districts through a federal nonpartisan expert committee rather than partisan state governments.",
+    points: [
+      "He supports a federal nonpartisan committee of experts to draw congressional districts.",
+      "Committee members would be appointed for defined terms on a rolling basis and work alongside the U.S. Census Bureau, similar to the Federal Reserve Board.",
+      "He frames that structure as the closest practical way to eliminate partisan gerrymandering tied to state apportionment."
+    ],
+    tags: ["gerrymandering", "redistricting", "voting maps", "census", "democracy", "elections"],
+    relatedIssueIds: [
+      "making-voting-easier",
+      "voting-rights",
+      "supreme-court-reform",
+      "abolishing-the-filibuster"
+    ],
+    source: campaignSource(`${moneyOut}#h-ending-gerrymandering`)
+  },
+  {
+    id: "supreme-court-reform",
+    title: "Supreme Court reform",
+    eyebrow: "Term limits for justices",
+    category: "Democracy",
+    summary: "El-Sayed supports reforming the Supreme Court by ending lifetime appointments, imposing limited terms, and equalizing appointments across presidential terms.",
+    points: [
+      "He supports ending lifetime appointments to the Supreme Court.",
+      "He supports imposing limited terms for justices.",
+      "He supports allowing the same number of appointments for each presidential term."
+    ],
+    tags: ["supreme court", "term limits", "judiciary", "democracy", "voting rights", "civil rights"],
+    relatedIssueIds: [
+      "making-voting-easier",
+      "voting-rights",
+      "ending-gerrymandering",
+      "abolishing-the-filibuster"
+    ],
+    source: campaignSource(`${moneyOut}#h-supreme-court-reform`)
+  },
+  {
+    id: "abolishing-the-filibuster",
+    title: "Abolishing the filibuster",
+    eyebrow: "Majority rule in the Senate",
+    category: "Democracy",
+    summary: "El-Sayed calls the Senate filibuster antidemocratic and supports abolishing it.",
+    points: [
+      "He says the filibuster has been used by senators to shield one another from hard votes.",
+      "He believes the filibuster is antidemocratic and should be abolished."
+    ],
+    tags: ["filibuster", "senate", "majority rule", "democracy", "legislative process"],
+    relatedIssueIds: [
+      "making-voting-easier",
+      "voting-rights",
+      "ending-gerrymandering",
+      "supreme-court-reform"
+    ],
+    source: campaignSource(`${moneyOut}#h-abolishing-the-filibuster`)
   },
   {
     id: "cost-of-living",
@@ -272,6 +506,21 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=RNXI7_U9ZPQ" }
       ]
     ),
+    moreClips: [
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DYIN7oruB_m/",
+        "Food prices and corporate greed",
+        "They want way more money for the same exact thing. And it’s not just groceries.",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mlgvugrqak2i" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7637966262533950733" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/187P4YLwQh/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2053184829273845847" }
+        ]
+      )
+    ],
+    relatedIssueIds: ["housing", "corporate-consolidation", "money-out-of-politics"],
     source: campaignSource(`${moneyIn}#h-taxing-billionaire-wealth`)
   },
   {
@@ -287,6 +536,7 @@ export const positionIssues: PositionIssue[] = [
     ],
     tags: ["small business", "entrepreneur", "employer insurance", "restaurant", "health benefits"],
     clip: youtubeClip("TvfEHzT9wnI", "1:25", "Healthcare and a Detroit small business", "It’s so hard for us to even offer the health insurance to people."),
+    relatedIssueIds: ["medicare-for-all", "cost-of-living"],
     source: campaignSource(medicare)
   },
   {
@@ -300,9 +550,25 @@ export const positionIssues: PositionIssue[] = [
       "Data centers must create the local jobs they promise or face penalties, and be built by Michigan contractors with registered apprenticeship programs.",
       "Projects must commit to closed-loop cooling and binding community benefits for local infrastructure."
     ],
-    tags: ["artificial intelligence", "ai", "data center", "dte", "electric bills", "technology", "automation"],
+    tags: ["data center", "dte", "electric bills", "technology", "jobs", "water", "energy"],
     clip: youtubeClip("oNFAVuNPdsk", "1:47", "Terms of engagement for data centers", "If you promise jobs, deliver those jobs."),
+    relatedIssueIds: ["artificial-intelligence"],
     source: campaignSource("https://abdulforsenate.com/2026/01/datacenters/")
+  },
+  {
+    id: "artificial-intelligence",
+    title: "Artificial intelligence",
+    eyebrow: "AI under democracy",
+    category: "Economy",
+    summary: "El-Sayed’s AI Under Democracy plan would put frontier AI under public-benefit governance, public ownership stakes, and hard safety guardrails.",
+    points: [
+      "He supports mandatory public-benefit charters for frontier AI labs and majority public or democratically elected board control.",
+      "He supports public ownership stakes in the largest AI companies, including an annual AI dividend funded by returns and an automation levy reinvested in workers.",
+      "He supports an FDA-style independent safety-testing agency and bans AI from denying medical care, making hiring or firing decisions, or replacing human oversight in life-or-death decisions."
+    ],
+    tags: ["artificial intelligence", "ai", "automation", "big tech", "jobs", "safety", "democracy"],
+    relatedIssueIds: ["data-centers-and-ai", "cost-of-living", "corporate-consolidation"],
+    source: campaignSource("https://abdulforsenate.com/2026/06/first-do-no-harm-ai-under-democracy/")
   },
   {
     id: "family-farms",
@@ -317,6 +583,7 @@ export const positionIssues: PositionIssue[] = [
     ],
     tags: ["agriculture", "farm", "cherries", "subsidies", "right to repair", "rural", "tariffs"],
     clip: youtubeClip("BT54YJt5ess", "2:56", "How to help Michigan family farms", "We don’t want to see agriculture be corporatized."),
+    relatedIssueIds: ["climate-and-agriculture", "cost-of-living"],
     source: campaignSource(`${moneyIn}#h-farming`)
   },
   {
@@ -332,6 +599,7 @@ export const positionIssues: PositionIssue[] = [
     ],
     tags: ["climate", "renewable energy", "pollution", "environment", "farm", "solar", "wind"],
     clip: youtubeClip("6I_5VJNLqiw", "2:26", "Agriculture, climate, immigration, and trade", "When you talk about agriculture, you’re also talking about climate change and immigration and tariffs."),
+    relatedIssueIds: ["family-farms", "water-and-great-lakes"],
     source: campaignSource(`${moneyOut}#h-environment-and-natural-resources`)
   },
   {
@@ -359,6 +627,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=ZthabYiMQ-g" }
       ]
     ),
+    relatedIssueIds: ["jewish-community-and-antisemitism", "aipac-and-dark-money"],
     source: campaignSource(`${moneyOut}#h-sensible-foreign-policy`)
   },
   {
@@ -386,6 +655,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=v1_0UVF3T68" }
       ]
     ),
+    relatedIssueIds: ["cost-of-living", "unions-and-worker-power", "money-out-of-politics"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
   {
@@ -410,6 +680,19 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2055350302610522521" }
       ]
     ),
+    moreClips: [
+      youtubeClip(
+        "06_-88XQ_F8",
+        "1:04",
+        "Stop the Big Techification of housing",
+        "We've got to stop the Big Techification of our housing.",
+        [
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7641703085047401742" },
+          { platform: "Facebook", url: "https://www.facebook.com/reel/1492587468975908/" }
+        ]
+      )
+    ],
+    relatedIssueIds: ["cost-of-living", "corporate-consolidation"],
     source: campaignSource(`${moneyIn}#h-housing-and-homelessness`)
   },
   {
@@ -434,6 +717,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2052782767964901584" }
       ]
     ),
+    relatedIssueIds: ["unions-and-worker-power", "cost-of-living"],
     source: campaignSource(`${moneyIn}#h-education`)
   },
   {
@@ -448,6 +732,7 @@ export const positionIssues: PositionIssue[] = [
       "He supports holding polluters responsible for PFAS and agricultural runoff, and shutting down Line 5 to protect the Great Lakes."
     ],
     tags: ["water", "great lakes", "line 5", "pfas", "lead pipes", "flint", "water bills"],
+    relatedIssueIds: ["climate-and-agriculture"],
     source: campaignSource(`${moneyOut}#h-water`)
   },
   {
@@ -462,7 +747,28 @@ export const positionIssues: PositionIssue[] = [
       "He proposes property-tax relief for seniors, expanded home- and community-based services, and greater support for family caregivers."
     ],
     tags: ["seniors", "aging", "medicare", "social security", "property tax", "caregivers", "long-term care"],
+    relatedIssueIds: ["medicare-for-all", "medicare-advantage"],
     source: campaignSource("https://abdulforsenate.com/2026/06/the-aaa-plan-for-seniors-aging-affordably-in-america")
+  },
+  {
+    id: "making-voting-easier",
+    title: "Making voting easier",
+    eyebrow: "Automatic registration & early voting",
+    category: "Democracy",
+    summary: "El-Sayed opposes mandatory voter-ID barriers and supports automatic registration, Election Day holidays, and no-reason absentee and early voting.",
+    points: [
+      "He opposes mandatory voter ID laws like the SAVE Act that impose unnecessary barriers to voting.",
+      "He supports automatic voter registration at age 18 and automatic re-registration when people move.",
+      "He supports making election days holidays and requiring no-reason absentee and early in-person voting."
+    ],
+    tags: ["voting", "voter id", "save act", "absentee", "early voting", "election day", "registration"],
+    relatedIssueIds: [
+      "voting-rights",
+      "ending-gerrymandering",
+      "supreme-court-reform",
+      "abolishing-the-filibuster"
+    ],
+    source: campaignSource(`${moneyOut}#h-making-voting-easier`)
   },
   {
     id: "voting-rights",
@@ -488,6 +794,11 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2053135720387055734" }
       ]
     ),
+    relatedIssueIds: [
+      "making-voting-easier",
+      "ending-gerrymandering",
+      "supreme-court-reform"
+    ],
     source: socialVideoSource("Instagram", "https://www.instagram.com/p/DYH3ATfgMEF/")
   },
   {
@@ -514,6 +825,11 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2052888884342575323" }
       ]
     ),
+    relatedIssueIds: [
+      "money-out-of-politics",
+      "jewish-community-and-antisemitism",
+      "foreign-policy"
+    ],
     source: campaignSource(moneyOut)
   },
   {
@@ -539,6 +855,22 @@ export const positionIssues: PositionIssue[] = [
         { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3ml7m2e5nzs2b" }
       ]
     ),
+    moreClips: [
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DXURjD5ADfV/",
+        "Equal rights to peace and self-determination",
+        "All people deserve equal rights to peace, dignity, and self-determination.",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mju76hedy22f" },
+          { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7630484120560323854" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/r/1CNdd4cZqp/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2045876168469995621" },
+          { platform: "YouTube", url: "https://www.youtube.com/watch?v=ZthabYiMQ-g" }
+        ]
+      )
+    ],
+    relatedIssueIds: ["foreign-policy", "aipac-and-dark-money"],
     source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DYAvEZPv3eR/")
   },
   {
@@ -565,6 +897,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2047839160933740888" }
       ]
     ),
+    relatedIssueIds: ["lgbtq-rights-and-care"],
     source: campaignSource(medicare)
   },
   {
@@ -591,6 +924,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2047735621628698779" }
       ]
     ),
+    relatedIssueIds: ["reproductive-rights", "rule-of-law-and-accountability"],
     source: campaignSource(medicare)
   },
   {
@@ -598,20 +932,34 @@ export const positionIssues: PositionIssue[] = [
     title: "Black community & racial equity",
     eyebrow: "Close structural gaps",
     category: "Community",
-    summary: "El-Sayed identifies racial inequality in healthcare as a structural problem and supports Medicare for All as guaranteed care for every American.",
+    summary: "El-Sayed calls out racial inequity in healthcare and partners with Detroit Black civic leadership working for prosperity and change.",
     points: [
-      "He would expand Medicare to cover every American from cradle to grave without premiums, copays, or deductibles.",
-      "He supports abolishing medical debt for every American.",
-      "He categorically opposes cutting Medicaid or destroying the ACA market by cutting subsidies."
+      "He criticizes a healthcare system that values a Black child’s body at a lower rate than a white child’s body for the same care.",
+      "He says that racial disparity in how care is valued “makes no sense.”",
+      "He has celebrated earning the endorsement of Detroit’s Black Slate, describing the organization as a leader in change, activism, and Black prosperity."
     ],
-    tags: ["black community", "racial equity", "health disparities", "civil rights", "representation", "healthcare"],
+    tags: ["black community", "racial equity", "health disparities", "civil rights", "detroit", "representation"],
     clip: socialClip(
       "Instagram",
       "https://www.instagram.com/reel/DXZzYMPEZJa/",
       "Racial inequality in healthcare",
       "We are valuing a Black child’s body at a lower rate than a white child’s body for the same healthcare. That to me makes no sense."
     ),
-    source: campaignSource(medicare)
+    moreClips: [
+      socialClip(
+        "Instagram",
+        "https://www.instagram.com/reel/DYFkAbPuqIV/",
+        "Black Slate endorsement",
+        "I am so proud and overflowing with gratitude to earn the endorsement of the Black Slate, a powerful organization that has been at the forefront of change, activism, and Black prosperity in Detroit.",
+        [
+          { platform: "Bluesky", url: "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mledjb4omc2h" },
+          { platform: "Facebook", url: "https://www.facebook.com/share/v/18b3g2TFF4/" },
+          { platform: "X", url: "https://x.com/AbdulElSayed/status/2052811446011006978" }
+        ]
+      )
+    ],
+    relatedIssueIds: ["medicare-for-all", "rule-of-law-and-accountability"],
+    source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXZzYMPEZJa/")
   },
   {
     id: "democratic-party-strategy",
@@ -637,6 +985,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2044456330727997946" }
       ]
     ),
+    relatedIssueIds: ["money-out-of-politics", "rule-of-law-and-accountability"],
     source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXKMIxDAN8l/")
   },
   {
@@ -657,6 +1006,7 @@ export const positionIssues: PositionIssue[] = [
       "Hold power to account",
       "We have to hold power to account and make sure marginalized communities feel safe."
     ),
+    relatedIssueIds: ["immigration-and-ice", "lgbtq-rights-and-care"],
     source: campaignSource(`${moneyOut}#h-civil-rights-amp-liberties`)
   }
 

@@ -37,6 +37,37 @@ const socialThumbnails = import.meta.glob<string>("./thumbnails/*.webp", {
   query: "?url"
 });
 
+const instagramShortcode = (url: string) => {
+  const match = url.match(/instagram\.com\/(?:reel|p)\/([^/?#]+)/i);
+  return match?.[1];
+};
+
+const youtubeIdFromUrl = (url: string) => {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]{11})/);
+  return match?.[1];
+};
+
+const clipThumbnailUrl = (clip: NonNullable<PositionIssue["clip"]>, issue: PositionIssue) => {
+  if (clip.youtubeId) return `https://i.ytimg.com/vi/${clip.youtubeId}/hqdefault.jpg`;
+
+  const youtubeAlternate = clip.alternates?.find((option) => option.platform === "YouTube");
+  const alternateYoutubeId = youtubeAlternate ? youtubeIdFromUrl(youtubeAlternate.url) : undefined;
+  if (alternateYoutubeId) return `https://i.ytimg.com/vi/${alternateYoutubeId}/hqdefault.jpg`;
+
+  const shortcode = clip.platform !== "YouTube" ? instagramShortcode(clip.url) : undefined;
+  if (shortcode) {
+    const byShortcode = socialThumbnails[`./thumbnails/${shortcode}.webp`];
+    if (byShortcode) return byShortcode;
+  }
+
+  // Issue-level thumbs are for the card face / primary clip only — never reuse them for moreClips.
+  if (issue.clip?.url === clip.url) {
+    return socialThumbnails[`./thumbnails/${issue.id}.webp`];
+  }
+
+  return undefined;
+};
+
 const normalize = (value: string) =>
   value
     .toLowerCase()
@@ -202,7 +233,13 @@ function App() {
         </footer>
       </main>
 
-      {selectedIssue ? <IssueDetail issue={selectedIssue} onClose={closeIssue} /> : null}
+      {selectedIssue ? (
+        <IssueDetail
+          issue={selectedIssue}
+          onClose={closeIssue}
+          onOpenIssue={openIssue}
+        />
+      ) : null}
     </div>
   );
 }
@@ -258,13 +295,36 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
   );
 }
 
-function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => void }) {
+function IssueDetail({
+  issue,
+  onClose,
+  onOpenIssue
+}: {
+  issue: PositionIssue;
+  onClose: () => void;
+  onOpenIssue: (issue: PositionIssue) => void;
+}) {
   const [copied, setCopied] = React.useState(false);
+  const [activeClipUrl, setActiveClipUrl] = React.useState(issue.clip?.url ?? "");
   const shareUrl = `${window.location.origin}${window.location.pathname}#${issue.id}`;
+  const panelRef = React.useRef<HTMLElement>(null);
+  const clipOptions = React.useMemo(
+    () => [issue.clip, ...(issue.moreClips ?? [])].filter((clip): clip is NonNullable<typeof clip> => Boolean(clip)),
+    [issue.clip, issue.moreClips]
+  );
+  const activeClip = clipOptions.find((clip) => clip.url === activeClipUrl) ?? issue.clip;
   const blueskyOption =
-    issue.clip?.platform === "Instagram"
-      ? issue.clip.alternates?.find((option) => option.platform === "Bluesky")
+    activeClip?.platform === "Instagram"
+      ? activeClip.alternates?.find((option) => option.platform === "Bluesky")
       : undefined;
+  const relatedIssues = (issue.relatedIssueIds ?? [])
+    .map((id) => positionIssues.find((candidate) => candidate.id === id))
+    .filter((candidate): candidate is PositionIssue => Boolean(candidate));
+
+  React.useEffect(() => {
+    setActiveClipUrl(issue.clip?.url ?? "");
+    panelRef.current?.scrollTo({ top: 0 });
+  }, [issue.id, issue.clip?.url]);
 
   const share = async () => {
     if (navigator.share) {
@@ -285,7 +345,7 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
   return (
     <div className="detailLayer" role="dialog" aria-modal="true" aria-labelledby="detail-title">
       <button type="button" className="detailBackdrop" onClick={onClose} aria-label="Close details" />
-      <article className="detailPanel">
+      <article className="detailPanel" ref={panelRef}>
         <header className="detailHeader">
           <button type="button" className="backButton" onClick={onClose}>
             <ArrowLeft size={19} /> Back to issues
@@ -303,31 +363,33 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
             <p>{issue.summary}</p>
           </div>
 
-          {issue.clip ? (
+          {activeClip ? (
             <section className="videoSection">
-              {issue.clip.youtubeId ? (
+              {activeClip.youtubeId ? (
                 <div className="videoFrame">
                   <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${issue.clip.youtubeId}?rel=0`}
-                    title={issue.clip.title}
+                    key={activeClip.youtubeId}
+                    src={`https://www.youtube-nocookie.com/embed/${activeClip.youtubeId}?rel=0`}
+                    title={activeClip.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   />
                 </div>
-              ) : isInstagramClip(issue.clip.platform) && blueskyOption ? (
+              ) : isInstagramClip(activeClip.platform) && blueskyOption ? (
                 <BlueskyEmbed
+                  key={blueskyOption.url}
                   url={blueskyOption.url}
-                  instagramUrl={issue.clip.url}
-                  title={issue.clip.title}
+                  instagramUrl={activeClip.url}
+                  title={activeClip.title}
                 />
-              ) : isInstagramClip(issue.clip.platform) ? (
-                <InstagramEmbed url={issue.clip.url} title={issue.clip.title} />
+              ) : isInstagramClip(activeClip.platform) ? (
+                <InstagramEmbed key={activeClip.url} url={activeClip.url} title={activeClip.title} />
               ) : (
-                <a className="externalClip" href={issue.clip.url} target="_blank" rel="noreferrer">
+                <a className="externalClip" href={activeClip.url} target="_blank" rel="noreferrer">
                   <span className="externalClipIcon"><Play size={27} fill="currentColor" /></span>
                   <span>
-                    <small>WATCH ON {issue.clip.platform.toUpperCase()}</small>
-                    <strong>{issue.clip.title}</strong>
+                    <small>WATCH ON {activeClip.platform.toUpperCase()}</small>
+                    <strong>{activeClip.title}</strong>
                   </span>
                   <ExternalLink size={20} />
                 </a>
@@ -336,15 +398,15 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
                 <div>
                   <Film size={16} />
                   <span>
-                    IN HIS OWN WORDS · {issue.clip.duration ?? (blueskyOption ? "Bluesky" : issue.clip.platform)}
+                    IN HIS OWN WORDS · {activeClip.duration ?? (blueskyOption ? "Bluesky" : activeClip.platform)}
                   </span>
                 </div>
-                <blockquote>“{issue.clip.quote}”</blockquote>
-                {issue.clip.alternates?.length ? (
+                <blockquote>“{activeClip.quote}”</blockquote>
+                {activeClip.alternates?.length ? (
                   <div className="alternateClips" aria-label="Alternate places to watch this clip">
                     <span>Also watch on</span>
                     <div>
-                      {issue.clip.alternates.map((option) => (
+                      {activeClip.alternates.map((option) => (
                         <a href={option.url} target="_blank" rel="noreferrer" key={`${option.platform}-${option.url}`}>
                           {option.platform} <ExternalLink size={12} />
                         </a>
@@ -363,6 +425,50 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
               </div>
             </section>
           )}
+
+          {clipOptions.length > 1 ? (
+            <section className="moreClips" aria-label="More clips in his own words">
+              <p className="sectionLabel">MORE IN HIS WORDS</p>
+              <div className="moreClipsStrip">
+                {clipOptions.map((clip) => {
+                  const selected = clip.url === activeClip?.url;
+                  const thumb = clipThumbnailUrl(clip, issue);
+                  const label =
+                    clip.platform === "Instagram" &&
+                    clip.alternates?.some((option) => option.platform === "Bluesky")
+                      ? "Bluesky"
+                      : clip.platform;
+                  return (
+                    <button
+                      type="button"
+                      key={clip.url}
+                      className={`moreClipCard ${selected ? "selected" : ""}`}
+                      aria-pressed={selected}
+                      onClick={() => setActiveClipUrl(clip.url)}
+                    >
+                      <span className="moreClipThumb">
+                        {thumb ? (
+                          <img src={thumb} alt="" loading="lazy" />
+                        ) : (
+                          <span className="moreClipFallback">
+                            <Film size={18} />
+                            {label}
+                          </span>
+                        )}
+                        <span className="moreClipPlay">
+                          <Play size={12} fill="currentColor" />
+                        </span>
+                      </span>
+                      <span className="moreClipMeta">
+                        <small>{clip.duration ?? label}</small>
+                        <strong>{clip.title}</strong>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          ) : null}
 
           <section className="positionPoints">
             <p className="sectionLabel">WHAT HE HAS SAID</p>
@@ -383,6 +489,28 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
               {issue.source.label} <ExternalLink size={15} />
             </a>
           </section>
+
+          {relatedIssues.length ? (
+            <section className="relatedIssues" aria-label="Related positions">
+              <p className="sectionLabel">RELATED POSITIONS</p>
+              <div className="relatedIssueStrip">
+                {relatedIssues.map((related) => (
+                  <button
+                    type="button"
+                    key={related.id}
+                    className="relatedIssueChip"
+                    onClick={() => onOpenIssue(related)}
+                  >
+                    <span>
+                      <small>{related.category}</small>
+                      <strong>{related.title}</strong>
+                    </span>
+                    <ChevronRight size={16} />
+                  </button>
+                ))}
+              </div>
+            </section>
+          ) : null}
 
           <p className="detailNote">
             This page summarizes the linked campaign source. Open the original for full context.
