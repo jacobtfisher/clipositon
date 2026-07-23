@@ -21,22 +21,21 @@ import {
   type PositionCategory,
   type PositionIssue
 } from "../../shared/positions";
+import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
+import { getInstagramEmbedUrl } from "../../shared/instagram";
 import "./styles.css";
 
 type CategoryFilter = "All" | PositionCategory;
 type SourceFilter = "all" | "clips";
 
-declare global {
-  interface Window {
-    instgrm?: {
-      Embeds?: { process: () => void };
-    };
-  }
-}
-
 const isInstagramClip = (platform: string) => platform === "Instagram";
 const isEmbeddableClip = (issue: PositionIssue) =>
   Boolean(issue.clip?.youtubeId || (issue.clip && isInstagramClip(issue.clip.platform)));
+const socialThumbnails = import.meta.glob<string>("./thumbnails/*.webp", {
+  eager: true,
+  import: "default",
+  query: "?url"
+});
 
 const normalize = (value: string) =>
   value
@@ -209,22 +208,31 @@ function App() {
 }
 
 function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: number; onOpen: () => void }) {
+  const displayPlatform =
+    issue.clip?.platform === "Instagram" &&
+    issue.clip.alternates?.some((option) => option.platform === "Bluesky")
+      ? "Bluesky"
+      : issue.clip?.platform;
+  const socialThumbnail = socialThumbnails[`./thumbnails/${issue.id}.webp`];
+
   return (
     <article className={`issueCard ${index < 3 ? "featured" : ""}`}>
       <button type="button" className="cardButton" onClick={onOpen} aria-label={`Open ${issue.title}`}>
         {issue.clip ? (
-          <div className={`cardMedia ${issue.clip.youtubeId ? "" : "socialMedia"}`}>
+          <div className={`cardMedia ${issue.clip.youtubeId || socialThumbnail ? "" : "socialMedia"}`}>
             {issue.clip.youtubeId ? (
               <img src={`https://i.ytimg.com/vi/${issue.clip.youtubeId}/hqdefault.jpg`} alt="" loading="lazy" />
+            ) : socialThumbnail ? (
+              <img src={socialThumbnail} alt="" loading="lazy" />
             ) : (
               <div className="socialMediaLabel">
                 <Film size={28} />
-                <span>{issue.clip.platform}</span>
+                <span>{displayPlatform}</span>
                 <strong>RECENT CAMPAIGN CLIP</strong>
               </div>
             )}
             <span className="playBadge">
-              <Play size={15} fill="currentColor" /> {issue.clip.duration ?? issue.clip.platform}
+              <Play size={15} fill="currentColor" /> {issue.clip.duration ?? displayPlatform}
             </span>
           </div>
         ) : (
@@ -253,6 +261,10 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
 function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => void }) {
   const [copied, setCopied] = React.useState(false);
   const shareUrl = `${window.location.origin}${window.location.pathname}#${issue.id}`;
+  const blueskyOption =
+    issue.clip?.platform === "Instagram"
+      ? issue.clip.alternates?.find((option) => option.platform === "Bluesky")
+      : undefined;
 
   const share = async () => {
     if (navigator.share) {
@@ -302,6 +314,12 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
                     allowFullScreen
                   />
                 </div>
+              ) : isInstagramClip(issue.clip.platform) && blueskyOption ? (
+                <BlueskyEmbed
+                  url={blueskyOption.url}
+                  instagramUrl={issue.clip.url}
+                  title={issue.clip.title}
+                />
               ) : isInstagramClip(issue.clip.platform) ? (
                 <InstagramEmbed url={issue.clip.url} title={issue.clip.title} />
               ) : (
@@ -317,7 +335,9 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
               <div className="clipCaption">
                 <div>
                   <Film size={16} />
-                  <span>IN HIS OWN WORDS · {issue.clip.duration ?? issue.clip.platform}</span>
+                  <span>
+                    IN HIS OWN WORDS · {issue.clip.duration ?? (blueskyOption ? "Bluesky" : issue.clip.platform)}
+                  </span>
                 </div>
                 <blockquote>“{issue.clip.quote}”</blockquote>
                 {issue.clip.alternates?.length ? (
@@ -373,48 +393,158 @@ function IssueDetail({ issue, onClose }: { issue: PositionIssue; onClose: () => 
   );
 }
 
-function InstagramEmbed({ url, title }: { url: string; title: string }) {
-  const [timedOut, setTimedOut] = React.useState(false);
+function BlueskyEmbed({
+  url,
+  instagramUrl,
+  title
+}: {
+  url: string;
+  instagramUrl: string;
+  title: string;
+}) {
+  const frameId = React.useId().replaceAll(":", "");
+  const frameRef = React.useRef<HTMLIFrameElement>(null);
+  const oEmbedUrl = getBlueskyOEmbedUrl(url);
+  const [iframeUrl, setIframeUrl] = React.useState<string | null>(null);
+  const [status, setStatus] = React.useState<"loading" | "ready" | "unavailable">("loading");
+  const [height, setHeight] = React.useState(620);
 
   React.useEffect(() => {
-    setTimedOut(false);
+    const controller = new AbortController();
+    setIframeUrl(null);
+    setHeight(620);
+    setStatus(oEmbedUrl ? "loading" : "unavailable");
 
-    const processEmbeds = () => window.instgrm?.Embeds?.process();
-    const existingScript = document.querySelector<HTMLScriptElement>(
-      'script[src="https://www.instagram.com/embed.js"]'
+    if (!oEmbedUrl) return () => controller.abort();
+
+    const timeoutId = window.setTimeout(
+      () => setStatus((current) => current === "loading" ? "unavailable" : current),
+      10000
     );
 
-    if (existingScript) {
-      if (window.instgrm?.Embeds) processEmbeds();
-      else existingScript.addEventListener("load", processEmbeds, { once: true });
-    } else {
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = "https://www.instagram.com/embed.js";
-      script.addEventListener("load", processEmbeds, { once: true });
-      document.body.appendChild(script);
-    }
+    void fetch(oEmbedUrl, {
+      headers: { Accept: "application/json" },
+      signal: controller.signal
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`Bluesky oEmbed returned ${response.status}`);
+        return response.json() as Promise<{ html?: unknown }>;
+      })
+      .then((data) => {
+        if (typeof data.html !== "string") throw new Error("Bluesky oEmbed HTML is missing");
+        const embedUrl = getBlueskyIframeUrl(
+          data.html,
+          frameId,
+          `${window.location.origin}${window.location.pathname}`
+        );
+        if (!embedUrl) throw new Error("Bluesky oEmbed URI is invalid");
+        setIframeUrl(embedUrl);
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setStatus("unavailable");
+        }
+      });
 
-    const timeoutId = window.setTimeout(() => setTimedOut(true), 6500);
-    return () => window.clearTimeout(timeoutId);
-  }, [url]);
+    return () => {
+      controller.abort();
+      window.clearTimeout(timeoutId);
+    };
+  }, [frameId, oEmbedUrl]);
+
+  React.useEffect(() => {
+    const resize = (event: MessageEvent<unknown>) => {
+      if (
+        event.origin !== "https://embed.bsky.app" ||
+        event.source !== frameRef.current?.contentWindow ||
+        typeof event.data !== "object" ||
+        event.data === null
+      ) {
+        return;
+      }
+
+      const message = event.data as { id?: unknown; height?: unknown };
+      if (message.id !== frameId || typeof message.height !== "number") return;
+      setHeight(Math.min(1200, Math.max(240, message.height)));
+    };
+
+    window.addEventListener("message", resize);
+    return () => window.removeEventListener("message", resize);
+  }, [frameId]);
+
+  if (status === "unavailable") {
+    return <InstagramEmbed url={instagramUrl} title={title} />;
+  }
 
   return (
-    <div className="instagramEmbedShell">
-      <blockquote
-        className="instagram-media"
-        data-instgrm-captioned="false"
-        data-instgrm-permalink={url}
-        data-instgrm-version="14"
-        aria-label={`Instagram video: ${title}`}
-      >
-        <a href={url} target="_blank" rel="noreferrer">
-          Watch {title} on Instagram
-        </a>
-      </blockquote>
-      {timedOut ? (
+    <div className="blueskyEmbedShell" aria-busy={status === "loading"}>
+      {status === "loading" ? (
+        <div className="socialEmbedLoading" role="status">
+          <span />
+          Loading Bluesky video…
+        </div>
+      ) : null}
+      {iframeUrl ? (
+        <iframe
+          ref={frameRef}
+          className="blueskyEmbedFrame"
+          src={iframeUrl}
+          style={{ height }}
+          title={`Bluesky video: ${title}`}
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          scrolling="no"
+          onLoad={() => setStatus("ready")}
+          onError={() => setStatus("unavailable")}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+function InstagramEmbed({ url, title }: { url: string; title: string }) {
+  const embedUrl = getInstagramEmbedUrl(url);
+  const [status, setStatus] = React.useState<"loading" | "ready" | "unavailable">(
+    embedUrl ? "loading" : "unavailable"
+  );
+
+  React.useEffect(() => {
+    setStatus(embedUrl ? "loading" : "unavailable");
+    if (!embedUrl) return;
+
+    const timeoutId = window.setTimeout(
+      () => setStatus((current) => current === "loading" ? "unavailable" : current),
+      10000
+    );
+    return () => window.clearTimeout(timeoutId);
+  }, [embedUrl]);
+
+  return (
+    <div className="instagramEmbedShell" aria-busy={status === "loading"}>
+      {embedUrl ? (
+        <div className="instagramFrameWrap">
+          {status === "loading" ? (
+            <div className="socialEmbedLoading" role="status">
+              <span />
+              Loading Instagram video…
+            </div>
+          ) : null}
+          <iframe
+            className="instagramEmbedFrame"
+            src={embedUrl}
+            title={`Instagram video: ${title}`}
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
+            onLoad={() => setStatus("ready")}
+            onError={() => setStatus("unavailable")}
+          />
+        </div>
+      ) : null}
+      {status === "unavailable" ? (
         <div className="instagramFallback">
-          <p>Instagram may be blocked by privacy settings or a content blocker.</p>
+          <p>Instagram could not load here. Privacy settings or a content blocker may be preventing it.</p>
           <a href={url} target="_blank" rel="noreferrer">
             Watch on Instagram <ExternalLink size={14} />
           </a>
