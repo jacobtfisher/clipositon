@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/ringleader/clipositon/issues"
   },
-  "homepage": "https://tools4abdul.com/cliposition/",
+  "homepage": "https://volunteers4abdul.com/cliposition/",
   "dependencies": {
     "date-fns": "^4.4.0",
     "lucide-react": "^1.26.0",
