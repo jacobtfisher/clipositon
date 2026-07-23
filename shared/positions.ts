@@ -46,6 +46,17 @@ const campaignPriorities = "https://abdulforsenate.com/priorities/";
 const moneyOut = "https://abdulforsenate.com/priority/money-out-of-politics/";
 const moneyIn = "https://abdulforsenate.com/priority/money-in-your-pocket/";
 const medicare = "https://abdulforsenate.com/priority/medicare-for-all-the-path-to-a-healthier-america/";
+/** WOOD TV8 Democratic primary debate (El-Sayed vs Stevens), 2026-07-07. */
+const woodDebateId = "9_R3JHg26qU";
+
+function woodDebateClip(
+  startSeconds: number,
+  duration: string,
+  title: string,
+  quote: string
+): PositionClip {
+  return youtubeClip(woodDebateId, duration, title, quote, undefined, startSeconds);
+}
 
 function youtubeClip(
   youtubeId: string,
@@ -172,6 +183,12 @@ export const positionIssues: PositionIssue[] = [
           { platform: "Facebook", url: "https://www.facebook.com/share/r/1DwNkmYE59/" },
           { platform: "X", url: "https://x.com/AbdulElSayed/status/2043440274823577947" }
         ]
+      ),
+      woodDebateClip(
+        1980,
+        "1:05",
+        "Debate: Medicare for All without deductibles",
+        "We need to tackle healthcare by guaranteeing everybody healthcare without a deductible, a premium, or a co-pay through Medicare for All."
       )
     ],
     relatedIssueIds: [
@@ -345,6 +362,12 @@ export const positionIssues: PositionIssue[] = [
           { platform: "Facebook", url: "https://www.facebook.com/share/r/1DM5GgxfVY/" },
           { platform: "X", url: "https://x.com/AbdulElSayed/status/2047828804819624401" }
         ]
+      ),
+      woodDebateClip(
+        3464,
+        "1:05",
+        "Debate: Abolish ICE",
+        "I've been clear that you can't reform ICE. You can't retrain ICE. You have to abolish ICE."
       )
     ],
     relatedIssueIds: ["rule-of-law-and-accountability", "foreign-policy"],
@@ -398,6 +421,12 @@ export const positionIssues: PositionIssue[] = [
           { platform: "Facebook", url: "https://www.facebook.com/share/r/1Fdr5S963K/" },
           { platform: "X", url: "https://x.com/AbdulElSayed/status/2053836498529653188" }
         ]
+      ),
+      woodDebateClip(
+        2655,
+        "1:00",
+        "Debate: UAW endorsement and working people",
+        "I'm proud to have been endorsed by the UAW. And the reason that they've endorsed me is because they understand that I am a fighter for working people."
       )
     ],
     relatedIssueIds: ["education", "break-up-big-healthcare", "cost-of-living"],
@@ -440,6 +469,12 @@ export const positionIssues: PositionIssue[] = [
           { platform: "Facebook", url: "https://www.facebook.com/share/r/183RX5zvbz/" },
           { platform: "X", url: "https://x.com/AbdulElSayed/status/2054358077428613280" }
         ]
+      ),
+      woodDebateClip(
+        2089,
+        "1:05",
+        "Debate: Politicians bought off by corporations",
+        "We also don't need politicians bought off by corporations in this race."
       )
     ],
     relatedIssueIds: ["aipac-and-dark-money", "cost-of-living", "corporate-consolidation"],
@@ -559,6 +594,12 @@ export const positionIssues: PositionIssue[] = [
           { platform: "Facebook", url: "https://www.facebook.com/share/r/187P4YLwQh/" },
           { platform: "X", url: "https://x.com/AbdulElSayed/status/2053184829273845847" }
         ]
+      ),
+      woodDebateClip(
+        1967,
+        "1:10",
+        "Debate: Michiganders can't afford to live here",
+        "No matter where I go, people say the same thing. I just can't afford to live here anymore."
       )
     ],
     relatedIssueIds: ["housing", "corporate-consolidation", "money-out-of-politics"],
@@ -674,6 +715,14 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=ZthabYiMQ-g" }
       ]
     ),
+    moreClips: [
+      woodDebateClip(
+        2278,
+        "1:10",
+        "Debate: AIPAC and wars Michiganders shouldn't fight",
+        "And so long as our politicians continue to be bought off by AIPAC, do not be surprised when we fight wars that are in their best interest."
+      )
+    ],
     relatedIssueIds: ["jewish-community-and-antisemitism", "aipac-and-dark-money"],
     source: campaignSource(`${moneyOut}#h-sensible-foreign-policy`)
   },
@@ -702,6 +751,14 @@ export const positionIssues: PositionIssue[] = [
         { platform: "YouTube", url: "https://www.youtube.com/watch?v=v1_0UVF3T68" }
       ]
     ),
+    moreClips: [
+      woodDebateClip(
+        1988,
+        "0:55",
+        "Debate: Stand up to monopolies",
+        "We need to stand up to the monopolies and oligopolies that are picking our pockets."
+      )
+    ],
     relatedIssueIds: ["cost-of-living", "unions-and-worker-power", "money-out-of-politics"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
@@ -737,6 +794,12 @@ export const positionIssues: PositionIssue[] = [
           { platform: "TikTok", url: "https://www.tiktok.com/@abdulelsayed/video/7641703085047401742" },
           { platform: "Facebook", url: "https://www.facebook.com/reel/1492587468975908/" }
         ]
+      ),
+      woodDebateClip(
+        219,
+        "1:00",
+        "Debate: Housing crisis and corporate accountability",
+        "Corporations should not be able to buy politicians to do their bidding to allow them to go to wars to allow them to get away when they cause a banking and now a housing crisis."
       )
     ],
     relatedIssueIds: ["cost-of-living", "corporate-consolidation"],
@@ -884,6 +947,14 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2052888884342575323" }
       ]
     ),
+    moreClips: [
+      woodDebateClip(
+        2278,
+        "1:10",
+        "Debate: Bought off by AIPAC",
+        "And so long as our politicians continue to be bought off by AIPAC, do not be surprised when we fight wars that are in their best interest."
+      )
+    ],
     relatedIssueIds: [
       "money-out-of-politics",
       "jewish-community-and-antisemitism",
@@ -1044,6 +1115,14 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2044456330727997946" }
       ]
     ),
+    moreClips: [
+      woodDebateClip(
+        100,
+        "1:05",
+        "Debate week: Trump as symptom, not the disease",
+        "Donald Trump is not himself the disease of our politics. He's just the worst symptom of the disease."
+      )
+    ],
     relatedIssueIds: ["money-out-of-politics", "rule-of-law-and-accountability"],
     source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXKMIxDAN8l/")
   },

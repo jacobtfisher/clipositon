@@ -1,7 +1,6 @@
 # Debate & podcast clip catalog
 
-Inventory of long-form YouTube sources to mine for `youtubeClip(..., startSeconds)` segments.
-Timestamps below are **rough placeholders** — verify while watching before adding to [`shared/positions.ts`](../shared/positions.ts).
+Inventory of long-form YouTube sources mined for `youtubeClip(..., startSeconds)` segments.
 Keep campaign pages as `source` for policy points; use these clips for quotes + media only.
 
 ## Debates
@@ -10,17 +9,23 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 
 - **Date:** 2026-07-07
 - **YouTube:** https://www.youtube.com/watch?v=9_R3JHg26qU (`9_R3JHg26qU`)
-- **Length:** ~1h54m (includes pre-show; debate body is roughly the middle hour)
+- **Length:** ~1h54m (pre-show + debate + spin room)
 - **Host:** WOOD TV8 / Nexstar (Grand Rapids)
-- **Coverage:** [WOOD takeaways](https://www.woodtv.com/news/elections/6-takeaways-from-the-michigan-democratic-u-s-senate-primary-debate-between-stevens-and-el-sayed/), [ClickOnDetroit](https://www.clickondetroit.com/news/local/2026/07/08/michigan-us-senate-candidates-haley-stevens-abdul-el-sayed-clash-in-democratic-debate/)
+- **Helper in code:** `woodDebateClip(startSeconds, duration, title, quote)` in [`shared/positions.ts`](../shared/positions.ts)
 
-| Rough topic | Likely issue ids | Notes / startSeconds |
-| --- | --- | --- |
-| Affordability / Medicare for All | `cost-of-living`, `medicare-for-all` | TBD — El-Sayed on guaranteeing care without premium/copay |
-| Corporate / outside money | `money-out-of-politics`, `aipac-and-dark-money`, `democratic-party-strategy` | TBD — “bought off by corporations” exchanges |
-| Immigration / ICE | `immigration-and-ice` | TBD |
-| Israel / Gaza / AIPAC | `foreign-policy`, `aipac-and-dark-money`, `jewish-community-and-antisemitism` | TBD |
-| Manufacturing / China | `corporate-consolidation`, `unions-and-worker-power` | TBD |
+| Issue id | startSeconds | Timestamp | Quote (short) | Status |
+| --- | ---: | --- | --- | --- |
+| `medicare-for-all` | 1980 | 33:00 | Guarantee care without deductible/premium/co-pay | Added as `moreClips` |
+| `cost-of-living` | 1967 | 32:47 | “I just can't afford to live here anymore.” | Added as `moreClips` |
+| `money-out-of-politics` | 2089 | 34:49 | “We also don't need politicians bought off by corporations…” | Added as `moreClips` |
+| `aipac-and-dark-money` | 2278 | 37:58 | Bought off by AIPAC / wars | Added as `moreClips` |
+| `foreign-policy` | 2278 | 37:58 | Same AIPAC / wars exchange | Added as `moreClips` |
+| `immigration-and-ice` | 3464 | 57:44 | Can't reform/retrain ICE — abolish ICE | Added as `moreClips` |
+| `unions-and-worker-power` | 2655 | 44:15 | Proud of UAW endorsement | Added as `moreClips` |
+| `corporate-consolidation` | 1988 | 33:08 | Stand up to monopolies and oligopolies | Added as `moreClips` |
+| `housing` | 219 | 3:39 | Banking/housing crisis + corporate accountability | Added as `moreClips` |
+| `democratic-party-strategy` | 100 | 1:40 | Trump as symptom, not the disease (pre-debate interview) | Added as `moreClips` |
+| `making-voting-easier` | — | — | No clean debate hit for auto-registration / SAVE Act | Still open |
 
 ### The Hill — Decision Desk coverage of the same debate night
 
@@ -33,24 +38,22 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | --- | --- | --- | --- | --- |
 | Eyeing Office Ep. 1 (Drop Site News) | `feFaM3ZHxdA` | ~15m | `medicare-for-all`, `cost-of-living`, `foreign-policy`, `money-out-of-politics` | TBD |
 | Sumud Podcast clip — military spending as public health crisis | `73CPge7cgDI` | ~0:52 | `public-health`, `foreign-policy` | `0` (short clip) |
-| Lever Time — healthcare / AIPAC (audio may be paywalled; confirm YT mirror) | search “Lever Time Abdul El-Sayed” | ~full ep | `medicare-for-all`, `aipac-and-dark-money` | TBD |
+| Lever Time — healthcare / AIPAC (confirm YT mirror) | search “Lever Time Abdul El-Sayed” | ~full ep | `medicare-for-all`, `aipac-and-dark-money` | TBD |
 | Playbook Podcast — populist Democrat conversation | search “Playbook Podcast Abdul El-Sayed” | ~44m | `democratic-party-strategy`, `immigration-and-ice`, `artificial-intelligence` | TBD |
 
-## Gap still open (no clean Bluesky primary yet)
+## Gap still open
 
-- `making-voting-easier` — no on-message Bluesky video found for automatic registration / SAVE Act / early voting. Prefer a debate or podcast segment once timestamped.
+- `making-voting-easier` — no on-message Bluesky video and no debate segment for automatic registration / SAVE Act / early voting.
 
 ## How to add a segment
 
 ```ts
-youtubeClip(
-  "9_R3JHg26qU",
-  "1:12",
+woodDebateClip(
+  1980,
+  "1:05",
   "Short descriptive title",
-  "Verbatim quote from the segment.",
-  undefined,
-  1234 // startSeconds
+  "Verbatim quote from the segment."
 )
 ```
 
-Verify embed: `https://www.youtube-nocookie.com/embed/VIDEO_ID?rel=0&start=SECONDS`
+Verify embed: `https://www.youtube-nocookie.com/embed/9_R3JHg26qU?rel=0&start=SECONDS`
