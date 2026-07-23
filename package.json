@@ -9,7 +9,9 @@
     "build": "rm -rf dist && vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit -p tsconfig.json",
-    "test": "tsx --test shared/*.test.ts"
+    "test": "tsx --test shared/*.test.ts",
+    "verify:clips": "tsx scripts/verify-clip-embeds.ts",
+    "list:bluesky": "tsx scripts/list-bluesky-posts.ts"
   },
   "repository": {
     "type": "git",
