@@ -273,11 +273,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .clipCaption > div { display: flex; align-items: center; gap: 8px; color: var(--red); font-size: .66rem; font-weight: 800; letter-spacing: .12em; }
 .clipCaption blockquote { margin: 13px 0 0; font: 700 1.02rem/1.46 "Manrope", sans-serif; color: var(--navy); }
 
-.noClipNotice { margin-top: 30px; display: flex; gap: 14px; padding: 18px; border: 1px solid #d9cba8; background: #fff9e8; border-radius: 5px; }
-.noClipNotice svg { flex: 0 0 auto; color: #9a6b0b; }
-.noClipNotice strong { display: block; font-size: .9rem; }
-.noClipNotice p { margin: 5px 0 0; color: #71674f; font-size: .8rem; line-height: 1.45; }
-
 .positionPoints { margin-top: 34px; }
 .positionPoints ul { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
 .positionPoints li { display: flex; gap: 12px; padding: 15px 0; border-bottom: 1px solid var(--line); color: #444b66; font-size: .91rem; line-height: 1.5; }

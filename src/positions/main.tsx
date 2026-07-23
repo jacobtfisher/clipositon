@@ -416,15 +416,7 @@ function IssueDetail({
                 ) : null}
               </div>
             </section>
-          ) : (
-            <section className="noClipNotice">
-              <LinkIcon size={20} />
-              <div>
-                <strong>Campaign position, clip still needed</strong>
-                <p>We found a detailed official position, but not a clean public video clip yet.</p>
-              </div>
-            </section>
-          )}
+          ) : null}
 
           {clipOptions.length > 1 ? (
             <section className="moreClips" aria-label="More clips in his own words">
