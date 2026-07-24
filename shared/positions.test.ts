@@ -53,6 +53,10 @@ test("every issue is sourced and searchable", () => {
 
   for (const issue of positionIssues) {
     assert.match(issue.source.url, /^https:\/\//);
+    for (const additional of issue.additionalSources ?? []) {
+      assert.match(additional.url, /^https:\/\//);
+      assert.notEqual(additional.url, issue.source.url);
+    }
     assert.ok(issue.summary.length > 40);
     assert.ok(issue.points.length >= 2);
     assert.ok(issue.tags.length >= 3);

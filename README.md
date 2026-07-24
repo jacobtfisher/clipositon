@@ -1,10 +1,12 @@
 # Where Abdul Stands
 
-A searchable, sourced guide to Abdul El-Sayed's public positions — in his own
-words — published at **[tools4abdul.com](https://tools4abdul.com/cliposition/)**.
+A searchable, sourced guide to Abdul El-Sayed's public positions, in his own
+words, published at **[tools4abdul.com](https://tools4abdul.com/cliposition/)**.
 
 > Created by volunteers. Not officially affiliated with or endorsed by the
-> Abdul for U.S. Senate campaign. It is not independent fact-checking.
+> Abdul for U.S. Senate campaign. It is not independent fact-checking. Minor errors
+> may slip in. For his official positions, refer directly to the campaign's own
+> materials.
 
 ## Sourcing rule
 

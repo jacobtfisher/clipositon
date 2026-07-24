@@ -54,17 +54,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   color: var(--navy);
   display: flex;
   align-items: center;
-  gap: 10px;
   text-decoration: none;
-}
-
-.logoMark {
-  width: 39px;
-  height: 39px;
-  flex: 0 0 auto;
-  display: block;
-  border-radius: 4px;
-  object-fit: cover;
 }
 
 .wordmark span { display: grid; line-height: 1; }
@@ -131,6 +121,52 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .heroStats strong { font: 800 2rem/1 "Manrope", sans-serif; }
 .heroStats span { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
 .heroStats i { width: 1px; height: 42px; background: var(--line); }
+
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; margin-top: 24px; }
+
+.actionTextLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 2px;
+  color: var(--navy);
+  font: 600 .95rem/1 "Manrope", sans-serif;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: color .16s ease;
+}
+.actionTextLink svg { flex: 0 0 auto; }
+.actionTextLink span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: rgba(23, 36, 91, .35);
+  transition: text-decoration-color .16s ease;
+}
+.actionTextLink:hover { color: var(--red); }
+.actionTextLink:hover span { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
+.actionTextLink:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 6px;
+  border: 1.6px solid var(--navy);
+  background: transparent;
+  color: var(--navy);
+  font: 800 .86rem/1 "Manrope", sans-serif;
+  text-decoration: none;
+  transition: background .16s ease, color .16s ease, border-color .16s ease, transform .16s ease;
+}
+.actionLink svg { flex: 0 0 auto; }
+.actionLink:hover { background: rgba(23, 36, 91, .07); transform: translateY(-1px); }
+.actionLink.primary { background: var(--red); border-color: var(--red); color: #fff; }
+.actionLink.primary:hover { background: #b3182a; border-color: #b3182a; }
+
+.getInvolved { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--line); }
+.getInvolvedLinks { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
 
 .searchDock {
   position: sticky;
@@ -227,8 +263,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .emptyState button { margin-top: 18px; border: 0; border-radius: 4px; padding: 10px 15px; background: var(--navy); color: white; font-weight: 700; cursor: pointer; }
 
 .libraryFooter { margin-top: 55px; padding: 30px 0 42px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 30px; }
-.libraryFooter > div { display: flex; align-items: center; gap: 14px; max-width: 690px; }
-.libraryFooter .logoMark { width: 34px; }
+.libraryFooter > div { max-width: 690px; }
 .libraryFooter p { margin: 0; color: var(--muted); font-size: .75rem; line-height: 1.45; }
 .libraryFooter a { display: flex; align-items: center; gap: 6px; color: var(--navy); font-size: .78rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
 
@@ -262,11 +297,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: var(--paper);
 }
 .backButton, .shareButton { border: 0; background: transparent; color: var(--navy); display: flex; align-items: center; gap: 8px; font-size: .8rem; font-weight: 800; cursor: pointer; }
-.shareButton { min-width: 82px; justify-content: center; padding: 9px 12px; border: 1px solid var(--line); border-radius: 4px; }
+.shareButton { min-width: 82px; justify-content: center; padding: 8px 11px; border: 1px solid var(--line); border-radius: 4px; line-height: 1; }
+.shareButton svg { width: 14px; height: 14px; }
 
 .detailHeaderActions {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 10px;
   min-width: 0;
 }
@@ -332,6 +368,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .positionPoints li svg { flex: 0 0 auto; margin-top: 3px; color: var(--red); }
 
 .sourceCard { margin-top: 32px; padding: 19px; display: flex; align-items: center; justify-content: space-between; gap: 20px; background: #f1eee5; border-radius: 5px; }
+.sourceCard + .sourceCard { margin-top: 10px; }
 .sourceCard > div { display: grid; gap: 4px; }
 .sourceCard span { color: var(--red); font-size: .62rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
 .sourceCard strong { font-size: .9rem; }
@@ -465,7 +502,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 @media (max-width: 620px) {
   .siteHeader { height: 64px; padding: 0 16px; }
-  .wordmark .logoMark { width: 34px; }
   .wordmark b { font-size: 1.05rem; }
   .sourcePromise { font-size: .62rem; }
   .sourcePromise svg { display: none; }
@@ -473,6 +509,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .hero { min-height: 245px; padding: 48px 0 31px; }
   .hero h1 { font-size: clamp(3rem, 16vw, 4.45rem); }
   .heroIntro { margin-top: 18px; font-size: .96rem; }
+  .heroActions { gap: 8px 22px; margin-top: 18px; }
+  .actionTextLink { font-size: .9rem; }
+  .actionLink { flex: 1 1 auto; justify-content: center; padding: 11px 12px; font-size: .8rem; }
   .searchDock { top: 63px; padding-bottom: 13px; }
   .searchField { height: 57px; padding-left: 16px; gap: 11px; }
   .searchField input { font-size: .93rem; }

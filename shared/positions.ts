@@ -40,6 +40,8 @@ export type PositionIssue = {
   /** Peer issue ids for the related-positions rail. */
   relatedIssueIds?: string[];
   source: PositionSource;
+  /** Further pages backing points that the primary source does not cover; rendered alongside it. */
+  additionalSources?: PositionSource[];
 };
 
 const campaignPriorities = "https://abdulforsenate.com/priorities/";
@@ -48,13 +50,13 @@ const moneyIn = "https://abdulforsenate.com/priority/money-in-your-pocket/";
 const medicare = "https://abdulforsenate.com/priority/medicare-for-all-the-path-to-a-healthier-america/";
 /** WOOD TV8 Democratic primary debate (El-Sayed vs Stevens), 2026-07-07. */
 const woodDebateId = "9_R3JHg26qU";
-/** Mackinac Policy Conference three-way debate (El-Sayed, Stevens, McMorrow), 2026-05-28 — WDIV Local 4. */
+/** Mackinac Policy Conference three-way debate (El-Sayed, Stevens, McMorrow), 2026-05-28 (WDIV Local 4). */
 const mackinacDebateId = "d5L9FFdEQe8";
-/** CBS News The Takeout — Major Garrett extended interview. */
+/** CBS News The Takeout: Major Garrett extended interview. */
 const cbsTakeoutId = "2FofXOB5T2s";
-/** Drop Site News — Eyeing Office Ep. 1. */
+/** Drop Site News: Eyeing Office Ep. 1. */
 const dropSiteId = "feFaM3ZHxdA";
-/** May Day 2026 speech — Fountain Street Church, Grand Rapids. */
+/** May Day 2026 speech at Fountain Street Church, Grand Rapids. */
 const mayDayId = "eZj8BkBq0Ys";
 
 function woodDebateClip(
@@ -148,9 +150,9 @@ function videoSource(youtubeId: string): PositionSource {
   };
 }
 
-function campaignSource(url: string): PositionSource {
+function campaignSource(url: string, pageName?: string): PositionSource {
   return {
-    label: "Read the campaign position",
+    label: pageName ? `Read the ${pageName} position` : "Read the campaign position",
     url,
     publisher: "Abdul for U.S. Senate",
     kind: "Campaign position"
@@ -547,8 +549,10 @@ export const positionIssues: PositionIssue[] = [
     category: "Democracy",
     summary: "El-Sayed supports overturning Citizens United, banning major forms of corporate outside spending, and publicly funding elections.",
     points: [
-      "Has never taken corporate money to run this campaign — and never will.",
-      "Supports overturning Citizens United and banning outside spending through corporate 501(c)4s, Super PACs, and 527 groups.",
+      "Believes corporations and special interests shouldn't be able to buy elections.",
+      "Is the only U.S. Senate candidate in Michigan who has never taken a dime of corporate money, and never will.",
+      "Supports legislation to overturn the Citizens United Supreme Court decision.",
+      "Supports banning outside spending through corporate 501(c)4s, Super PACs, and 527 groups.",
       "Supports public election funding and campaign spending caps."
     ],
     tags: ["campaign finance", "citizens united", "super pac", "dark money", "corporate pac", "aipac"],
@@ -707,7 +711,7 @@ export const positionIssues: PositionIssue[] = [
     title: "Money in your pocket",
     eyebrow: "An economy for working people",
     category: "Economy",
-    summary: "El-Sayed argues it shouldn't be this hard to get by, and backs an economy built for working people — lowering everyday costs and taxing extreme wealth to fund schools, healthcare, and infrastructure.",
+    summary: "El-Sayed argues it shouldn't be this hard to get by, and backs an economy built for working people, lowering everyday costs and taxing extreme wealth to fund schools, healthcare, and infrastructure.",
     points: [
       "Says that in the state that built the American Dream, it shouldn't be this hard to get by, and backs an economy built by and for working people.",
       "Would fight corporate tax breaks and the capture of the economy by billionaires and would-be oligarchs, arguing one good job should pay enough to raise a family.",
@@ -772,14 +776,26 @@ export const positionIssues: PositionIssue[] = [
     category: "Economy",
     summary: "El-Sayed argues that every American deserves guaranteed healthcare regardless of what they do for work, so coverage is not tied to an employer.",
     points: [
-      "Believes every American deserves guaranteed healthcare regardless of what they do for work.",
-      "His Medicare for All plan would make coverage automatic from cradle to grave, without premiums, copays, or deductibles.",
-      "Would abolish medical debt for every American, as he did for more than 300,000 Michiganders in Wayne County."
+      "Argues that every American deserves guaranteed healthcare regardless of what they do for work.",
+      "Would extend Medicare to every American from cradle to grave without premiums, copays, or deductibles, automatic and accepted everywhere, so that additional insurance through a union or employer becomes redundant and unnecessary.",
+      "Wants to abolish medical debt, just as he did for more than 300,000 Michiganders in Wayne County.",
+      "Would fight for an economy where anyone can start and grow a business to build wealth for themselves, their family, their co-workers, and their communities.",
+      "Supports investment in small business revolving loan funds as part of his response to the risk of massive automation of jobs.",
+      "Supports adjusting the tax system so it stops penalizing human employment and rewarding automation."
     ],
-    tags: ["small business", "entrepreneur", "employer insurance", "restaurant", "health benefits"],
+    tags: [
+      "small business",
+      "entrepreneur",
+      "employer insurance",
+      "restaurant",
+      "health benefits",
+      "self-employed",
+      "medical debt"
+    ],
     clip: youtubeClip("TvfEHzT9wnI", "1:25", "Healthcare and a Detroit small business", "It’s so hard for us to even offer the health insurance to people."),
     relatedIssueIds: ["medicare-for-all", "money-in-your-pocket"],
-    source: campaignSource(medicare)
+    source: campaignSource(moneyIn, "Money in Your Pocket"),
+    additionalSources: [campaignSource(medicare, "Medicare for All")]
   },
   {
     id: "data-centers-and-ai",
@@ -861,7 +877,7 @@ export const positionIssues: PositionIssue[] = [
     points: [
       "Says blockchain has the potential to disrupt the overwhelming power of big banks in Americans’ financial lives.",
       "Supports legislation that clarifies the governance and legitimate use-cases of blockchain for financial services.",
-      "Supports protecting consumers and the public from those who would use financial technology to launder funds, defraud the public, or engage in corruption — including pump-and-dump schemes, speculative crypto tokens and scams, and pay-to-play schemes."
+      "Supports protecting consumers and the public from those who would use financial technology to launder funds, defraud the public, or engage in corruption, including pump-and-dump schemes, speculative crypto tokens and scams, and pay-to-play schemes."
     ],
     tags: ["crypto", "cryptocurrency", "blockchain", "fintech", "consumer protection", "fraud", "big banks"],
     relatedIssueIds: ["corporate-consolidation", "artificial-intelligence", "money-in-your-pocket"],
@@ -924,7 +940,7 @@ export const positionIssues: PositionIssue[] = [
     eyebrow: "Diplomacy before war",
     category: "Foreign policy",
     summary:
-      "El-Sayed favors a foreign policy centered on diplomacy, human rights, and standing with democratic allies — from Ukraine to Iran, China, and Taiwan.",
+      "El-Sayed favors a foreign policy centered on diplomacy, human rights, and standing with democratic allies, from Ukraine to Iran, China, and Taiwan.",
     points: [
       "Supports a foreign policy that centers diplomacy, cooperation, and human rights, and that stands with democratic allies.",
       "Supports Ukraine against Russia’s invasion as acting in the interest of human rights and democracy, and criticizes past rule-breaking interventions such as Vietnam, Iraq, and Palestine.",
@@ -987,7 +1003,7 @@ export const positionIssues: PositionIssue[] = [
     summary:
       "El-Sayed opposes blank-check U.S. military funding abroad, supports an arms embargo on Israel, and says American tax dollars must not fund what he calls a genocide in Gaza.",
     points: [
-      "Opposes blank-check funding to foreign militaries — including Egypt, Israel, Saudi Arabia, and the UAE — arguing taxpayer dollars should be spent at home on schools and healthcare.",
+      "Opposes blank-check funding to foreign militaries (including Egypt, Israel, Saudi Arabia, and the UAE), arguing taxpayer dollars should be spent at home on schools and healthcare.",
       "Says U.S. tax dollars and American-made weapons are being used in a genocide in Gaza, illegal settlements in the West Bank and Jerusalem, and the attempted annexation of southern Lebanon, and that it must end.",
       "Supports immediate, comprehensive enforcement of U.S. laws that condition military aid and sales, an immediate arms embargo on Israel, and rejects the false distinction between “offensive” and “defensive” weapons."
     ],
@@ -1137,8 +1153,8 @@ export const positionIssues: PositionIssue[] = [
     category: "Community",
     summary: "El-Sayed supports a federal clean-water guarantee, faster lead-pipe replacement, stronger PFAS enforcement, and shutting down Line 5.",
     points: [
-      "Supports a federal water guarantee — at least 50 gallons per person per day, bills capped at 2% of household income, and protection from shutoffs for families who can't pay.",
-      "Wants every lead pipe in Michigan’s water systems removed by 2030 — seven years ahead of the current federal deadline.",
+      "Supports a federal water guarantee: at least 50 gallons per person per day, bills capped at 2% of household income, and protection from shutoffs for families who can't pay.",
+      "Wants every lead pipe in Michigan’s water systems removed by 2030, seven years ahead of the current federal deadline.",
       "Supports holding polluters accountable for PFAS contamination and ensuring corporate farms taking federal dollars are accountable for agricultural runoff.",
       "Supports federal funding to modernize aging drainage and purification systems.",
       "Supports shutting down Line 5 to protect the Great Lakes, while making the line safer in the meantime without destroying sensitive environmental or tribal sites."
@@ -1342,7 +1358,7 @@ export const positionIssues: PositionIssue[] = [
     summary: "El-Sayed supports codifying federal reproductive rights and restoring the protections formerly provided under Roe v. Wade.",
     points: [
       "Supports codifying the rights formerly protected by Roe v. Wade into federal law.",
-      "Says reproductive-care decisions should be made by a patient (and their parents if a minor) and their doctor—no one else.",
+      "Says reproductive-care decisions should be made by a patient (and their parents if a minor) and their doctor, no one else.",
       "Opposes criminalizing medications used in reproductive care.",
       "Opposes lawfare or funding cuts used to stop providers from offering full-spectrum healthcare that meets the needs of diverse communities."
     ],
@@ -1369,7 +1385,7 @@ export const positionIssues: PositionIssue[] = [
     category: "Community",
     summary: "El-Sayed supports protecting LGBTQ+ people from discrimination and preserving access to gender-affirming care as a patient–doctor decision.",
     points: [
-      "Says everyone has the right to make personal healthcare decisions, including gender-affirming care, with a patient (and parents if a minor) and their doctor—no one else.",
+      "Says everyone has the right to make personal healthcare decisions, including gender-affirming care, with a patient (and parents if a minor) and their doctor, no one else.",
       "Opposes criminalizing medications and the use of lawfare or funding cuts to stop providers from offering full-spectrum care for diverse communities.",
       "Affirms constitutional protections regardless of sexual orientation or gender identity, and freedom of self-expression."
     ],
@@ -1397,7 +1413,7 @@ export const positionIssues: PositionIssue[] = [
     summary:
       "El-Sayed calls out racial inequity in healthcare, ties dignity to neighborhood investment regardless of ZIP code, and has partnered with Detroit Black civic leadership.",
     points: [
-      "Calls out a healthcare system that values a Black child’s body at a lower rate than a white child’s body for the same care — saying that disparity “makes no sense.”",
+      "Calls out a healthcare system that values a Black child’s body at a lower rate than a white child’s body for the same care, saying that disparity “makes no sense.”",
       "Says the campaign is about guaranteeing healthcare as a human right, rebuilding and investing in neighborhoods, and ensuring a fair shot at a dignified life no matter your ZIP code.",
       "As a public health official in Detroit and Wayne County, confronted childhood lead poisoning and stood between polluters and the communities they poison.",
       "Earned the endorsement of Detroit’s Black Slate, describing it as a powerful organization at the forefront of change, activism, and Black prosperity in Detroit."
@@ -1493,7 +1509,7 @@ export const positionIssues: PositionIssue[] = [
       "Affirms freedom of speech, assembly, religion and from religion, and self-expression.",
       "Calls the rights to criticize the government and to protest peacefully sacrosanct, and opposes weaponizing the state to intimidate protest or boycotts.",
       "Says healthcare decisions should stay between an individual and their doctor, and that healthcare data must remain private unless used to provide care.",
-      "Says healthcare providers should be protected from undue government coercion to provide data or to provide—or withhold—care they deem necessary."
+      "Says healthcare providers should be protected from undue government coercion to provide data or to provide (or withhold) care they deem necessary."
     ],
     tags: ["rule of law", "accountability", "civil rights", "public safety", "abuse of power", "justice"],
     clip: socialClip(
