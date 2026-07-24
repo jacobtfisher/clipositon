@@ -5,7 +5,7 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 
 ## Debates
 
-### WOOD TV8 — Democratic U.S. Senate primary (El-Sayed vs Stevens)
+### WOOD TV8: Democratic U.S. Senate primary (El-Sayed vs Stevens)
 
 - **Date:** 2026-07-07
 - **YouTube:** https://www.youtube.com/watch?v=9_R3JHg26qU (`9_R3JHg26qU`)
@@ -20,20 +20,20 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | `money-out-of-politics` | 2089 | 34:49 | “We also don't need politicians bought off by corporations…” | Added as `moreClips` |
 | `aipac-and-dark-money` | 2278 | 37:58 | Bought off by AIPAC / wars | Added as `moreClips` |
 | `foreign-policy` | 2278 | 37:58 | Same AIPAC / wars exchange | Added as `moreClips` |
-| `immigration-and-ice` | 3464 | 57:44 | Can't reform/retrain ICE — abolish ICE | Added as `moreClips` |
+| `immigration-and-ice` | 3464 | 57:44 | Can't reform/retrain ICE; abolish ICE | Added as `moreClips` |
 | `unions-and-worker-power` | 2655 | 44:15 | Proud of UAW endorsement | Added as `moreClips` |
 | `corporate-consolidation` | 1988 | 33:08 | Stand up to monopolies and oligopolies | Added as `moreClips` |
 | `housing` | 219 | 3:39 | Banking/housing crisis + corporate accountability | Added as `moreClips` |
 | `democratic-party-strategy` | 100 | 1:40 | Trump as symptom, not the disease (pre-debate interview) | Added as `moreClips` |
 | `making-voting-easier` | — | — | No clean debate hit for auto-registration / SAVE Act | Still open |
 
-### Mackinac Policy Conference — three-way (El-Sayed, Stevens, McMorrow)
+### Mackinac Policy Conference: three-way (El-Sayed, Stevens, McMorrow)
 
 - **Date:** 2026-05-28
 - **YouTube (WDIV Local 4):** https://www.youtube.com/watch?v=d5L9FFdEQe8 (`d5L9FFdEQe8`)
 - **Length:** ~57:36
 - **Also available:** One Detroit `zeD5gpUG-p0` (~61m), [C-SPAN](https://www.c-span.org/program/campaign-2026/michigan-democratic-us-senate-candidates-debate/680080)
-- **Helper in code:** `mackinacDebateClip(startSeconds, duration, title, quote)` — timestamps verified against WDIV ASR transcript
+- **Helper in code:** `mackinacDebateClip(startSeconds, duration, title, quote)` (timestamps verified against WDIV ASR transcript)
 
 | Issue id | startSeconds | Timestamp | Quote (short) | Status |
 | --- | ---: | --- | --- | --- |
@@ -54,23 +54,23 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | `corporate-consolidation` | 2941 | 49:01 | Ban stock buybacks; labor on boards | Added as `moreClips` |
 | `unions-and-worker-power` | 2986 | 49:46 | Labor on corporate boards | Added as `moreClips` |
 
-### The Hill — Decision Desk coverage of the same debate night
+### The Hill: Decision Desk coverage of the same debate night
 
 - **YouTube:** https://www.youtube.com/watch?v=axQYRxJoJsg (`axQYRxJoJsg`)
-- **Notes:** Live wrap / secondary feed — prefer WOOD full debate (`9_R3JHg26qU`) for clean segment clips.
+- **Notes:** Live wrap / secondary feed; prefer WOOD full debate (`9_R3JHg26qU`) for clean segment clips.
 
 ## Podcasts & long interviews (YouTube)
 
 | Title | YouTube | Length | Likely issue ids | Status |
 | --- | --- | --- | --- | --- |
-| Sumud Podcast clip — military spending as public health crisis | `73CPge7cgDI` | 0:52 | `foreign-policy`, `public-health` | **Added** as `moreClips` (whole clip @ 0) |
+| Sumud Podcast clip: military spending as public health crisis | `73CPge7cgDI` | 0:52 | `foreign-policy`, `public-health` | **Added** as `moreClips` (whole clip @ 0) |
 | Lever / Carville response clip | `8HdRuCChSAE` | 4:56 | `democratic-party-strategy` | **Added** @ 56s |
 | Eyeing Office Ep. 1 (Drop Site News) | `feFaM3ZHxdA` | 15:27 | `medicare-for-all`, `money-in-your-pocket`, `foreign-policy` | **Added** segments @ 56s, 136s |
-| CBS News The Takeout — Major Garrett extended interview | `2FofXOB5T2s` | 30:29 | `artificial-intelligence`, `immigration-and-ice`, `aipac-and-dark-money`, `foreign-policy`, `medicare-for-all` | **Added** segments @ 402, 417, 583, 1011, 1517 |
-| May Day 2026 — Fountain Street Church (Grand Rapids) | `eZj8BkBq0Ys` | 26:08 | `immigration-and-ice` | **Added** segment @ 263s |
-| Lever Time — Macomb healthcare / AIPAC interview | podcast (Apple/iHeart) | ~51m | `medicare-for-all`, `aipac-and-dark-money` | Audio episode confirmed; YouTube mirror not found |
-| C-SPAN — Detroit press conference | [C-SPAN event](https://www.c-span.org/event/campaign-2026/us-senate-candidate-abdul-el-sayed-d-mi-holds-press-conference-in-detroit/445411) | — | TBD | YouTube mirror TBD |
-| Michigan Public — It's Just Politics interview | radio/podcast | — | TBD | YouTube mirror TBD |
+| CBS News The Takeout: Major Garrett extended interview | `2FofXOB5T2s` | 30:29 | `artificial-intelligence`, `immigration-and-ice`, `aipac-and-dark-money`, `foreign-policy`, `medicare-for-all` | **Added** segments @ 402, 417, 583, 1011, 1517 |
+| May Day 2026: Fountain Street Church (Grand Rapids) | `eZj8BkBq0Ys` | 26:08 | `immigration-and-ice` | **Added** segment @ 263s |
+| Lever Time: Macomb healthcare / AIPAC interview | podcast (Apple/iHeart) | ~51m | `medicare-for-all`, `aipac-and-dark-money` | Audio episode confirmed; YouTube mirror not found |
+| C-SPAN: Detroit press conference | [C-SPAN event](https://www.c-span.org/event/campaign-2026/us-senate-candidate-abdul-el-sayed-d-mi-holds-press-conference-in-detroit/445411) | — | TBD | YouTube mirror TBD |
+| Michigan Public: It's Just Politics interview | radio/podcast | — | TBD | YouTube mirror TBD |
 
 ### Timestamp notes (mined from auto-captions via yt-dlp android client)
 
@@ -87,7 +87,7 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 
 ## Gap still open
 
-- `making-voting-easier` — no on-message Bluesky video and no debate/podcast segment yet for automatic registration / SAVE Act / early voting.
+- `making-voting-easier`: no on-message Bluesky video and no debate/podcast segment yet for automatic registration / SAVE Act / early voting.
 
 ## How to add a segment
 

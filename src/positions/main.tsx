@@ -7,11 +7,13 @@ import {
   ChevronRight,
   ExternalLink,
   Film,
+  HeartHandshake,
   Link as LinkIcon,
   Play,
   Search,
   Share2,
   SlidersHorizontal,
+  Vote,
   X
 } from "lucide-react";
 import {
@@ -24,8 +26,11 @@ import {
 import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
 import { getInstagramEmbedUrl } from "../../shared/instagram";
 import { shortUrlForIssue } from "../../shared/slugs";
-import forUsMark from "./assets/for-us-mark.png";
 import "./styles.css";
+
+// Campaign action destinations surfaced as prominent CTAs.
+const VOTE_INFO_URL = "https://abdulforsenate.com/vote/";
+const VOLUNTEER_URL = "https://abdulforsenate.com/volunteer-for-abdul/";
 
 type CategoryFilter = "All" | PositionCategory;
 type SourceFilter = "all" | "clips";
@@ -55,6 +60,32 @@ const orderedIssues: PositionIssue[] = [
     .filter((issue): issue is PositionIssue => Boolean(issue)),
   ...positionIssues.filter((issue) => !pinnedIssueIds.includes(issue.id))
 ];
+
+function ActionLinks({ variant = "buttons" }: { variant?: "buttons" | "links" }) {
+  if (variant === "links") {
+    return (
+      <>
+        <a className="actionTextLink" href={VOTE_INFO_URL} target="_blank" rel="noreferrer">
+          <Vote size={17} strokeWidth={2.5} /> <span>How to vote</span>
+        </a>
+        <a className="actionTextLink" href={VOLUNTEER_URL} target="_blank" rel="noreferrer">
+          <HeartHandshake size={17} strokeWidth={2.5} /> <span>Volunteer</span>
+        </a>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <a className="actionLink primary" href={VOTE_INFO_URL} target="_blank" rel="noreferrer">
+        <Vote size={18} strokeWidth={2.5} /> How to vote
+      </a>
+      <a className="actionLink" href={VOLUNTEER_URL} target="_blank" rel="noreferrer">
+        <HeartHandshake size={18} strokeWidth={2.5} /> Volunteer
+      </a>
+    </>
+  );
+}
 
 const displayClipPlatform = (clip: NonNullable<PositionIssue["clip"]>) => {
   if (isBlueskyClip(clip.platform)) return "Bluesky";
@@ -165,7 +196,6 @@ function App() {
     <div className="positionApp">
       <header className="siteHeader">
         <a className="wordmark" href="https://abdulforsenate.com/" target="_blank" rel="noreferrer" aria-label="Abdul for U.S. Senate">
-          <LogoMark />
           <span>
             <b>ABDUL</b>
             <small>FOR U.S. SENATE</small>
@@ -185,6 +215,9 @@ function App() {
             <p className="heroIntro">
               Pick an issue and see where Abdul stands. His own words, linked to the original source. Made by volunteers.
             </p>
+            <div className="heroActions">
+              <ActionLinks variant="links" />
+            </div>
           </div>
           <div className="heroStats" aria-label="Library status">
             <div>
@@ -265,10 +298,11 @@ function App() {
 
         <footer className="libraryFooter">
           <div>
-            <LogoMark />
             <p>
               Created by volunteers. Not officially affiliated with or endorsed by the
-              Abdul for U.S. Senate campaign. It is not independent fact-checking.
+              Abdul for U.S. Senate campaign. It is not independent fact-checking. Minor
+              errors may slip in. For his official positions, refer directly to the
+              campaign’s own materials.
             </p>
           </div>
           <a href={positionLibrarySource.url} target="_blank" rel="noreferrer">
@@ -541,16 +575,18 @@ function IssueDetail({
             </ul>
           </section>
 
-          <section className="sourceCard">
-            <div>
-              <span>{issue.source.kind}</span>
-              <strong>{issue.source.publisher}</strong>
-              <small>Primary campaign source</small>
-            </div>
-            <a href={issue.source.url} target="_blank" rel="noreferrer">
-              {issue.source.label} <ExternalLink size={15} />
-            </a>
-          </section>
+          {[issue.source, ...(issue.additionalSources ?? [])].map((source, index) => (
+            <section className="sourceCard" key={source.url}>
+              <div>
+                <span>{source.kind}</span>
+                <strong>{source.publisher}</strong>
+                <small>{index === 0 ? "Primary campaign source" : "Additional campaign source"}</small>
+              </div>
+              <a href={source.url} target="_blank" rel="noreferrer">
+                {source.label} <ExternalLink size={15} />
+              </a>
+            </section>
+          ))}
 
           {relatedIssues.length ? (
             <section className="relatedIssues" aria-label="Related positions">
@@ -574,8 +610,16 @@ function IssueDetail({
             </section>
           ) : null}
 
+          <section className="getInvolved" aria-label="Get involved">
+            <p className="sectionLabel">GET INVOLVED</p>
+            <div className="getInvolvedLinks">
+              <ActionLinks />
+            </div>
+          </section>
+
           <p className="detailNote">
-            This page summarizes the linked campaign source. Open the original for full context.
+            This page summarizes the linked campaign {issue.additionalSources?.length ? "sources" : "source"}.
+            Open the {issue.additionalSources?.length ? "originals" : "original"} for full context.
           </p>
         </div>
       </article>
@@ -754,19 +798,6 @@ function InstagramEmbed({ url, title }: { url: string; title: string }) {
         </div>
       ) : null}
     </div>
-  );
-}
-
-function LogoMark() {
-  return (
-    <img
-      className="logoMark"
-      src={forUsMark}
-      alt=""
-      width={192}
-      height={192}
-      decoding="async"
-    />
   );
 }
 
