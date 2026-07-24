@@ -273,9 +273,9 @@ export const positionIssues: PositionIssue[] = [
     category: "Healthcare",
     summary: "As a former Wayne County veterans services director, El-Sayed supports expanding and improving the VA so veterans have housing, jobs, and education support.",
     points: [
-      "He supports expanding and improving the VA, not cutting it.",
-      "He says no veteran should go without housing, a good job, and an education.",
-      "He supports vastly expanding VA services to include those housing, job, and education supports."
+      "He supports expanding and improving the VA rather than cutting it.",
+      "He says no veteran should go without housing, a good job, or an education.",
+      "He would vastly expand VA services to meet those housing, employment, and education needs."
     ],
     tags: ["veterans", "va", "housing", "jobs", "education", "military families"],
     clip: socialClip(
@@ -338,6 +338,12 @@ export const positionIssues: PositionIssue[] = [
         "1:10",
         "Mackinac debate: First public health official in the Senate",
         "If I was elected, I'd be the first Democratic doctor elected to the U.S. Senate since 1969. First ever public health official elected to the U.S. Senate."
+      ),
+      youtubeClip(
+        "73CPge7cgDI",
+        "0:52",
+        "Military spending as a public health crisis",
+        "That money should not be spent a billion dollars a day killing other people's children. It should be spent providing for our own."
       )
     ],
     relatedIssueIds: ["medicare-for-all", "rural-healthcare"],
@@ -415,7 +421,7 @@ export const positionIssues: PositionIssue[] = [
       "He believes that one good job should pay enough to raise a family.",
       "He believes unions must have a significant voice at the tables where decisions about the future of the economy are made.",
       "He supports targeted, smart tariffs to protect Michigan manufacturing and incubate future industries with unions at the forefront, rather than reckless blanket tariffs.",
-      "He supports workplace protections and laws that stop Wall Street speculation from wrecking good companies and killing good jobs."
+      "He supports protecting workers on the job and making publicly traded corporations accountable to their workers."
     ],
     tags: ["labor", "union", "workers", "wages", "uaw", "middle class"],
     clip: socialClip(
@@ -732,11 +738,12 @@ export const positionIssues: PositionIssue[] = [
     category: "Economy",
     summary: "El-Sayed’s AI Under Democracy plan would put frontier AI under public-benefit governance, public ownership stakes, and hard safety guardrails.",
     points: [
-      "He supports mandatory public-benefit charters for frontier AI labs, majority public or democratically elected board control, and requiring major platform companies to divest controlling interests in frontier AI.",
+      "He supports mandatory public-benefit charters for frontier AI labs, with majority public or democratically elected board control.",
+      "He would require major platform companies like Google, Microsoft, Amazon, and Meta to divest their controlling interests in frontier AI labs.",
       "He supports public ownership stakes in the largest AI companies, an annual AI dividend funded by returns, and an automation levy reinvested in workers through education, wage insurance, and small-business loans.",
       "He supports an FDA-style independent safety-testing agency with interpretability standards, red-teaming, incident reporting, and compute “know your customer” controls.",
       "He would ban AI from denying medical care, making hiring or firing decisions, conducting warrantless surveillance, or replacing human oversight in life-or-death decisions.",
-      "He supports democracy protections including a federal ban on deceptive AI-generated political media, mandatory disclosure of AI-generated political ads, and a federal task force on algorithmic disinformation with real enforcement power."
+      "He supports banning deceptive AI-generated political media, requiring disclosure of AI-generated political ads, and a federal task force on algorithmic disinformation."
     ],
     tags: ["artificial intelligence", "ai", "automation", "big tech", "jobs", "safety", "democracy"],
     clip: socialClip(
@@ -802,7 +809,7 @@ export const positionIssues: PositionIssue[] = [
       "He supports a foreign policy that centers diplomacy, cooperation, and human rights, and that stands with democratic allies.",
       "He supports Ukraine against Russia’s invasion as acting in the interest of human rights and democracy, and criticizes past rule-breaking interventions such as Vietnam, Iraq, and Palestine.",
       "He opposes the Iran war, demands an immediate end to hostilities, and argues diplomacy (as under the JCPOA) is more effective than war at preventing a nuclear-armed Iran.",
-      "He opposes a warlike pathway with China, favoring competition through research, development, and economic power rather than a zero-sum arms race, while insisting China play by trade and intellectual-property rules.",
+      "He opposes a warlike pathway with China, favoring economic and research competition over a zero-sum arms race while insisting China play by trade and intellectual-property rules.",
       "He says Taiwan’s future should be chosen by the Taiwanese through democratic means, and supports onshoring critical national-security assets such as chip manufacturing.",
       "He opposes blank-check funding to foreign militaries, including Egypt, Israel, Saudi Arabia, and the UAE, arguing taxpayer dollars should be spent at home on schools and healthcare.",
       "He says U.S. tax dollars and weapons are being used in a genocide in Gaza, illegal settlements in the West Bank and Jerusalem, and the attempted annexation of southern Lebanon, and that must end.",
@@ -850,6 +857,12 @@ export const positionIssues: PositionIssue[] = [
         "1:05",
         "Mackinac debate: International law, not AIPAC money",
         "It's AIPAC money which is being spent already in this race… I believe international law ought to guide how we engage with our allies and our opponents."
+      ),
+      youtubeClip(
+        "73CPge7cgDI",
+        "0:52",
+        "Military spending as a public health crisis",
+        "That money should not be spent a billion dollars a day killing other people's children. It should be spent providing for our own."
       )
     ],
     relatedIssueIds: ["jewish-community-and-antisemitism", "aipac-and-dark-money", "public-health"],
@@ -863,9 +876,8 @@ export const positionIssues: PositionIssue[] = [
     summary: "El-Sayed supports stronger federal antitrust enforcement so corporations cannot price-gouge families or hollow out good jobs.",
     points: [
       "He supports a muscular Federal Trade Commission that enforces anti-monopoly laws against corporate price-gouging.",
-      "He wants laws that stop Wall Street speculators from wrecking good companies and killing good jobs, and that force publicly traded corporations to be accountable to their workers.",
-      "He supports protecting workers on the job and keeping unions at the table as manufacturing and trade policy are set.",
-      "He supports investing more and faster in research agencies like NSF and NIH, and argues taxpayers who fund research should earn back returns on that investment."
+      "He wants laws that stop Wall Street speculators from wrecking good companies and killing good jobs.",
+      "He supports forcing publicly traded corporations to be accountable to their workers and keeping unions at the table as economic policy is set."
     ],
     tags: ["antitrust", "monopoly", "mergers", "ftc", "corporations", "price gouging", "competition"],
     clip: socialClip(
@@ -954,7 +966,8 @@ export const positionIssues: PositionIssue[] = [
       "He supports raising the minimum teacher salary to at least $60,000 a year and investing more in nurses, psychologists, social workers, and other wraparound staff.",
       "He opposes privatizing public education through vouchers and supports fully funding the Individuals with Disabilities Education Act.",
       "He proposes tying any percentage increase in national education funding to any equivalent increase in the national defense budget.",
-      "He backs debt-free and tuition-free pathways through apprenticeships or college, expanded funding for HBCUs, community colleges, and trade schools, and caps on administrative overhead at federally funded institutions."
+      "He backs debt-free, tuition-free pathways through apprenticeships or college, with more funding for HBCUs, community colleges, and trade schools.",
+      "He would cap administrative overhead at institutions receiving federal funding to rein in higher-education costs."
     ],
     tags: ["schools", "teachers", "childcare", "pre-k", "college", "student debt", "trades", "apprenticeship"],
     clip: socialClip(
@@ -977,7 +990,7 @@ export const positionIssues: PositionIssue[] = [
     category: "Community",
     summary: "El-Sayed supports a federal clean-water guarantee, faster lead-pipe replacement, stronger PFAS enforcement, and shutting down Line 5.",
     points: [
-      "He supports a federal water guarantee of at least 50 gallons of clean water per person per day, with bills capped at 2% of household income and protections against shutoffs for families who cannot pay.",
+      "He supports a federal water guarantee — at least 50 gallons per person per day, bills capped at 2% of household income, and protection from shutoffs for families who can't pay.",
       "He wants every lead pipe in Michigan’s water systems removed by 2030 — seven years ahead of the current federal deadline.",
       "He supports holding polluters accountable for PFAS contamination and ensuring corporate farms taking federal dollars are accountable for agricultural runoff.",
       "He supports federal funding to modernize aging drainage and purification systems.",
@@ -1004,7 +1017,8 @@ export const positionIssues: PositionIssue[] = [
       "He supports expanding Medicare drug-price negotiation to all drugs paid by Medicare and banning AI-based prior authorization that overrides physician judgment.",
       "He supports repealing the Windfall Elimination Provision and Government Pension Offset that cut Social Security for many public employees.",
       "He supports lifting the Social Security payroll-tax cap and ending federal taxes on Social Security benefits.",
-      "He proposes a federal framework for state property-tax freezes for homeowners 65+, expanded Medicaid home- and community-based services, ending institutional bias in long-term care financing, and a federal caregiver tax credit with respite care."
+      "He proposes a federal framework for state property-tax freezes for homeowners 65 and older so they can afford to age in place.",
+      "He would expand Medicaid home- and community-based services, end the financing bias toward nursing homes over home care, and create a federal caregiver tax credit with respite care."
     ],
     tags: ["seniors", "aging", "medicare", "social security", "property tax", "caregivers", "long-term care"],
     clip: socialClip(
@@ -1292,6 +1306,12 @@ export const positionIssues: PositionIssue[] = [
         "1:00",
         "Mackinac debate: Sand in the gears",
         "For the next two years, we are going to have to put as much sand in the gears of the Trump administration as possible."
+      ),
+      youtubeClip(
+        "8HdRuCChSAE",
+        "4:56",
+        "Response to Carville and Democratic elites",
+        "The mistake that our party too often makes is we center party elites and not people."
       )
     ],
     relatedIssueIds: ["money-out-of-politics", "rule-of-law-and-accountability"],
@@ -1306,7 +1326,7 @@ export const positionIssues: PositionIssue[] = [
     points: [
       "He says he will protect the rights of all Americans under the Constitution, regardless of where they live, where their parents came from, how or if they pray, sexual orientation, gender identity, age, or wealth.",
       "He affirms freedom of speech, assembly, religion and from religion, and self-expression.",
-      "He treats the right to speak against government actions and to protest peacefully as sacrosanct, and stands against weaponizing the state to intimidate peaceful protest, including the freedom to boycott.",
+      "He calls the rights to criticize the government and to protest peacefully sacrosanct, and opposes weaponizing the state to intimidate protest or boycotts.",
       "He says healthcare decisions should stay between an individual and their doctor, and that healthcare data must remain private unless used to provide care.",
       "He says healthcare providers should be protected from undue government coercion to provide data or to provide—or withhold—care they deem necessary."
     ],

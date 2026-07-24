@@ -23,6 +23,7 @@ import {
 } from "../../shared/positions";
 import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
 import { getInstagramEmbedUrl } from "../../shared/instagram";
+import { shortUrlForIssue } from "../../shared/slugs";
 import "./styles.css";
 
 type CategoryFilter = "All" | PositionCategory;
@@ -223,7 +224,7 @@ function App() {
             <SlidersHorizontal size={15} />
             <span>{filtered.length} {filtered.length === 1 ? "result" : "results"}</span>
           </div>
-          <p>Last reviewed July 23, 2026</p>
+          <p>Last reviewed July 24, 2026</p>
         </section>
 
         {filtered.length ? (
@@ -327,7 +328,9 @@ function IssueDetail({
 }) {
   const [copied, setCopied] = React.useState(false);
   const [activeClipUrl, setActiveClipUrl] = React.useState(issue.clip?.url ?? "");
-  const shareUrl = `${window.location.origin}${window.location.pathname}#${issue.id}`;
+  const shareUrl =
+    shortUrlForIssue(issue.id, window.location.origin) ??
+    `${window.location.origin}${window.location.pathname}#${issue.id}`;
   const bodyRef = React.useRef<HTMLDivElement>(null);
   const clipOptions = React.useMemo(
     () => [issue.clip, ...(issue.moreClips ?? [])].filter((clip): clip is NonNullable<typeof clip> => Boolean(clip)),
