@@ -37,6 +37,7 @@ export const issueSlugById: Record<string, string> = {
   "artificial-intelligence": "ai",
   "crypto-and-blockchain": "crypto",
   "science-and-research": "science",
+  "jobs-trade-and-manufacturing": "jobs",
   "family-farms": "farms",
   "climate-and-agriculture": "climate",
   "foreign-policy": "foreign-policy",
@@ -44,6 +45,7 @@ export const issueSlugById: Record<string, string> = {
   "corporate-consolidation": "monopolies",
   housing: "housing",
   education: "education",
+  "college-and-training": "college",
   "water-and-great-lakes": "water",
   "seniors-aging-affordably": "seniors",
   "making-voting-easier": "voting",
@@ -54,6 +56,7 @@ export const issueSlugById: Record<string, string> = {
   "lgbtq-rights-and-care": "lgbtq",
   "black-community-equity": "racial-equity",
   "democratic-party-strategy": "democrats",
+  "privacy-and-surveillance": "privacy",
   "rule-of-law-and-accountability": "rule-of-law"
 };
 
