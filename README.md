@@ -5,7 +5,7 @@ words — published at **[tools4abdul.com](https://tools4abdul.com/cliposition/)
 
 > Created by volunteers, not the official campaign. This guide organizes
 > statements published by Abdul for U.S. Senate. It is not independent
-> fact-checking and never generates a position.
+> fact-checking.
 
 ## Sourcing rule
 
