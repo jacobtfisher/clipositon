@@ -1,7 +1,7 @@
 {
   "name": "clipositon",
   "version": "1.0.0",
-  "description": "Public dashboard for tracking campaign spending and outside spending around Abdul El-Sayed, Diop Harris, and their 2026 opponents.",
+  "description": "Where Abdul Stands \u2014 a searchable, sourced guide to Abdul El-Sayed's public positions in his own words.",
   "private": true,
   "type": "module",
   "scripts": {

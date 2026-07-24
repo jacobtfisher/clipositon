@@ -56,22 +56,32 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 
 ### The Hill — Decision Desk coverage of the same debate night
 
-
 - **YouTube:** https://www.youtube.com/watch?v=axQYRxJoJsg (`axQYRxJoJsg`)
 - **Notes:** Live wrap / secondary feed — prefer WOOD full debate (`9_R3JHg26qU`) for clean segment clips.
 
 ## Podcasts & long interviews (YouTube)
 
-| Title | YouTube | Length | Likely issue ids | startSeconds |
+| Title | YouTube | Length | Likely issue ids | Status |
 | --- | --- | --- | --- | --- |
-| Eyeing Office Ep. 1 (Drop Site News) | `feFaM3ZHxdA` | ~15m | `medicare-for-all`, `cost-of-living`, `foreign-policy`, `money-out-of-politics` | TBD |
-| Sumud Podcast clip — military spending as public health crisis | `73CPge7cgDI` | ~0:52 | `public-health`, `foreign-policy` | `0` (short clip) |
-| Lever Time — healthcare / AIPAC (confirm YT mirror) | search “Lever Time Abdul El-Sayed” | ~full ep | `medicare-for-all`, `aipac-and-dark-money` | TBD |
-| Playbook Podcast — populist Democrat conversation | search “Playbook Podcast Abdul El-Sayed” | ~44m | `democratic-party-strategy`, `immigration-and-ice`, `artificial-intelligence` | TBD |
+| Sumud Podcast clip — military spending as public health crisis | `73CPge7cgDI` | 0:52 | `foreign-policy`, `public-health` | **Added** as `moreClips` (whole clip @ 0) |
+| Lever / Carville response clip | `8HdRuCChSAE` | 4:56 | `democratic-party-strategy` | **Added** @ 56s |
+| Eyeing Office Ep. 1 (Drop Site News) | `feFaM3ZHxdA` | 15:27 | `medicare-for-all`, `cost-of-living`, `foreign-policy` | **Added** segments @ 56s, 136s |
+| CBS News The Takeout — Major Garrett extended interview | `2FofXOB5T2s` | 30:29 | `artificial-intelligence`, `immigration-and-ice`, `aipac-and-dark-money`, `foreign-policy`, `medicare-for-all` | **Added** segments @ 402, 417, 583, 1011, 1517 |
+| May Day 2026 — Fountain Street Church (Grand Rapids) | `eZj8BkBq0Ys` | 26:08 | `immigration-and-ice` | **Added** segment @ 263s |
+| Lever Time — Macomb healthcare / AIPAC interview | podcast (Apple/iHeart) | ~51m | `medicare-for-all`, `aipac-and-dark-money` | Audio episode confirmed; YouTube mirror not found |
+| C-SPAN — Detroit press conference | [C-SPAN event](https://www.c-span.org/event/campaign-2026/us-senate-candidate-abdul-el-sayed-d-mi-holds-press-conference-in-detroit/445411) | — | TBD | YouTube mirror TBD |
+| Michigan Public — It's Just Politics interview | radio/podcast | — | TBD | YouTube mirror TBD |
+
+### Timestamp notes (mined from auto-captions via yt-dlp android client)
+
+- **CBS Takeout** `2FofXOB5T2s`: AIPAC/tax dollars ~402–444; AI under democracy ~583–628; ICE paramilitary ~1011–1018; Medicare for All works ~1517–1522
+- **Drop Site** `feFaM3ZHxdA`: “shouldn't be this hard” / M4A ~56–79; Iran/taxpayer bombs ~136–151
+- **May Day** `eZj8BkBq0Ys`: ICE government thugs ~263–300; abolish ICE cheer ~1113
+- **Carville response** `8HdRuCChSAE`: party elites vs people ~56–63
 
 ## Gap still open
 
-- `making-voting-easier` — no on-message Bluesky video and no debate segment for automatic registration / SAVE Act / early voting.
+- `making-voting-easier` — no on-message Bluesky video and no debate/podcast segment yet for automatic registration / SAVE Act / early voting.
 
 ## How to add a segment
 
