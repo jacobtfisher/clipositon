@@ -6,3 +6,7 @@ dist-local/
 .env.*
 !.env.example
 .DS_Store
+
+# Local authoring notes and editor config, kept out of the published repo
+.cursor/
+docs/card-expansion-plan.md

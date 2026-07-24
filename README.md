@@ -11,10 +11,19 @@ words, published at **[tools4abdul.com](https://tools4abdul.com/cliposition/)**.
 ## Sourcing rule
 
 Every position bullet must trace to a primary source: an official campaign page
-or a direct public clip in Abdul's own words. Clips are illustrative (quote +
-media only); policy points stay sourced to campaign pages. See
-[`.cursor/rules/position-sourcing.mdc`](.cursor/rules/position-sourcing.mdc) for
-the full policy. Do not invent, soften, or extrapolate claims.
+or a direct public clip in Abdul's own words. The full policy:
+
+- Every "What he has said" point traces to at least one primary source.
+- Nothing is invented, softened, or extrapolated from a clip's theme. A video
+  about teachers does not license unrelated education-policy bullets.
+- Clips are illustrative (quote + media only). Policy points stay sourced to
+  campaign pages, and `source` is the page that actually supports the points
+  shown, not the clip that happens to sit above them.
+- `additionalSources` is used only when a card's points genuinely come from more
+  than one primary page. Every point still traces to one of them, and every
+  cited source supports at least one point shown.
+- Each cited URL is opened and checked against the text before a bullet ships.
+  If a claim cannot be verified, it is omitted.
 
 ## Tech
 
