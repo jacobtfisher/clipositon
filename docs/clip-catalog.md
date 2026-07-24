@@ -74,10 +74,16 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 
 ### Timestamp notes (mined from auto-captions via yt-dlp android client)
 
-- **CBS Takeout** `2FofXOB5T2s`: AIPAC/tax dollars ~402–444; AI under democracy ~583–628; ICE paramilitary ~1011–1018; Medicare for All works ~1517–1522
+- **CBS Takeout** `2FofXOB5T2s`: AIPAC/tax dollars ~402–444; AI under democracy ~583–628; data center in your backyard ~960–971; ICE paramilitary ~1011–1018; passport/authoritarianism ~1046–1054; Medicare for All works ~1517–1522
 - **Drop Site** `feFaM3ZHxdA`: “shouldn't be this hard” / M4A ~56–79; Iran/taxpayer bombs ~136–151
-- **May Day** `eZj8BkBq0Ys`: ICE government thugs ~263–300; abolish ICE cheer ~1113
+- **May Day** `eZj8BkBq0Ys`: corporation buys your voice box ~807–818; ICE government thugs ~263–300; every worker's right to a union ~1378–1384; abolish ICE cheer ~1113
 - **Carville response** `8HdRuCChSAE`: party elites vs people ~56–63
+
+### Card structure changes (this pass)
+
+- Split the mega **foreign-policy** card: kept diplomacy / Ukraine / Iran / China / Taiwan / aid there, and moved blank-check funding, Gaza/West Bank/Lebanon, and the arms embargo into a new **`gaza-and-military-aid`** card (slug `gaza`, hero = Sumud clip).
+- Added **`crypto-and-blockchain`** (slug `crypto`) and **`science-and-research`** (slug `science`) cards, sourced to the *Money in Your Pocket* priority page.
+- Cleaned redundant “He …” openers on every card so bullets read as predicates under the “What he has said” header.
 
 ## Gap still open
 
