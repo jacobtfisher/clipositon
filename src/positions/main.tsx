@@ -31,11 +31,20 @@ type SourceFilter = "all" | "clips";
 
 const isInstagramClip = (platform: string) => platform === "Instagram";
 const isBlueskyClip = (platform: string) => platform === "Bluesky";
-const isEmbeddableClip = (issue: PositionIssue) =>
-  Boolean(
-    issue.clip?.youtubeId ||
-      (issue.clip && (isInstagramClip(issue.clip.platform) || isBlueskyClip(issue.clip.platform)))
+
+// A clip embeds in-page when it's a YouTube (youtubeId), Instagram, or Bluesky
+// clip — the same criteria the detail view uses to decide iframe vs. external link.
+const isEmbeddableClip = (clip: NonNullable<PositionIssue["clip"]>) =>
+  Boolean(clip.youtubeId || isInstagramClip(clip.platform) || isBlueskyClip(clip.platform));
+
+// Every embeddable clip shown across the library: each issue's primary clip plus
+// every entry in moreClips. Derived so it stays accurate as cards/clips grow.
+const embeddedClipCount = positionIssues.reduce((total, issue) => {
+  const clips = [issue.clip, ...(issue.moreClips ?? [])].filter(
+    (clip): clip is NonNullable<PositionIssue["clip"]> => Boolean(clip)
   );
+  return total + clips.filter(isEmbeddableClip).length;
+}, 0);
 
 const displayClipPlatform = (clip: NonNullable<PositionIssue["clip"]>) => {
   if (isBlueskyClip(clip.platform)) return "Bluesky";
@@ -174,7 +183,7 @@ function App() {
             </div>
             <i />
             <div>
-              <strong>{positionIssues.filter(isEmbeddableClip).length}</strong>
+              <strong>{embeddedClipCount}</strong>
               <span>embedded clips</span>
             </div>
           </div>
