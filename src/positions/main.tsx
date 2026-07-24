@@ -24,7 +24,6 @@ import {
 import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
 import { getInstagramEmbedUrl } from "../../shared/instagram";
 import { shortUrlForIssue } from "../../shared/slugs";
-import heroPortrait from "./assets/hero-portrait.webp";
 import "./styles.css";
 
 type CategoryFilter = "All" | PositionCategory;
@@ -176,27 +175,17 @@ function App() {
             <p className="heroIntro">
               Search Abdul El-Sayed’s public positions, watch him explain them, and open the original campaign source.
             </p>
-            <div className="heroStats" aria-label="Library status">
-              <div>
-                <strong>{positionIssues.length}</strong>
-                <span>issues</span>
-              </div>
-              <i />
-              <div>
-                <strong>{embeddedClipCount}</strong>
-                <span>embedded clips</span>
-              </div>
-            </div>
           </div>
-          <div className="heroVisual">
-            <img
-              src={heroPortrait}
-              alt="Abdul El-Sayed speaking at a campaign event"
-              width={437}
-              height={547}
-              decoding="async"
-              fetchPriority="high"
-            />
+          <div className="heroStats" aria-label="Library status">
+            <div>
+              <strong>{positionIssues.length}</strong>
+              <span>issues</span>
+            </div>
+            <i />
+            <div>
+              <strong>{embeddedClipCount}</strong>
+              <span>embedded clips</span>
+            </div>
           </div>
         </section>
 
@@ -347,7 +336,10 @@ function IssueDetail({
   onOpenIssue: (issue: PositionIssue) => void;
 }) {
   const [copied, setCopied] = React.useState(false);
+  const [copiedShort, setCopiedShort] = React.useState(false);
   const [activeClipUrl, setActiveClipUrl] = React.useState(issue.clip?.url ?? "");
+  const productionShortUrl = shortUrlForIssue(issue.id);
+  const shortUrlLabel = productionShortUrl?.replace(/^https?:\/\//, "");
   const shareUrl =
     shortUrlForIssue(issue.id, window.location.origin) ??
     `${window.location.origin}${window.location.pathname}#${issue.id}`;
@@ -379,6 +371,17 @@ function IssueDetail({
     window.setTimeout(() => setCopied(false), 1800);
   };
 
+  const copyShortUrl = async () => {
+    if (!productionShortUrl) return;
+    await navigator.clipboard.writeText(productionShortUrl);
+    setCopiedShort(true);
+    window.setTimeout(() => setCopiedShort(false), 1600);
+  };
+
+  React.useEffect(() => {
+    setCopiedShort(false);
+  }, [issue.id]);
+
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
     window.addEventListener("keydown", onKeyDown);
@@ -393,10 +396,25 @@ function IssueDetail({
           <button type="button" className="backButton" onClick={onClose}>
             <ArrowLeft size={19} /> Back to issues
           </button>
-          <button type="button" className="shareButton" onClick={() => void share()}>
-            {copied ? <Check size={17} /> : <Share2 size={17} />}
-            {copied ? "Copied" : "Share"}
-          </button>
+          <div className="detailHeaderActions">
+            {productionShortUrl && shortUrlLabel ? (
+              <button
+                type="button"
+                className={`detailShortUrl ${copiedShort ? "copied" : ""}`}
+                onClick={() => void copyShortUrl()}
+                aria-label={copiedShort ? "Short link copied" : `Copy short link ${shortUrlLabel}`}
+                title="Copy short link"
+              >
+                <LinkIcon size={14} />
+                <span className="detailShortUrlText">{shortUrlLabel}</span>
+                <span className="detailShortUrlHint">{copiedShort ? "Copied" : "Copy"}</span>
+              </button>
+            ) : null}
+            <button type="button" className="shareButton" onClick={() => void share()}>
+              {copied ? <Check size={17} /> : <Share2 size={17} />}
+              {copied ? "Copied" : "Share"}
+            </button>
+          </div>
         </header>
 
         <div className="detailBody" ref={bodyRef}>
