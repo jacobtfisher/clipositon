@@ -3,9 +3,8 @@
 A searchable, sourced guide to Abdul El-Sayed's public positions — in his own
 words — published at **[tools4abdul.com](https://tools4abdul.com/cliposition/)**.
 
-> Created by volunteers, not the official campaign. This guide organizes
-> statements published by Abdul for U.S. Senate. It is not independent
-> fact-checking.
+> Created by volunteers. Not officially affiliated with or endorsed by the
+> Abdul for U.S. Senate campaign. It is not independent fact-checking.
 
 ## Sourcing rule
 

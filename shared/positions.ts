@@ -537,7 +537,7 @@ export const positionIssues: PositionIssue[] = [
         "It is about building an economy where every single worker has the right to a union, where we finally tax billionaires their wealth."
       )
     ],
-    relatedIssueIds: ["education", "break-up-big-healthcare", "cost-of-living"],
+    relatedIssueIds: ["education", "break-up-big-healthcare", "money-in-your-pocket"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
   {
@@ -597,7 +597,7 @@ export const positionIssues: PositionIssue[] = [
         "Where are the politicians with the bold ideas? It turns out there are no bold ideas when a corporation buys your voice box and tells you you can't have bold ideas."
       )
     ],
-    relatedIssueIds: ["aipac-and-dark-money", "cost-of-living", "corporate-consolidation"],
+    relatedIssueIds: ["aipac-and-dark-money", "money-in-your-pocket", "corporate-consolidation"],
     source: campaignSource(`${moneyOut}#h-banning-corporate-money-in-politics`)
   },
   {
@@ -703,19 +703,20 @@ export const positionIssues: PositionIssue[] = [
     source: campaignSource(`${moneyOut}#h-abolishing-the-filibuster`)
   },
   {
-    id: "cost-of-living",
-    title: "Cost of living",
-    eyebrow: "Put money in your pocket",
+    id: "money-in-your-pocket",
+    title: "Money in your pocket",
+    eyebrow: "An economy for working people",
     category: "Economy",
-    summary: "El-Sayed argues that working people are being priced out, and that taxing billionaire wealth can fund schools, healthcare, and infrastructure.",
+    summary: "El-Sayed argues it shouldn't be this hard to get by, and backs an economy built for working people — lowering everyday costs and taxing extreme wealth to fund schools, healthcare, and infrastructure.",
     points: [
-      "Supports a cost-of-living exemption on federal taxes for the first $50,000 of income.",
-      "Supports a billionaire tax on wealth over $1 billion and raising the marginal tax rate on earnings over $1 million.",
-      "Supports taxing capital gains over $1 million at the same rate as ordinary income and closing the stepped-up basis loophole.",
-      "Supports taxing inheritances greater than $1 million like ordinary income and imposing a progressive tax on wealth held by trusts.",
-      "Supports closing the Social Security payroll-tax cap so high earners pay their fair share and Social Security stays solvent."
+      "Says that in the state that built the American Dream, it shouldn't be this hard to get by, and backs an economy built by and for working people.",
+      "Would fight corporate tax breaks and the capture of the economy by billionaires and would-be oligarchs, arguing one good job should pay enough to raise a family.",
+      "Supports a cost-of-living exemption on the first $50,000 of income, a billionaire tax on wealth over $1 billion, and a higher marginal tax rate on earnings over $1 million.",
+      "Supports taxing capital gains and inheritances over $1 million as ordinary income and closing the stepped-up basis loophole.",
+      "Supports closing the Social Security payroll-tax cap so high earners pay their fair share and Social Security stays solvent.",
+      "Backs a muscular Federal Trade Commission that enforces anti-monopoly laws so corporations can't price-gouge families."
     ],
-    tags: ["affordability", "inflation", "groceries", "prices", "family budget", "monopoly", "taxes", "billionaire tax"],
+    tags: ["affordability", "cost of living", "inflation", "groceries", "billionaire tax", "wages", "working families", "monopoly"],
     clip: socialClip(
       "Instagram",
       "https://www.instagram.com/reel/DXKbpGqjuvs/",
@@ -761,8 +762,8 @@ export const positionIssues: PositionIssue[] = [
         "It shouldn't be this hard to afford a second bag of groceries. It shouldn't be this hard to know that your kid goes to a dignified school."
       )
     ],
-    relatedIssueIds: ["housing", "corporate-consolidation", "money-out-of-politics"],
-    source: campaignSource(`${moneyIn}#h-taxing-billionaire-wealth`)
+    relatedIssueIds: ["housing", "corporate-consolidation", "unions-and-worker-power", "money-out-of-politics"],
+    source: campaignSource(moneyIn)
   },
   {
     id: "small-business-healthcare",
@@ -777,7 +778,7 @@ export const positionIssues: PositionIssue[] = [
     ],
     tags: ["small business", "entrepreneur", "employer insurance", "restaurant", "health benefits"],
     clip: youtubeClip("TvfEHzT9wnI", "1:25", "Healthcare and a Detroit small business", "It’s so hard for us to even offer the health insurance to people."),
-    relatedIssueIds: ["medicare-for-all", "cost-of-living"],
+    relatedIssueIds: ["medicare-for-all", "money-in-your-pocket"],
     source: campaignSource(medicare)
   },
   {
@@ -847,7 +848,7 @@ export const positionIssues: PositionIssue[] = [
         "AI is new technology, but democracy is old technology, one we love in America. And I'm saying that AI needs to sit under democracy."
       )
     ],
-    relatedIssueIds: ["data-centers-and-ai", "crypto-and-blockchain", "cost-of-living", "corporate-consolidation"],
+    relatedIssueIds: ["data-centers-and-ai", "crypto-and-blockchain", "money-in-your-pocket", "corporate-consolidation"],
     source: campaignSource("https://abdulforsenate.com/2026/06/first-do-no-harm-ai-under-democracy/")
   },
   {
@@ -863,7 +864,7 @@ export const positionIssues: PositionIssue[] = [
       "Supports protecting consumers and the public from those who would use financial technology to launder funds, defraud the public, or engage in corruption — including pump-and-dump schemes, speculative crypto tokens and scams, and pay-to-play schemes."
     ],
     tags: ["crypto", "cryptocurrency", "blockchain", "fintech", "consumer protection", "fraud", "big banks"],
-    relatedIssueIds: ["corporate-consolidation", "artificial-intelligence", "cost-of-living"],
+    relatedIssueIds: ["corporate-consolidation", "artificial-intelligence", "money-in-your-pocket"],
     source: campaignSource(moneyIn)
   },
   {
@@ -896,7 +897,7 @@ export const positionIssues: PositionIssue[] = [
     ],
     tags: ["agriculture", "farm", "cherries", "subsidies", "right to repair", "rural", "tariffs"],
     clip: youtubeClip("BT54YJt5ess", "2:56", "How to help Michigan family farms", "We don’t want to see agriculture be corporatized."),
-    relatedIssueIds: ["climate-and-agriculture", "cost-of-living"],
+    relatedIssueIds: ["climate-and-agriculture", "money-in-your-pocket"],
     source: campaignSource(`${moneyIn}#h-farming`)
   },
   {
@@ -1053,7 +1054,7 @@ export const positionIssues: PositionIssue[] = [
         "Number one, we need to ban stock buybacks entirely. Number two, we need to put labor on corporate boards."
       )
     ],
-    relatedIssueIds: ["cost-of-living", "unions-and-worker-power", "money-out-of-politics"],
+    relatedIssueIds: ["money-in-your-pocket", "unions-and-worker-power", "money-out-of-politics"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
   {
@@ -1098,7 +1099,7 @@ export const positionIssues: PositionIssue[] = [
         "Corporations should not be able to buy politicians to do their bidding to allow them to go to wars to allow them to get away when they cause a banking and now a housing crisis."
       )
     ],
-    relatedIssueIds: ["cost-of-living", "corporate-consolidation"],
+    relatedIssueIds: ["money-in-your-pocket", "corporate-consolidation"],
     source: campaignSource(`${moneyIn}#h-housing-and-homelessness`)
   },
   {
@@ -1126,7 +1127,7 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2052782767964901584" }
       ]
     ),
-    relatedIssueIds: ["unions-and-worker-power", "cost-of-living"],
+    relatedIssueIds: ["unions-and-worker-power", "money-in-your-pocket"],
     source: campaignSource(`${moneyIn}#h-education`)
   },
   {
@@ -1393,11 +1394,13 @@ export const positionIssues: PositionIssue[] = [
     title: "Black community & racial equity",
     eyebrow: "Close structural gaps",
     category: "Community",
-    summary: "El-Sayed calls out racial inequity in healthcare and partners with Detroit Black civic leadership working for prosperity and change.",
+    summary:
+      "El-Sayed calls out racial inequity in healthcare, ties dignity to neighborhood investment regardless of ZIP code, and has partnered with Detroit Black civic leadership.",
     points: [
-      "Criticizes a healthcare system that values a Black child’s body at a lower rate than a white child’s body for the same care.",
-      "Says that racial disparity in how care is valued “makes no sense.”",
-      "Has celebrated earning the endorsement of Detroit’s Black Slate, describing the organization as a leader in change, activism, and Black prosperity."
+      "Calls out a healthcare system that values a Black child’s body at a lower rate than a white child’s body for the same care — saying that disparity “makes no sense.”",
+      "Says the campaign is about guaranteeing healthcare as a human right, rebuilding and investing in neighborhoods, and ensuring a fair shot at a dignified life no matter your ZIP code.",
+      "As a public health official in Detroit and Wayne County, confronted childhood lead poisoning and stood between polluters and the communities they poison.",
+      "Earned the endorsement of Detroit’s Black Slate, describing it as a powerful organization at the forefront of change, activism, and Black prosperity in Detroit."
     ],
     tags: ["black community", "racial equity", "health disparities", "civil rights", "detroit", "representation"],
     clip: socialClip(
@@ -1419,8 +1422,16 @@ export const positionIssues: PositionIssue[] = [
         ]
       )
     ],
-    relatedIssueIds: ["medicare-for-all", "rule-of-law-and-accountability"],
-    source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXZzYMPEZJa/")
+    relatedIssueIds: [
+      "medicare-for-all",
+      "climate-and-agriculture",
+      "water-and-great-lakes",
+      "voting-rights",
+      "ending-gerrymandering"
+    ],
+    source: campaignSource(
+      "https://abdulforsenate.com/2026/05/dr-abdul-el-sayed-earns-two-critical-wayne-county-endorsements-wayne-county-commissioner-martha-g-scott-detroit-city-councilmember-denzel-mccampbell/"
+    )
   },
   {
     id: "democratic-party-strategy",

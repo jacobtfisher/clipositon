@@ -47,6 +47,15 @@ const embeddedClipCount = positionIssues.reduce((total, issue) => {
   return total + clips.filter(isEmbeddableClip).length;
 }, 0);
 
+// Abdul's core campaign pillars lead the library (and get the featured card treatment).
+const pinnedIssueIds = ["money-out-of-politics", "money-in-your-pocket", "medicare-for-all"];
+const orderedIssues: PositionIssue[] = [
+  ...pinnedIssueIds
+    .map((id) => positionIssues.find((issue) => issue.id === id))
+    .filter((issue): issue is PositionIssue => Boolean(issue)),
+  ...positionIssues.filter((issue) => !pinnedIssueIds.includes(issue.id))
+];
+
 const displayClipPlatform = (clip: NonNullable<PositionIssue["clip"]>) => {
   if (isBlueskyClip(clip.platform)) return "Bluesky";
   if (
@@ -134,7 +143,7 @@ function App() {
 
   const filtered = React.useMemo(() => {
     const words = normalize(query).split(" ").filter(Boolean);
-    return positionIssues.filter((issue) => {
+    return orderedIssues.filter((issue) => {
       if (category !== "All" && issue.category !== category) return false;
       if (sourceFilter === "clips" && !issue.clip) return false;
       const haystack = searchableText(issue);
@@ -174,7 +183,7 @@ function App() {
             <p className="kicker">WHERE ABDUL STANDS</p>
             <h1>Hear it from him.</h1>
             <p className="heroIntro">
-              Search Abdul El-Sayed’s public positions, watch him explain them, and open the original campaign source.
+              Pick an issue and see where Abdul stands. His own words, linked to the original source. Made by volunteers.
             </p>
           </div>
           <div className="heroStats" aria-label="Library status">
@@ -258,9 +267,8 @@ function App() {
           <div>
             <LogoMark />
             <p>
-              Created by volunteers, not the official campaign. This guide organizes
-              statements published by Abdul for U.S. Senate. It is not independent
-              fact-checking.
+              Created by volunteers. Not officially affiliated with or endorsed by the
+              Abdul for U.S. Senate campaign. It is not independent fact-checking.
             </p>
           </div>
           <a href={positionLibrarySource.url} target="_blank" rel="noreferrer">

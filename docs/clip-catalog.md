@@ -16,7 +16,7 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | Issue id | startSeconds | Timestamp | Quote (short) | Status |
 | --- | ---: | --- | --- | --- |
 | `medicare-for-all` | 1980 | 33:00 | Guarantee care without deductible/premium/co-pay | Added as `moreClips` |
-| `cost-of-living` | 1967 | 32:47 | “I just can't afford to live here anymore.” | Added as `moreClips` |
+| `money-in-your-pocket` | 1967 | 32:47 | “I just can't afford to live here anymore.” | Added as `moreClips` |
 | `money-out-of-politics` | 2089 | 34:49 | “We also don't need politicians bought off by corporations…” | Added as `moreClips` |
 | `aipac-and-dark-money` | 2278 | 37:58 | Bought off by AIPAC / wars | Added as `moreClips` |
 | `foreign-policy` | 2278 | 37:58 | Same AIPAC / wars exchange | Added as `moreClips` |
@@ -38,7 +38,7 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | Issue id | startSeconds | Timestamp | Quote (short) | Status |
 | --- | ---: | --- | --- | --- |
 | `money-out-of-politics` | 559 | 9:19 | Never taken a dime from a corporation | Added as `moreClips` |
-| `cost-of-living` | 741 | 12:21 | Tax billionaires at seven percent of wealth | Added as `moreClips` |
+| `money-in-your-pocket` | 741 | 12:21 | Tax billionaires at seven percent of wealth | Added as `moreClips` |
 | `aipac-and-dark-money` | 932 | 15:32 | Didn't ask AIPAC for support | Added as `moreClips` |
 | `foreign-policy` | 932 | 15:32 | International law, not AIPAC money | Added as `moreClips` |
 | `jewish-community-and-antisemitism` | 1382 | 23:02 | Antisemitism and Islamophobia / white supremacy | Added as `moreClips` |
@@ -65,7 +65,7 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | --- | --- | --- | --- | --- |
 | Sumud Podcast clip — military spending as public health crisis | `73CPge7cgDI` | 0:52 | `foreign-policy`, `public-health` | **Added** as `moreClips` (whole clip @ 0) |
 | Lever / Carville response clip | `8HdRuCChSAE` | 4:56 | `democratic-party-strategy` | **Added** @ 56s |
-| Eyeing Office Ep. 1 (Drop Site News) | `feFaM3ZHxdA` | 15:27 | `medicare-for-all`, `cost-of-living`, `foreign-policy` | **Added** segments @ 56s, 136s |
+| Eyeing Office Ep. 1 (Drop Site News) | `feFaM3ZHxdA` | 15:27 | `medicare-for-all`, `money-in-your-pocket`, `foreign-policy` | **Added** segments @ 56s, 136s |
 | CBS News The Takeout — Major Garrett extended interview | `2FofXOB5T2s` | 30:29 | `artificial-intelligence`, `immigration-and-ice`, `aipac-and-dark-money`, `foreign-policy`, `medicare-for-all` | **Added** segments @ 402, 417, 583, 1011, 1517 |
 | May Day 2026 — Fountain Street Church (Grand Rapids) | `eZj8BkBq0Ys` | 26:08 | `immigration-and-ice` | **Added** segment @ 263s |
 | Lever Time — Macomb healthcare / AIPAC interview | podcast (Apple/iHeart) | ~51m | `medicare-for-all`, `aipac-and-dark-money` | Audio episode confirmed; YouTube mirror not found |

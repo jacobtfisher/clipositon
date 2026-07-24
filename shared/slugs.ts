@@ -31,7 +31,7 @@ export const issueSlugById: Record<string, string> = {
   "ending-gerrymandering": "gerrymandering",
   "supreme-court-reform": "scotus",
   "abolishing-the-filibuster": "filibuster",
-  "cost-of-living": "cost-of-living",
+  "money-in-your-pocket": "money-in",
   "small-business-healthcare": "small-business",
   "data-centers-and-ai": "data-centers",
   "artificial-intelligence": "ai",
@@ -60,7 +60,9 @@ export const issueSlugById: Record<string, string> = {
 /** Optional aliases that also redirect to the same issue. */
 export const slugAliases: Record<string, string> = {
   "medicare-for-all": "medicare",
-  m4a: "medicare"
+  m4a: "medicare",
+  // Keep the pre-rebrand short link working after Cost of living → Money in your pocket.
+  "cost-of-living": "money-in"
 };
 
 const issueIdBySlug = new Map<string, string>();
