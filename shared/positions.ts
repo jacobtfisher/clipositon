@@ -50,6 +50,12 @@ const medicare = "https://abdulforsenate.com/priority/medicare-for-all-the-path-
 const woodDebateId = "9_R3JHg26qU";
 /** Mackinac Policy Conference three-way debate (El-Sayed, Stevens, McMorrow), 2026-05-28 — WDIV Local 4. */
 const mackinacDebateId = "d5L9FFdEQe8";
+/** CBS News The Takeout — Major Garrett extended interview. */
+const cbsTakeoutId = "2FofXOB5T2s";
+/** Drop Site News — Eyeing Office Ep. 1. */
+const dropSiteId = "feFaM3ZHxdA";
+/** May Day 2026 speech — Fountain Street Church, Grand Rapids. */
+const mayDayId = "eZj8BkBq0Ys";
 
 function woodDebateClip(
   startSeconds: number,
@@ -67,6 +73,33 @@ function mackinacDebateClip(
   quote: string
 ): PositionClip {
   return youtubeClip(mackinacDebateId, duration, title, quote, undefined, startSeconds);
+}
+
+function cbsTakeoutClip(
+  startSeconds: number,
+  duration: string,
+  title: string,
+  quote: string
+): PositionClip {
+  return youtubeClip(cbsTakeoutId, duration, title, quote, undefined, startSeconds);
+}
+
+function dropSiteClip(
+  startSeconds: number,
+  duration: string,
+  title: string,
+  quote: string
+): PositionClip {
+  return youtubeClip(dropSiteId, duration, title, quote, undefined, startSeconds);
+}
+
+function mayDayClip(
+  startSeconds: number,
+  duration: string,
+  title: string,
+  quote: string
+): PositionClip {
+  return youtubeClip(mayDayId, duration, title, quote, undefined, startSeconds);
 }
 
 function youtubeClip(
@@ -208,6 +241,18 @@ export const positionIssues: PositionIssue[] = [
         "1:15",
         "Mackinac debate: Fight for guaranteed healthcare",
         "Revolution is definitely not coming if we're not fighting for it… I think we really can fight for a world where everybody can be guaranteed healthcare."
+      ),
+      dropSiteClip(
+        56,
+        "0:30",
+        "Drop Site: Guarantee healthcare through Medicare for All",
+        "It shouldn't be this hard to go and see a doctor when you get sick… guarantee healthcare to everybody through Medicare for all."
+      ),
+      cbsTakeoutClip(
+        1517,
+        "0:25",
+        "CBS Takeout: Medicare for All can work",
+        "I believe in Medicare for all cuz I did the research, wrote a whole book on it. And it can work."
       )
     ],
     relatedIssueIds: [
@@ -343,7 +388,7 @@ export const positionIssues: PositionIssue[] = [
         "73CPge7cgDI",
         "0:52",
         "Military spending as a public health crisis",
-        "That money should not be spent a billion dollars a day killing other people's children. It should be spent providing for our own."
+        "That money should not be spent in a billion dollars a day killing other people's children. It should be spent providing for our own."
       )
     ],
     relatedIssueIds: ["medicare-for-all", "rural-healthcare"],
@@ -405,6 +450,18 @@ export const positionIssues: PositionIssue[] = [
         "1:05",
         "Debate: Abolish ICE",
         "I've been clear that you can't reform ICE. You can't retrain ICE. You have to abolish ICE."
+      ),
+      cbsTakeoutClip(
+        1011,
+        "0:20",
+        "CBS Takeout: ICE is not about immigration",
+        "ICE is not about immigration. ICE is not about the southern border. ICE is about normalizing paramilitary force on our streets."
+      ),
+      mayDayClip(
+        263,
+        "0:40",
+        "May Day: ICE is about government thugs on your streets",
+        "ICE is not about immigration. ICE is not about the southern border. ICE is about normalizing the use of government thugs on your streets."
       )
     ],
     relatedIssueIds: ["rule-of-law-and-accountability", "foreign-policy"],
@@ -684,6 +741,12 @@ export const positionIssues: PositionIssue[] = [
         "0:40",
         "Mackinac debate: Seven percent billionaire wealth tax",
         "I would like to see us tax billionaires at seven percent of their wealth… you know what they still are? Still a billionaire."
+      ),
+      dropSiteClip(
+        56,
+        "0:25",
+        "Drop Site: It shouldn't be this hard",
+        "It shouldn't be this hard to afford a second bag of groceries. It shouldn't be this hard to know that your kid goes to a dignified school."
       )
     ],
     relatedIssueIds: ["housing", "corporate-consolidation", "money-out-of-politics"],
@@ -758,6 +821,12 @@ export const positionIssues: PositionIssue[] = [
         "1:10",
         "Mackinac debate: AI is the oncoming tsunami",
         "AI is the oncoming tsunami. We need legislation… We need leaders who understand the technology and are willing to stand up on it and protect humanity."
+      ),
+      cbsTakeoutClip(
+        583,
+        "0:35",
+        "CBS Takeout: AI under democracy",
+        "AI is new technology, but democracy is old technology, one we love in America. And I'm saying that AI needs to sit under democracy."
       )
     ],
     relatedIssueIds: ["data-centers-and-ai", "cost-of-living", "corporate-consolidation"],
@@ -862,7 +931,19 @@ export const positionIssues: PositionIssue[] = [
         "73CPge7cgDI",
         "0:52",
         "Military spending as a public health crisis",
-        "That money should not be spent a billion dollars a day killing other people's children. It should be spent providing for our own."
+        "That money should not be spent in a billion dollars a day killing other people's children. It should be spent providing for our own."
+      ),
+      cbsTakeoutClip(
+        417,
+        "0:35",
+        "CBS Takeout: Tax dollars for Michigan, not bombs abroad",
+        "The biggest spender in a race for Senate in Michigan wants to take your tax dollars and not spend them on your kids or your schools… It wants to spend them to buy bombs and tanks for foreign governments."
+      ),
+      dropSiteClip(
+        136,
+        "0:30",
+        "Drop Site: Taxpayer dollars bombing without justification",
+        "This is our taxpayer dollars being spent to bomb another country without justification of any real imminent threat to the United States or its interests."
       )
     ],
     relatedIssueIds: ["jewish-community-and-antisemitism", "aipac-and-dark-money", "public-health"],
@@ -1125,6 +1206,12 @@ export const positionIssues: PositionIssue[] = [
         "0:55",
         "Mackinac debate: Didn't ask AIPAC for support",
         "It's AIPAC money which is being spent already in this race to pump up one of my colleagues on this stage. I'm the only candidate who didn't ask AIPAC for their support."
+      ),
+      cbsTakeoutClip(
+        402,
+        "0:40",
+        "CBS Takeout: AIPAC spending to buy bombs abroad",
+        "AIPAC… The biggest spender in a race for Senate in Michigan wants to take your tax dollars… to buy bombs and tanks for foreign governments."
       )
     ],
     relatedIssueIds: [
@@ -1309,9 +1396,11 @@ export const positionIssues: PositionIssue[] = [
       ),
       youtubeClip(
         "8HdRuCChSAE",
-        "4:56",
+        "0:40",
         "Response to Carville and Democratic elites",
-        "The mistake that our party too often makes is we center party elites and not people."
+        "The mistake that our party too often makes is that we center party elites and not people.",
+        undefined,
+        56
       )
     ],
     relatedIssueIds: ["money-out-of-politics", "rule-of-law-and-accountability"],

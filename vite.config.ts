@@ -122,6 +122,48 @@ function githubPagesRootFiles(): Plugin {
   };
 }
 
+function productionHardening(): Plugin {
+  const csp = [
+    "default-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "img-src 'self' data: https://i.ytimg.com https://tools4abdul.goatcounter.com",
+    "style-src 'self' 'unsafe-inline'",
+    "script-src 'self' https://gc.zgo.at",
+    "connect-src 'self' https://embed.bsky.app https://tools4abdul.goatcounter.com",
+    "frame-src https://www.youtube-nocookie.com https://www.instagram.com https://embed.bsky.app",
+    "upgrade-insecure-requests"
+  ].join("; ");
+
+  const entryFsPath = resolve(repoRoot, "src/positions/main.tsx");
+
+  return {
+    name: "production-hardening",
+    transformIndexHtml: {
+      order: "pre",
+      handler(html, ctx) {
+        // Outside-root entry needs /@fs in serve; keep ../src for the production build.
+        if (ctx.server) {
+          return html.replace(
+            'src="../src/positions/main.tsx"',
+            `src="/@fs/${entryFsPath}"`
+          );
+        }
+        return html.replace(
+          "</head>",
+          `    <meta http-equiv="Content-Security-Policy" content="${csp}" />
+    <script
+      data-goatcounter="https://tools4abdul.goatcounter.com/count"
+      async
+      src="https://gc.zgo.at/count.js"
+    ></script>
+  </head>`
+        );
+      }
+    }
+  };
+}
+
 export default defineConfig({
   root: resolve(repoRoot, "cliposition"),
   base: siteBase,
@@ -135,5 +177,5 @@ export default defineConfig({
     outDir: resolve(repoRoot, "dist/cliposition"),
     emptyOutDir: true
   },
-  plugins: [githubPagesRootFiles()]
+  plugins: [productionHardening(), githubPagesRootFiles()]
 });
