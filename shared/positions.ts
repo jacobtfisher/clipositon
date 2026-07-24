@@ -24,6 +24,8 @@ export type PositionClip = {
   youtubeId?: string;
   /** Optional start offset for YouTube embeds (seconds from the beginning). */
   startSeconds?: number;
+  /** Text/link posts (no video). Defaults to video when omitted. */
+  media?: "video" | "post";
 };
 
 export type PositionIssue = {
@@ -48,6 +50,8 @@ const campaignPriorities = "https://abdulforsenate.com/priorities/";
 const moneyOut = "https://abdulforsenate.com/priority/money-out-of-politics/";
 const moneyIn = "https://abdulforsenate.com/priority/money-in-your-pocket/";
 const medicare = "https://abdulforsenate.com/priority/medicare-for-all-the-path-to-a-healthier-america/";
+const aiUnderDemocracy = "https://abdulforsenate.com/2026/06/first-do-no-harm-ai-under-democracy/";
+const dataCentersTerms = "https://abdulforsenate.com/2026/01/datacenters/";
 /** WOOD TV8 Democratic primary debate (El-Sayed vs Stevens), 2026-07-07. */
 const woodDebateId = "9_R3JHg26qU";
 /** Mackinac Policy Conference three-way debate (El-Sayed, Stevens, McMorrow), 2026-05-28 (WDIV Local 4). */
@@ -136,9 +140,10 @@ function socialClip(
   url: string,
   title: string,
   quote: string,
-  alternates?: ClipOption[]
+  alternates?: ClipOption[],
+  media: NonNullable<PositionClip["media"]> = "video"
 ): PositionClip {
-  return { platform, url, title, quote, alternates };
+  return { platform, url, title, quote, alternates, media };
 }
 
 function videoSource(youtubeId: string): PositionSource {
@@ -466,7 +471,7 @@ export const positionIssues: PositionIssue[] = [
         "ICE is not about immigration. ICE is not about the southern border. ICE is about normalizing the use of government thugs on your streets."
       )
     ],
-    relatedIssueIds: ["rule-of-law-and-accountability", "foreign-policy"],
+    relatedIssueIds: ["rule-of-law-and-accountability", "privacy-and-surveillance", "foreign-policy"],
     source: campaignSource(`${moneyOut}#h-immigration`)
   },
   {
@@ -539,7 +544,7 @@ export const positionIssues: PositionIssue[] = [
         "It is about building an economy where every single worker has the right to a union, where we finally tax billionaires their wealth."
       )
     ],
-    relatedIssueIds: ["education", "break-up-big-healthcare", "money-in-your-pocket"],
+    relatedIssueIds: ["education", "break-up-big-healthcare", "money-in-your-pocket", "jobs-trade-and-manufacturing"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
   {
@@ -620,7 +625,9 @@ export const positionIssues: PositionIssue[] = [
       "Bluesky",
       "https://bsky.app/profile/abdulelsayed.bsky.social/post/3mknsvnjhsc2p",
       "Racial gerrymandering and equal representation",
-      "The SCOTUS decision today guts the prohibition on racial gerrymandering, effectively using the redlining of the past to rob Black folks of equal representation in the future."
+      "The SCOTUS decision today guts the prohibition on racial gerrymandering, effectively using the redlining of the past to rob Black folks of equal representation in the future.",
+      undefined,
+      "post"
     ),
     moreClips: [
       mackinacDebateClip(
@@ -802,15 +809,20 @@ export const positionIssues: PositionIssue[] = [
     title: "Data centers",
     eyebrow: "Our communities, our terms",
     category: "Economy",
-    summary: "El-Sayed’s Terms of Engagement would require data centers to cover their own energy costs, deliver promised local jobs, and protect community water resources.",
+    summary:
+      "El-Sayed’s Terms of Engagement would make data centers cover their own energy costs, deliver promised local jobs, protect water, and face enforceable federal rules.",
     points: [
       "Data centers must pay for their own energy demand so costs are not passed onto ratepayers.",
+      "Communities must have a meaningful say in project approvals and community-benefits packages.",
       "Energy reliability cannot worsen because of data-center projects; utilities must make enforceable reliability improvements funded by data-center revenues.",
       "Data centers must create the local jobs they promise or face penalties, and be built by Michigan contractors with DOL-registered apprenticeship programs.",
-      "Projects must use closed-loop cooling, give communities a meaningful say in approvals, and include binding community-benefits agreements for local infrastructure.",
-      "Utilities cannot use data-center projects to weaken or sidestep clean-energy laws, and all agreements must be enforceable through actionable penalties."
+      "Projects must use closed-loop cooling to avoid stressing or polluting local water resources.",
+      "Projects should include binding community-benefits agreements for local infrastructure, grid improvements, burying power lines, and upgrading water treatment.",
+      "Utilities cannot use data-center projects to weaken or sidestep clean-energy laws.",
+      "All agreements must be enforceable through actionable penalties.",
+      "Supports comprehensive federal zoning guidelines and legislation, and intends to pass his Terms of Engagement as federal law."
     ],
-    tags: ["data center", "dte", "electric bills", "technology", "jobs", "water", "energy"],
+    tags: ["data center", "dte", "electric bills", "technology", "jobs", "water", "energy", "zoning"],
     clip: youtubeClip("oNFAVuNPdsk", "1:47", "Terms of engagement for data centers", "If you promise jobs, deliver those jobs."),
     moreClips: [
       mackinacDebateClip(
@@ -826,8 +838,9 @@ export const positionIssues: PositionIssue[] = [
         "If you want someone who's serious about taking on big AI and the folks who want to put a data center in your backyard… I might just be your guy."
       )
     ],
-    relatedIssueIds: ["artificial-intelligence", "crypto-and-blockchain"],
-    source: campaignSource("https://abdulforsenate.com/2026/01/datacenters/")
+    relatedIssueIds: ["artificial-intelligence", "crypto-and-blockchain", "money-in-your-pocket"],
+    source: campaignSource(dataCentersTerms, "Terms of Engagement"),
+    additionalSources: [campaignSource(`${moneyIn}#h-data-centers`, "Money in Your Pocket")]
   },
   {
     id: "artificial-intelligence",
@@ -864,8 +877,14 @@ export const positionIssues: PositionIssue[] = [
         "AI is new technology, but democracy is old technology, one we love in America. And I'm saying that AI needs to sit under democracy."
       )
     ],
-    relatedIssueIds: ["data-centers-and-ai", "crypto-and-blockchain", "money-in-your-pocket", "corporate-consolidation"],
-    source: campaignSource("https://abdulforsenate.com/2026/06/first-do-no-harm-ai-under-democracy/")
+    relatedIssueIds: [
+      "data-centers-and-ai",
+      "privacy-and-surveillance",
+      "crypto-and-blockchain",
+      "money-in-your-pocket",
+      "corporate-consolidation"
+    ],
+    source: campaignSource(aiUnderDemocracy)
   },
   {
     id: "crypto-and-blockchain",
@@ -896,7 +915,47 @@ export const positionIssues: PositionIssue[] = [
       "Believes the taxpayers who fund federal research should earn back the returns on their investment."
     ],
     tags: ["science", "research", "nsf", "nih", "innovation", "universities", "r&d"],
-    relatedIssueIds: ["public-health", "artificial-intelligence", "education"],
+    clip: youtubeClip(
+      "83xMdGINFwQ",
+      "1:00",
+      "Majority Report: Gutting NIH research",
+      "They're gutting so much of the cancer research and research on chronic disease and research on autism that is one of the best things our government does… And the NIH is part of that.",
+      undefined,
+      221
+    ),
+    moreClips: [
+      woodDebateClip(
+        4909,
+        "0:20",
+        "Debate: Invest in research and development",
+        "We need to unleash ingenuity by investing in research and development for the future."
+      )
+    ],
+    relatedIssueIds: ["public-health", "artificial-intelligence", "education", "college-and-training", "jobs-trade-and-manufacturing"],
+    source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
+  },
+  {
+    id: "jobs-trade-and-manufacturing",
+    title: "Jobs, trade & manufacturing",
+    eyebrow: "Build it here, with unions at the table",
+    category: "Economy",
+    summary:
+      "El-Sayed argues that NAFTA-style trade deals hollowed out Michigan manufacturing, and that smart, targeted tariffs and unions at the table can bring dignified jobs back.",
+    points: [
+      "Says trade deals like NAFTA have been a disaster for American manufacturing and have rotted out towns and destroyed communities.",
+      "Believes in bringing dignified, well-paying jobs to Michigan by investing in research, development, and growth of future technologies while using tariffs in a steady, thoughtful, and targeted way to protect them as they grow.",
+      "Says dumb trade agreements negotiated without unions at the table siphoned away manufacturing jobs, and that unions must have a significant voice where decisions about the economy’s future are made.",
+      "Supports targeted, smart tariffs focused on growth industries, with clear benchmarks for trading partners that sunset as American manufacturers establish themselves, and opposes Trump’s incoherent, self-serving version of tariffs.",
+      "Supports protecting workers on the job as part of holding corporations accountable for the future of the economy."
+    ],
+    tags: ["jobs", "trade", "manufacturing", "tariffs", "nafta", "unions", "michigan"],
+    clip: woodDebateClip(
+      2663,
+      "0:50",
+      "Debate: USMCA and targeted tariffs",
+      "There is bipartisan support already to blow up the USMCA, which has been a cancer on our manufacturing industry in Michigan… Donald Trump’s version of tariffs is like chemotherapy, but you give the patient all the chemo at the same time."
+    ),
+    relatedIssueIds: ["unions-and-worker-power", "corporate-consolidation", "money-in-your-pocket", "family-farms"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
   {
@@ -927,6 +986,7 @@ export const positionIssues: PositionIssue[] = [
       "Wants to codify the Endangerment Finding into law so no administration can strip EPA authority to regulate greenhouse gases by executive order.",
       "Supports strengthening air-quality standards for cumulative pollution burdens and strengthening NEPA so communities have a meaningful voice before fossil-fuel projects are permitted.",
       "Supports making environmental justice an explicit mandate of every federal agency with authority over air and water.",
+      "Would hold corporate polluters fully accountable for contaminating Michigan’s land, air, and water, and empower federal agencies to stop them before they cause harm.",
       "Supports shutting down Line 5 to protect the Great Lakes while making the line safer in the meantime without destroying sensitive environmental or tribal sites."
     ],
     tags: ["climate", "renewable energy", "pollution", "environment", "farm", "solar", "wind"],
@@ -1070,7 +1130,7 @@ export const positionIssues: PositionIssue[] = [
         "Number one, we need to ban stock buybacks entirely. Number two, we need to put labor on corporate boards."
       )
     ],
-    relatedIssueIds: ["money-in-your-pocket", "unions-and-worker-power", "money-out-of-politics"],
+    relatedIssueIds: ["money-in-your-pocket", "unions-and-worker-power", "money-out-of-politics", "jobs-trade-and-manufacturing"],
     source: campaignSource(`${moneyIn}#h-jobs-and-trade`)
   },
   {
@@ -1121,18 +1181,19 @@ export const positionIssues: PositionIssue[] = [
   {
     id: "education",
     title: "Public education",
-    eyebrow: "Invest from childcare through college",
+    eyebrow: "Childcare, pre-K, and strong public schools",
     category: "Community",
-    summary: "El-Sayed supports universal childcare and pre-K, stronger public-school funding, and tuition-free pathways through college, trades, or apprenticeships.",
+    summary:
+      "El-Sayed supports universal childcare and pre-K, higher teacher pay, wraparound school staff, and fully public K–12 funding instead of vouchers.",
     points: [
-      "Supports universal childcare, universal pre-K, and comprehensive public K–12 education, plus massive investment in school infrastructure.",
+      "Supports universal childcare, universal pre-K, and comprehensive public K–12 education tailored to kids’ unique needs, grounded in a right to literacy.",
+      "Supports massive investment in school infrastructure, the buildings and community spaces where children spend most of their days.",
       "Supports raising the minimum teacher salary to at least $60,000 a year and investing more in nurses, psychologists, social workers, and other wraparound staff.",
       "Opposes privatizing public education through vouchers and supports fully funding the Individuals with Disabilities Education Act.",
       "Proposes tying any percentage increase in national education funding to any equivalent increase in the national defense budget.",
-      "Backs debt-free, tuition-free pathways through apprenticeships or college, with more funding for HBCUs, community colleges, and trade schools.",
-      "Would cap administrative overhead at institutions receiving federal funding to rein in higher-education costs."
+      "Wants to move past funding models that tie school funding to property taxes, which deprive working-class communities of sufficient resources."
     ],
-    tags: ["schools", "teachers", "childcare", "pre-k", "college", "student debt", "trades", "apprenticeship"],
+    tags: ["schools", "teachers", "childcare", "pre-k", "k-12", "vouchers", "idea", "infrastructure"],
     clip: socialClip(
       "Instagram",
       "https://www.instagram.com/p/DYFW3VeAL5g/",
@@ -1143,7 +1204,26 @@ export const positionIssues: PositionIssue[] = [
         { platform: "X", url: "https://x.com/AbdulElSayed/status/2052782767964901584" }
       ]
     ),
-    relatedIssueIds: ["unions-and-worker-power", "money-in-your-pocket"],
+    relatedIssueIds: ["college-and-training", "unions-and-worker-power", "money-in-your-pocket"],
+    source: campaignSource(`${moneyIn}#h-education`)
+  },
+  {
+    id: "college-and-training",
+    title: "College & training",
+    eyebrow: "Debt-free paths after high school",
+    category: "Community",
+    summary:
+      "El-Sayed supports debt-free and tuition-free pathways through apprenticeships or college, plus more funding for HBCUs, community colleges, and trade schools.",
+    points: [
+      "Believes every student deserves a debt-free and tuition-free pathway toward the skills they need, whether a two-year apprenticeship or a four-year college education and beyond.",
+      "Would work alongside unions to fund and expand vocational and apprenticeship training opportunities.",
+      "Supports expanding funding for HBCUs, community colleges, and trade schools as engines of social mobility.",
+      "Says America’s colleges and universities deserve more research funding, not less, focused on high-risk, high-impact science.",
+      "Would cap administrative overhead costs for institutions receiving federal funding, arguing for more research and teaching rather than rec centers and flavors of frozen yogurt.",
+      "Champions non-traditional tenure pathways for educators whose work advances the teaching mission of higher education."
+    ],
+    tags: ["college", "student debt", "tuition", "apprenticeship", "trades", "hbcu", "community college"],
+    relatedIssueIds: ["education", "unions-and-worker-power", "science-and-research", "money-in-your-pocket"],
     source: campaignSource(`${moneyIn}#h-education`)
   },
   {
@@ -1499,6 +1579,38 @@ export const positionIssues: PositionIssue[] = [
     source: socialVideoSource("Instagram", "https://www.instagram.com/reel/DXKMIxDAN8l/")
   },
   {
+    id: "privacy-and-surveillance",
+    title: "Privacy & surveillance",
+    eyebrow: "Your data is yours",
+    category: "Democracy",
+    summary:
+      "El-Sayed would ban AI-enabled mass surveillance and predictive policing, and keep healthcare data private unless it is used to provide care.",
+    points: [
+      "Would prohibit mass political surveillance, protected-characteristic predictive policing, and AI targeting of dissent.",
+      "Would ban AI from conducting warrantless surveillance.",
+      "Says healthcare data must remain private, and that state and federal government should have no right to access it unless for the purpose of providing healthcare.",
+      "Says healthcare providers should be protected from undue government coercion to provide data."
+    ],
+    tags: ["privacy", "surveillance", "healthcare data", "ai", "predictive policing", "civil liberties"],
+    clip: woodDebateClip(
+      4283,
+      "0:40",
+      "Debate: Guardrails on what AI can and can't do",
+      "I proposed the plan putting AI under democracy… I also want real clear guard rails on what AI can and can't do. I want an agency in the government like an FDA for AIs."
+    ),
+    moreClips: [
+      cbsTakeoutClip(
+        583,
+        "0:35",
+        "CBS Takeout: AI under democracy",
+        "AI is new technology, but democracy is old technology, one we love in America. And I'm saying that AI needs to sit under democracy."
+      )
+    ],
+    relatedIssueIds: ["artificial-intelligence", "rule-of-law-and-accountability", "immigration-and-ice", "reproductive-rights"],
+    source: campaignSource(aiUnderDemocracy, "AI Under Democracy"),
+    additionalSources: [campaignSource(`${moneyOut}#h-civil-rights-amp-liberties`, "Civil Rights & Liberties")]
+  },
+  {
     id: "rule-of-law-and-accountability",
     title: "Rule of law & accountability",
     eyebrow: "Hold power to account",
@@ -1508,10 +1620,9 @@ export const positionIssues: PositionIssue[] = [
       "Will protect the rights of all Americans under the Constitution, regardless of where they live, where their parents came from, how or if they pray, sexual orientation, gender identity, age, or wealth.",
       "Affirms freedom of speech, assembly, religion and from religion, and self-expression.",
       "Calls the rights to criticize the government and to protest peacefully sacrosanct, and opposes weaponizing the state to intimidate protest or boycotts.",
-      "Says healthcare decisions should stay between an individual and their doctor, and that healthcare data must remain private unless used to provide care.",
-      "Says healthcare providers should be protected from undue government coercion to provide data or to provide (or withhold) care they deem necessary."
+      "Says healthcare decisions should always stay between an individual and their doctor, and that government cannot and should not interfere with the right to pursue healthcare choices."
     ],
-    tags: ["rule of law", "accountability", "civil rights", "public safety", "abuse of power", "justice"],
+    tags: ["rule of law", "accountability", "civil rights", "protest", "boycott", "constitution"],
     clip: socialClip(
       "Instagram",
       "https://www.instagram.com/reel/DXuavVpCUHF/",
@@ -1526,7 +1637,7 @@ export const positionIssues: PositionIssue[] = [
         "You know what protected me? My American passport, in 1998 in Egypt. Ask yourself whether or not you think our American passports will protect us in 2026 in America."
       )
     ],
-    relatedIssueIds: ["immigration-and-ice", "lgbtq-rights-and-care"],
+    relatedIssueIds: ["privacy-and-surveillance", "immigration-and-ice", "lgbtq-rights-and-care"],
     source: campaignSource(`${moneyOut}#h-civil-rights-amp-liberties`)
   }
 

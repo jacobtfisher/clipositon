@@ -25,6 +25,9 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | `corporate-consolidation` | 1988 | 33:08 | Stand up to monopolies and oligopolies | Added as `moreClips` |
 | `housing` | 219 | 3:39 | Banking/housing crisis + corporate accountability | Added as `moreClips` |
 | `democratic-party-strategy` | 100 | 1:40 | Trump as symptom, not the disease (pre-debate interview) | Added as `moreClips` |
+| `jobs-trade-and-manufacturing` | 2663 | 44:23 | USMCA as cancer on manufacturing; Trump tariffs as all-at-once chemo | **Added** as hero |
+| `privacy-and-surveillance` | 4283 | 71:23 | AI under democracy; clear guardrails on what AI can and can't do; FDA for AI | **Added** as hero |
+| `science-and-research` | 4909 | 81:49 | Unleash ingenuity by investing in research and development for the future | **Added** as `moreClips` |
 | `making-voting-easier` | — | — | No clean debate hit for auto-registration / SAVE Act | Still open |
 
 ### Mackinac Policy Conference: three-way (El-Sayed, Stevens, McMorrow)
@@ -68,6 +71,7 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 | Eyeing Office Ep. 1 (Drop Site News) | `feFaM3ZHxdA` | 15:27 | `medicare-for-all`, `money-in-your-pocket`, `foreign-policy` | **Added** segments @ 56s, 136s |
 | CBS News The Takeout: Major Garrett extended interview | `2FofXOB5T2s` | 30:29 | `artificial-intelligence`, `immigration-and-ice`, `aipac-and-dark-money`, `foreign-policy`, `medicare-for-all` | **Added** segments @ 402, 417, 583, 1011, 1517 |
 | May Day 2026: Fountain Street Church (Grand Rapids) | `eZj8BkBq0Ys` | 26:08 | `immigration-and-ice` | **Added** segment @ 263s |
+| Majority Report: Michigan Senate race heats up (Abdul segment) | `83xMdGINFwQ` | ~18m | `science-and-research` | **Added** hero @ 221s (NIH / cancer research gutting). Parent live show `98Webr7wiJY` (no EN captions); crypto half is Jacob Silverman, not Abdul |
 | Lever Time: Macomb healthcare / AIPAC interview | podcast (Apple/iHeart) | ~51m | `medicare-for-all`, `aipac-and-dark-money` | Audio episode confirmed; YouTube mirror not found |
 | C-SPAN: Detroit press conference | [C-SPAN event](https://www.c-span.org/event/campaign-2026/us-senate-candidate-abdul-el-sayed-d-mi-holds-press-conference-in-detroit/445411) | — | TBD | YouTube mirror TBD |
 | Michigan Public: It's Just Politics interview | radio/podcast | — | TBD | YouTube mirror TBD |
@@ -85,9 +89,20 @@ Keep campaign pages as `source` for policy points; use these clips for quotes + 
 - Added **`crypto-and-blockchain`** (slug `crypto`) and **`science-and-research`** (slug `science`) cards, sourced to the *Money in Your Pocket* priority page.
 - Cleaned redundant “He …” openers on every card so bullets read as predicates under the “What he has said” header.
 
+### Card structure changes (explore-new-cards)
+
+- Added **`privacy-and-surveillance`** (slug `privacy`): dual-sourced to AI Under Democracy + Civil Rights & Liberties; healthcare-data bullets moved off **`rule-of-law-and-accountability`**.
+- Expanded **`data-centers-and-ai`** to the full Terms of Engagement planks plus the federal zoning hook from Money in Your Pocket.
+- Added **`jobs-trade-and-manufacturing`** (slug `jobs`) from the Jobs and Trade section.
+- Split college content out of **`education`** into **`college-and-training`** (slug `college`); education now focuses on childcare through K–12.
+- Added one polluter-accountability bullet to **`climate-and-agriculture`**.
+
 ## Gap still open
 
 - `making-voting-easier`: no on-message Bluesky video and no debate/podcast segment yet for automatic registration / SAVE Act / early voting.
+- `college-and-training`: no dedicated on-message clip yet. Campus-tour tuition lines were other speakers; the fro-yo / tuition-free quotes were a post-rally press scrum without a clean YouTube mirror. Policy bullets remain campaign-page sourced.
+- `privacy-and-surveillance`: WOOD debate hero is the AI guardrails / FDA-for-AI exchange (illustrative of the No-Gos lane). No separate clip yet that names warrantless surveillance or healthcare-data privacy in his own spoken words.
+- `crypto-and-blockchain`: no verified spoken-word clip yet. Debates have no crypto/blockchain hits; Majority Report “Memecoin” episode crypto segment is Jacob Silverman (Abdul’s segment is NIH/science/Medicare); campaign socials index has no crypto theme; Arab American News op-ed is text-only. Policy bullets remain campaign-page sourced.
 
 ## How to add a segment
 

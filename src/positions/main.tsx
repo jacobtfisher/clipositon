@@ -37,6 +37,7 @@ type SourceFilter = "all" | "clips";
 
 const isInstagramClip = (platform: string) => platform === "Instagram";
 const isBlueskyClip = (platform: string) => platform === "Bluesky";
+const isVideoClip = (clip: NonNullable<PositionIssue["clip"]>) => clip.media !== "post";
 
 // A clip embeds in-page when it's a YouTube (youtubeId), Instagram, or Bluesky
 // clip — the same criteria the detail view uses to decide iframe vs. external link.
@@ -325,6 +326,7 @@ function App() {
 function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: number; onOpen: () => void }) {
   const displayPlatform = issue.clip ? displayClipPlatform(issue.clip) : undefined;
   const socialThumbnail = socialThumbnails[`./thumbnails/${issue.id}.webp`];
+  const clipIsVideo = issue.clip ? isVideoClip(issue.clip) : false;
 
   return (
     <article className={`issueCard ${index < 3 ? "featured" : ""}`}>
@@ -337,13 +339,18 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
               <img src={socialThumbnail} alt="" loading="lazy" />
             ) : (
               <div className="socialMediaLabel">
-                <Film size={28} />
+                {clipIsVideo ? <Film size={28} /> : <LinkIcon size={28} />}
                 <span>{displayPlatform}</span>
-                <strong>RECENT CAMPAIGN CLIP</strong>
+                <strong>{clipIsVideo ? "RECENT CAMPAIGN CLIP" : "IN HIS OWN WORDS"}</strong>
               </div>
             )}
             <span className="playBadge">
-              <Play size={15} fill="currentColor" /> {issue.clip.duration ?? displayPlatform}
+              {clipIsVideo ? (
+                <Play size={15} fill="currentColor" />
+              ) : (
+                <LinkIcon size={15} strokeWidth={2.5} />
+              )}{" "}
+              {issue.clip.duration ?? displayPlatform}
             </span>
           </div>
         ) : (
@@ -355,12 +362,14 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
         <div className="cardContent">
           <div className="cardMeta">
             <span>{issue.category}</span>
-            <small>{issue.clip ? "VIDEO + SOURCE" : "TEXT SOURCE"}</small>
+            <small>
+              {issue.clip ? (clipIsVideo ? "VIDEO + SOURCE" : "POST + SOURCE") : "TEXT SOURCE"}
+            </small>
           </div>
           <h2>{issue.title}</h2>
           <p>{issue.summary}</p>
           <div className="cardAction">
-            <span>{issue.clip ? "Watch & read" : "Read position"}</span>
+            <span>{issue.clip ? (clipIsVideo ? "Watch & read" : "Open & read") : "Read position"}</span>
             <ChevronRight size={18} />
           </div>
         </div>
@@ -489,14 +498,24 @@ function IssueDetail({
                   url={blueskyUrl}
                   fallbackInstagramUrl={instagramFallbackUrl}
                   title={activeClip.title}
+                  isVideo={isVideoClip(activeClip)}
                 />
               ) : isInstagramClip(activeClip.platform) ? (
                 <InstagramEmbed key={activeClip.url} url={activeClip.url} title={activeClip.title} />
               ) : (
                 <a className="externalClip" href={activeClip.url} target="_blank" rel="noreferrer">
-                  <span className="externalClipIcon"><Play size={27} fill="currentColor" /></span>
+                  <span className="externalClipIcon">
+                    {isVideoClip(activeClip) ? (
+                      <Play size={27} fill="currentColor" />
+                    ) : (
+                      <LinkIcon size={27} strokeWidth={2.5} />
+                    )}
+                  </span>
                   <span>
-                    <small>WATCH ON {activeClip.platform.toUpperCase()}</small>
+                    <small>
+                      {isVideoClip(activeClip) ? "WATCH ON" : "OPEN ON"}{" "}
+                      {activeClip.platform.toUpperCase()}
+                    </small>
                     <strong>{activeClip.title}</strong>
                   </span>
                   <ExternalLink size={20} />
@@ -504,7 +523,7 @@ function IssueDetail({
               )}
               <div className="clipCaption">
                 <div>
-                  <Film size={16} />
+                  {isVideoClip(activeClip) ? <Film size={16} /> : <LinkIcon size={16} />}
                   <span>
                     IN HIS OWN WORDS · {activeClip.duration ?? displayClipPlatform(activeClip)}
                   </span>
@@ -552,7 +571,11 @@ function IssueDetail({
                           </span>
                         )}
                         <span className="moreClipPlay">
-                          <Play size={12} fill="currentColor" />
+                          {isVideoClip(clip) ? (
+                            <Play size={12} fill="currentColor" />
+                          ) : (
+                            <LinkIcon size={12} strokeWidth={2.5} />
+                          )}
                         </span>
                       </span>
                       <span className="moreClipMeta">
@@ -630,11 +653,13 @@ function IssueDetail({
 function BlueskyEmbed({
   url,
   fallbackInstagramUrl,
-  title
+  title,
+  isVideo = true
 }: {
   url: string;
   fallbackInstagramUrl?: string;
   title: string;
+  isVideo?: boolean;
 }) {
   const frameId = React.useId().replaceAll(":", "");
   const frameRef = React.useRef<HTMLIFrameElement>(null);
@@ -713,9 +738,11 @@ function BlueskyEmbed({
 
     return (
       <a className="externalClip" href={url} target="_blank" rel="noreferrer">
-        <span className="externalClipIcon"><Play size={27} fill="currentColor" /></span>
+        <span className="externalClipIcon">
+          {isVideo ? <Play size={27} fill="currentColor" /> : <LinkIcon size={27} strokeWidth={2.5} />}
+        </span>
         <span>
-          <small>WATCH ON BLUESKY</small>
+          <small>{isVideo ? "WATCH ON BLUESKY" : "OPEN ON BLUESKY"}</small>
           <strong>{title}</strong>
         </span>
         <ExternalLink size={20} />
@@ -728,7 +755,7 @@ function BlueskyEmbed({
       {status === "loading" ? (
         <div className="socialEmbedLoading" role="status">
           <span />
-          Loading Bluesky video…
+          {isVideo ? "Loading Bluesky video…" : "Loading Bluesky post…"}
         </div>
       ) : null}
       {iframeUrl ? (
@@ -737,7 +764,7 @@ function BlueskyEmbed({
           className="blueskyEmbedFrame"
           src={iframeUrl}
           style={{ height }}
-          title={`Bluesky video: ${title}`}
+          title={isVideo ? `Bluesky video: ${title}` : `Bluesky post: ${title}`}
           allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
           loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
