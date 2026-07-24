@@ -24,6 +24,7 @@ import {
 import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
 import { getInstagramEmbedUrl } from "../../shared/instagram";
 import { shortUrlForIssue } from "../../shared/slugs";
+import heroPortrait from "./assets/hero-portrait.webp";
 import "./styles.css";
 
 type CategoryFilter = "All" | PositionCategory;
@@ -163,7 +164,7 @@ function App() {
         </a>
         <div className="sourcePromise">
           <Check size={14} strokeWidth={3} />
-          Sourced, not generated
+          In his own words
         </div>
       </header>
 
@@ -175,17 +176,27 @@ function App() {
             <p className="heroIntro">
               Search Abdul El-Sayed’s public positions, watch him explain them, and open the original campaign source.
             </p>
+            <div className="heroStats" aria-label="Library status">
+              <div>
+                <strong>{positionIssues.length}</strong>
+                <span>issues</span>
+              </div>
+              <i />
+              <div>
+                <strong>{embeddedClipCount}</strong>
+                <span>embedded clips</span>
+              </div>
+            </div>
           </div>
-          <div className="heroStats" aria-label="Library status">
-            <div>
-              <strong>{positionIssues.length}</strong>
-              <span>issues</span>
-            </div>
-            <i />
-            <div>
-              <strong>{embeddedClipCount}</strong>
-              <span>embedded clips</span>
-            </div>
+          <div className="heroVisual">
+            <img
+              src={heroPortrait}
+              alt="Abdul El-Sayed speaking at a campaign event"
+              width={437}
+              height={547}
+              decoding="async"
+              fetchPriority="high"
+            />
           </div>
         </section>
 
