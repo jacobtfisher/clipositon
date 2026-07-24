@@ -167,7 +167,7 @@ function productionHardening(): Plugin {
 export default defineConfig({
   root: resolve(repoRoot, "cliposition"),
   base: siteBase,
-  publicDir: false,
+  publicDir: resolve(repoRoot, "cliposition/public"),
   server: {
     fs: {
       allow: [repoRoot]

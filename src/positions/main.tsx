@@ -163,7 +163,7 @@ function App() {
         </a>
         <div className="sourcePromise">
           <Check size={14} strokeWidth={3} />
-          Sourced, not generated
+          In his own words
         </div>
       </header>
 
@@ -336,7 +336,10 @@ function IssueDetail({
   onOpenIssue: (issue: PositionIssue) => void;
 }) {
   const [copied, setCopied] = React.useState(false);
+  const [copiedShort, setCopiedShort] = React.useState(false);
   const [activeClipUrl, setActiveClipUrl] = React.useState(issue.clip?.url ?? "");
+  const productionShortUrl = shortUrlForIssue(issue.id);
+  const shortUrlLabel = productionShortUrl?.replace(/^https?:\/\//, "");
   const shareUrl =
     shortUrlForIssue(issue.id, window.location.origin) ??
     `${window.location.origin}${window.location.pathname}#${issue.id}`;
@@ -368,6 +371,17 @@ function IssueDetail({
     window.setTimeout(() => setCopied(false), 1800);
   };
 
+  const copyShortUrl = async () => {
+    if (!productionShortUrl) return;
+    await navigator.clipboard.writeText(productionShortUrl);
+    setCopiedShort(true);
+    window.setTimeout(() => setCopiedShort(false), 1600);
+  };
+
+  React.useEffect(() => {
+    setCopiedShort(false);
+  }, [issue.id]);
+
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
     window.addEventListener("keydown", onKeyDown);
@@ -382,10 +396,25 @@ function IssueDetail({
           <button type="button" className="backButton" onClick={onClose}>
             <ArrowLeft size={19} /> Back to issues
           </button>
-          <button type="button" className="shareButton" onClick={() => void share()}>
-            {copied ? <Check size={17} /> : <Share2 size={17} />}
-            {copied ? "Copied" : "Share"}
-          </button>
+          <div className="detailHeaderActions">
+            {productionShortUrl && shortUrlLabel ? (
+              <button
+                type="button"
+                className={`detailShortUrl ${copiedShort ? "copied" : ""}`}
+                onClick={() => void copyShortUrl()}
+                aria-label={copiedShort ? "Short link copied" : `Copy short link ${shortUrlLabel}`}
+                title="Copy short link"
+              >
+                <LinkIcon size={14} />
+                <span className="detailShortUrlText">{shortUrlLabel}</span>
+                <span className="detailShortUrlHint">{copiedShort ? "Copied" : "Copy"}</span>
+              </button>
+            ) : null}
+            <button type="button" className="shareButton" onClick={() => void share()}>
+              {copied ? <Check size={17} /> : <Share2 size={17} />}
+              {copied ? "Copied" : "Share"}
+            </button>
+          </div>
         </header>
 
         <div className="detailBody" ref={bodyRef}>
