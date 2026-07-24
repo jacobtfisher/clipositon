@@ -58,7 +58,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
   text-decoration: none;
 }
 
-.logoMark { width: 39px; height: 39px; flex: 0 0 auto; }
+.logoMark {
+  width: 39px;
+  height: 39px;
+  flex: 0 0 auto;
+  display: block;
+  border-radius: 4px;
+  object-fit: cover;
+}
 
 .wordmark span { display: grid; line-height: 1; }
 .wordmark b { font: 800 1.28rem/1 "Manrope", sans-serif; letter-spacing: .07em; }

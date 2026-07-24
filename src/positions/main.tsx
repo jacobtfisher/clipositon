@@ -24,6 +24,7 @@ import {
 import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
 import { getInstagramEmbedUrl } from "../../shared/instagram";
 import { shortUrlForIssue } from "../../shared/slugs";
+import forUsMark from "./assets/for-us-mark.png";
 import "./styles.css";
 
 type CategoryFilter = "All" | PositionCategory;
@@ -750,11 +751,14 @@ function InstagramEmbed({ url, title }: { url: string; title: string }) {
 
 function LogoMark() {
   return (
-    <svg className="logoMark" viewBox="0 0 46 46" aria-hidden="true">
-      <path d="M23 2 43 13v20L23 44 3 33V13L23 2Z" fill="currentColor" opacity=".12" />
-      <path d="m12 28 11-15 11 15h-6l-5-7-5 7h-6Z" fill="currentColor" />
-      <path d="M17 31h12v4H17z" fill="currentColor" />
-    </svg>
+    <img
+      className="logoMark"
+      src={forUsMark}
+      alt=""
+      width={192}
+      height={192}
+      decoding="async"
+    />
   );
 }
 
