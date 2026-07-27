@@ -1,5 +1,9 @@
 # Card expansion plan
 
+> **Status:** Completed in Jacob PR #6 and reconciled into the canonical
+> Ringleader repository in PR #7. This document is retained as the sourcing and
+> implementation record for that expansion.
+
 Working spec for the `explore-new-cards` branch. Adds 3 new cards and expands or
 refocuses 4 existing ones. Every task lists the exact primary source to verify against.
 

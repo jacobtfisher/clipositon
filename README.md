@@ -50,6 +50,7 @@ shared/bluesky.ts           # Bluesky oEmbed/iframe helpers
 shared/instagram.ts         # Instagram embed helpers
 scripts/                    # clip verification + research helpers
 docs/clip-catalog.md        # inventory of long-form YouTube sources mined for clips
+docs/card-expansion-plan.md # completed expansion plan and sourcing record
 vite.config.ts              # build config + GitHub Pages / short-URL / hardening plugins
 ```
 
