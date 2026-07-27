@@ -19,7 +19,7 @@ the full policy. Do not invent, soften, or extrapolate claims.
 ## Tech
 
 - [Vite](https://vitejs.dev/) + [React 19](https://react.dev/) + TypeScript
-- Static build deployed to **GitHub Pages** (custom domain `tools4abdul.com`)
+- Static build deployed from the current Pages owner at **GitHub Pages** (custom domain `tools4abdul.com`)
 - No backend, no database, no secrets, no cookies
 - Privacy-first analytics via [GoatCounter](https://www.goatcounter.com/)
   (open source, no cookies, no personal data)
@@ -68,6 +68,13 @@ no cookies and collects no personal data. The dashboard lives at
 
 ## Deployment
 
-Pushing to `main` triggers
-[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml),
-which runs tests + typecheck + build and publishes `dist/` to GitHub Pages.
+The canonical source repository is
+[`ringleader/clipositon`](https://github.com/ringleader/clipositon). The
+`tools4abdul.com` Pages site is currently owned and deployed by
+[`jacobtfisher/clipositon`](https://github.com/jacobtfisher/clipositon).
+
+The Pages workflow runs automatically in the current deployment-owner fork. It
+is gated off in other forks and in the canonical repository to avoid competing
+custom-domain deployments. To migrate deployment to Ringleader, first move the
+Pages custom domain, then set the Ringleader repository variable
+`ENABLE_PAGES_DEPLOY=true`.
