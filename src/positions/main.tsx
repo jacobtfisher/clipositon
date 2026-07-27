@@ -7,11 +7,13 @@ import {
   ChevronRight,
   ExternalLink,
   Film,
+  HeartHandshake,
   Link as LinkIcon,
   Play,
   Search,
   Share2,
   SlidersHorizontal,
+  Vote,
   X
 } from "lucide-react";
 import {
@@ -23,14 +25,87 @@ import {
 } from "../../shared/positions";
 import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
 import { getInstagramEmbedUrl } from "../../shared/instagram";
+import { shortUrlForIssue } from "../../shared/slugs";
 import "./styles.css";
+
+// Campaign action destinations surfaced as prominent CTAs.
+const VOTE_INFO_URL = "https://abdulforsenate.com/vote/";
+const VOLUNTEER_URL = "https://abdulforsenate.com/volunteer-for-abdul/";
 
 type CategoryFilter = "All" | PositionCategory;
 type SourceFilter = "all" | "clips";
 
 const isInstagramClip = (platform: string) => platform === "Instagram";
-const isEmbeddableClip = (issue: PositionIssue) =>
-  Boolean(issue.clip?.youtubeId || (issue.clip && isInstagramClip(issue.clip.platform)));
+const isBlueskyClip = (platform: string) => platform === "Bluesky";
+const isVideoClip = (clip: NonNullable<PositionIssue["clip"]>) => clip.media !== "post";
+
+// A clip embeds in-page when it's a YouTube (youtubeId), Instagram, or Bluesky
+// clip — the same criteria the detail view uses to decide iframe vs. external link.
+const isEmbeddableClip = (clip: NonNullable<PositionIssue["clip"]>) =>
+  Boolean(clip.youtubeId || isInstagramClip(clip.platform) || isBlueskyClip(clip.platform));
+
+// Every embeddable clip shown across the library: each issue's primary clip plus
+// every entry in moreClips. Derived so it stays accurate as cards/clips grow.
+const embeddedClipCount = positionIssues.reduce((total, issue) => {
+  const clips = [issue.clip, ...(issue.moreClips ?? [])].filter(
+    (clip): clip is NonNullable<PositionIssue["clip"]> => Boolean(clip)
+  );
+  return total + clips.filter(isEmbeddableClip).length;
+}, 0);
+
+// Abdul's core campaign pillars lead the library (and get the featured card treatment).
+const pinnedIssueIds = ["money-out-of-politics", "money-in-your-pocket", "medicare-for-all"];
+const orderedIssues: PositionIssue[] = [
+  ...pinnedIssueIds
+    .map((id) => positionIssues.find((issue) => issue.id === id))
+    .filter((issue): issue is PositionIssue => Boolean(issue)),
+  ...positionIssues.filter((issue) => !pinnedIssueIds.includes(issue.id))
+];
+
+function ActionLinks({ variant = "buttons" }: { variant?: "buttons" | "links" }) {
+  if (variant === "links") {
+    return (
+      <>
+        <a className="actionTextLink" href={VOTE_INFO_URL} target="_blank" rel="noreferrer">
+          <Vote size={17} strokeWidth={2.5} /> <span>How to vote</span>
+        </a>
+        <a className="actionTextLink" href={VOLUNTEER_URL} target="_blank" rel="noreferrer">
+          <HeartHandshake size={17} strokeWidth={2.5} /> <span>Volunteer</span>
+        </a>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <a className="actionLink primary" href={VOTE_INFO_URL} target="_blank" rel="noreferrer">
+        <Vote size={18} strokeWidth={2.5} /> How to vote
+      </a>
+      <a className="actionLink" href={VOLUNTEER_URL} target="_blank" rel="noreferrer">
+        <HeartHandshake size={18} strokeWidth={2.5} /> Volunteer
+      </a>
+    </>
+  );
+}
+
+const displayClipPlatform = (clip: NonNullable<PositionIssue["clip"]>) => {
+  if (isBlueskyClip(clip.platform)) return "Bluesky";
+  if (
+    isInstagramClip(clip.platform) &&
+    clip.alternates?.some((option) => option.platform === "Bluesky")
+  ) {
+    return "Bluesky";
+  }
+  return clip.platform;
+};
+
+const preferredBlueskyUrl = (clip: NonNullable<PositionIssue["clip"]>) => {
+  if (isBlueskyClip(clip.platform)) return clip.url;
+  if (isInstagramClip(clip.platform)) {
+    return clip.alternates?.find((option) => option.platform === "Bluesky")?.url;
+  }
+  return undefined;
+};
 const socialThumbnails = import.meta.glob<string>("./thumbnails/*.webp", {
   eager: true,
   import: "default",
@@ -100,7 +175,7 @@ function App() {
 
   const filtered = React.useMemo(() => {
     const words = normalize(query).split(" ").filter(Boolean);
-    return positionIssues.filter((issue) => {
+    return orderedIssues.filter((issue) => {
       if (category !== "All" && issue.category !== category) return false;
       if (sourceFilter === "clips" && !issue.clip) return false;
       const haystack = searchableText(issue);
@@ -122,7 +197,6 @@ function App() {
     <div className="positionApp">
       <header className="siteHeader">
         <a className="wordmark" href="https://abdulforsenate.com/" target="_blank" rel="noreferrer" aria-label="Abdul for U.S. Senate">
-          <LogoMark />
           <span>
             <b>ABDUL</b>
             <small>FOR U.S. SENATE</small>
@@ -130,7 +204,7 @@ function App() {
         </a>
         <div className="sourcePromise">
           <Check size={14} strokeWidth={3} />
-          Sourced, not generated
+          In his own words
         </div>
       </header>
 
@@ -140,8 +214,11 @@ function App() {
             <p className="kicker">WHERE ABDUL STANDS</p>
             <h1>Hear it from him.</h1>
             <p className="heroIntro">
-              Search Abdul El-Sayed’s public positions, watch him explain them, and open the original campaign source.
+              Pick an issue and see where Abdul stands. His own words, linked to the original source. Made by volunteers.
             </p>
+            <div className="heroActions">
+              <ActionLinks variant="links" />
+            </div>
           </div>
           <div className="heroStats" aria-label="Library status">
             <div>
@@ -150,7 +227,7 @@ function App() {
             </div>
             <i />
             <div>
-              <strong>{positionIssues.filter(isEmbeddableClip).length}</strong>
+              <strong>{embeddedClipCount}</strong>
               <span>embedded clips</span>
             </div>
           </div>
@@ -200,7 +277,7 @@ function App() {
             <SlidersHorizontal size={15} />
             <span>{filtered.length} {filtered.length === 1 ? "result" : "results"}</span>
           </div>
-          <p>Last reviewed July 23, 2026</p>
+          <p>Last reviewed July 24, 2026</p>
         </section>
 
         {filtered.length ? (
@@ -222,9 +299,11 @@ function App() {
 
         <footer className="libraryFooter">
           <div>
-            <LogoMark />
             <p>
-              This guide organizes statements published by Abdul for U.S. Senate. It is not independent fact-checking and never generates a position.
+              Created by volunteers. Not officially affiliated with or endorsed by the
+              Abdul for U.S. Senate campaign. It is not independent fact-checking. Minor
+              errors may slip in. For his official positions, refer directly to the
+              campaign’s own materials.
             </p>
           </div>
           <a href={positionLibrarySource.url} target="_blank" rel="noreferrer">
@@ -245,12 +324,9 @@ function App() {
 }
 
 function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: number; onOpen: () => void }) {
-  const displayPlatform =
-    issue.clip?.platform === "Instagram" &&
-    issue.clip.alternates?.some((option) => option.platform === "Bluesky")
-      ? "Bluesky"
-      : issue.clip?.platform;
+  const displayPlatform = issue.clip ? displayClipPlatform(issue.clip) : undefined;
   const socialThumbnail = socialThumbnails[`./thumbnails/${issue.id}.webp`];
+  const clipIsVideo = issue.clip ? isVideoClip(issue.clip) : false;
 
   return (
     <article className={`issueCard ${index < 3 ? "featured" : ""}`}>
@@ -263,13 +339,18 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
               <img src={socialThumbnail} alt="" loading="lazy" />
             ) : (
               <div className="socialMediaLabel">
-                <Film size={28} />
+                {clipIsVideo ? <Film size={28} /> : <LinkIcon size={28} />}
                 <span>{displayPlatform}</span>
-                <strong>RECENT CAMPAIGN CLIP</strong>
+                <strong>{clipIsVideo ? "RECENT CAMPAIGN CLIP" : "IN HIS OWN WORDS"}</strong>
               </div>
             )}
             <span className="playBadge">
-              <Play size={15} fill="currentColor" /> {issue.clip.duration ?? displayPlatform}
+              {clipIsVideo ? (
+                <Play size={15} fill="currentColor" />
+              ) : (
+                <LinkIcon size={15} strokeWidth={2.5} />
+              )}{" "}
+              {issue.clip.duration ?? displayPlatform}
             </span>
           </div>
         ) : (
@@ -281,12 +362,14 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
         <div className="cardContent">
           <div className="cardMeta">
             <span>{issue.category}</span>
-            <small>{issue.clip ? "VIDEO + SOURCE" : "TEXT SOURCE"}</small>
+            <small>
+              {issue.clip ? (clipIsVideo ? "VIDEO + SOURCE" : "POST + SOURCE") : "TEXT SOURCE"}
+            </small>
           </div>
           <h2>{issue.title}</h2>
           <p>{issue.summary}</p>
           <div className="cardAction">
-            <span>{issue.clip ? "Watch & read" : "Read position"}</span>
+            <span>{issue.clip ? (clipIsVideo ? "Watch & read" : "Open & read") : "Read position"}</span>
             <ChevronRight size={18} />
           </div>
         </div>
@@ -305,18 +388,22 @@ function IssueDetail({
   onOpenIssue: (issue: PositionIssue) => void;
 }) {
   const [copied, setCopied] = React.useState(false);
+  const [copiedShort, setCopiedShort] = React.useState(false);
   const [activeClipUrl, setActiveClipUrl] = React.useState(issue.clip?.url ?? "");
-  const shareUrl = `${window.location.origin}${window.location.pathname}#${issue.id}`;
+  const productionShortUrl = shortUrlForIssue(issue.id);
+  const shortUrlLabel = productionShortUrl?.replace(/^https?:\/\//, "");
+  const shareUrl =
+    shortUrlForIssue(issue.id, window.location.origin) ??
+    `${window.location.origin}${window.location.pathname}#${issue.id}`;
   const bodyRef = React.useRef<HTMLDivElement>(null);
   const clipOptions = React.useMemo(
     () => [issue.clip, ...(issue.moreClips ?? [])].filter((clip): clip is NonNullable<typeof clip> => Boolean(clip)),
     [issue.clip, issue.moreClips]
   );
   const activeClip = clipOptions.find((clip) => clip.url === activeClipUrl) ?? issue.clip;
-  const blueskyOption =
-    activeClip?.platform === "Instagram"
-      ? activeClip.alternates?.find((option) => option.platform === "Bluesky")
-      : undefined;
+  const blueskyUrl = activeClip ? preferredBlueskyUrl(activeClip) : undefined;
+  const instagramFallbackUrl =
+    activeClip && isInstagramClip(activeClip.platform) ? activeClip.url : undefined;
   const relatedIssues = (issue.relatedIssueIds ?? [])
     .map((id) => positionIssues.find((candidate) => candidate.id === id))
     .filter((candidate): candidate is PositionIssue => Boolean(candidate));
@@ -336,6 +423,17 @@ function IssueDetail({
     window.setTimeout(() => setCopied(false), 1800);
   };
 
+  const copyShortUrl = async () => {
+    if (!productionShortUrl) return;
+    await navigator.clipboard.writeText(productionShortUrl);
+    setCopiedShort(true);
+    window.setTimeout(() => setCopiedShort(false), 1600);
+  };
+
+  React.useEffect(() => {
+    setCopiedShort(false);
+  }, [issue.id]);
+
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
     window.addEventListener("keydown", onKeyDown);
@@ -350,10 +448,25 @@ function IssueDetail({
           <button type="button" className="backButton" onClick={onClose}>
             <ArrowLeft size={19} /> Back to issues
           </button>
-          <button type="button" className="shareButton" onClick={() => void share()}>
-            {copied ? <Check size={17} /> : <Share2 size={17} />}
-            {copied ? "Copied" : "Share"}
-          </button>
+          <div className="detailHeaderActions">
+            {productionShortUrl && shortUrlLabel ? (
+              <button
+                type="button"
+                className={`detailShortUrl ${copiedShort ? "copied" : ""}`}
+                onClick={() => void copyShortUrl()}
+                aria-label={copiedShort ? "Short link copied" : `Copy short link ${shortUrlLabel}`}
+                title="Copy short link"
+              >
+                <LinkIcon size={14} />
+                <span className="detailShortUrlText">{shortUrlLabel}</span>
+                <span className="detailShortUrlHint">{copiedShort ? "Copied" : "Copy"}</span>
+              </button>
+            ) : null}
+            <button type="button" className="shareButton" onClick={() => void share()}>
+              {copied ? <Check size={17} /> : <Share2 size={17} />}
+              {copied ? "Copied" : "Share"}
+            </button>
+          </div>
         </header>
 
         <div className="detailBody" ref={bodyRef}>
@@ -368,27 +481,41 @@ function IssueDetail({
               {activeClip.youtubeId ? (
                 <div className="videoFrame">
                   <iframe
-                    key={activeClip.youtubeId}
-                    src={`https://www.youtube-nocookie.com/embed/${activeClip.youtubeId}?rel=0`}
+                    key={`${activeClip.youtubeId}-${activeClip.startSeconds ?? 0}`}
+                    src={`https://www.youtube-nocookie.com/embed/${activeClip.youtubeId}?rel=0${
+                      activeClip.startSeconds && activeClip.startSeconds > 0
+                        ? `&start=${Math.floor(activeClip.startSeconds)}`
+                        : ""
+                    }`}
                     title={activeClip.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   />
                 </div>
-              ) : isInstagramClip(activeClip.platform) && blueskyOption ? (
+              ) : blueskyUrl ? (
                 <BlueskyEmbed
-                  key={blueskyOption.url}
-                  url={blueskyOption.url}
-                  instagramUrl={activeClip.url}
+                  key={blueskyUrl}
+                  url={blueskyUrl}
+                  fallbackInstagramUrl={instagramFallbackUrl}
                   title={activeClip.title}
+                  isVideo={isVideoClip(activeClip)}
                 />
               ) : isInstagramClip(activeClip.platform) ? (
                 <InstagramEmbed key={activeClip.url} url={activeClip.url} title={activeClip.title} />
               ) : (
                 <a className="externalClip" href={activeClip.url} target="_blank" rel="noreferrer">
-                  <span className="externalClipIcon"><Play size={27} fill="currentColor" /></span>
+                  <span className="externalClipIcon">
+                    {isVideoClip(activeClip) ? (
+                      <Play size={27} fill="currentColor" />
+                    ) : (
+                      <LinkIcon size={27} strokeWidth={2.5} />
+                    )}
+                  </span>
                   <span>
-                    <small>WATCH ON {activeClip.platform.toUpperCase()}</small>
+                    <small>
+                      {isVideoClip(activeClip) ? "WATCH ON" : "OPEN ON"}{" "}
+                      {activeClip.platform.toUpperCase()}
+                    </small>
                     <strong>{activeClip.title}</strong>
                   </span>
                   <ExternalLink size={20} />
@@ -396,9 +523,9 @@ function IssueDetail({
               )}
               <div className="clipCaption">
                 <div>
-                  <Film size={16} />
+                  {isVideoClip(activeClip) ? <Film size={16} /> : <LinkIcon size={16} />}
                   <span>
-                    IN HIS OWN WORDS · {activeClip.duration ?? (blueskyOption ? "Bluesky" : activeClip.platform)}
+                    IN HIS OWN WORDS · {activeClip.duration ?? displayClipPlatform(activeClip)}
                   </span>
                 </div>
                 <blockquote>“{activeClip.quote}”</blockquote>
@@ -416,15 +543,7 @@ function IssueDetail({
                 ) : null}
               </div>
             </section>
-          ) : (
-            <section className="noClipNotice">
-              <LinkIcon size={20} />
-              <div>
-                <strong>Campaign position, clip still needed</strong>
-                <p>We found a detailed official position, but not a clean public video clip yet.</p>
-              </div>
-            </section>
-          )}
+          ) : null}
 
           {clipOptions.length > 1 ? (
             <section className="moreClips" aria-label="More clips in his own words">
@@ -433,11 +552,7 @@ function IssueDetail({
                 {clipOptions.map((clip) => {
                   const selected = clip.url === activeClip?.url;
                   const thumb = clipThumbnailUrl(clip, issue);
-                  const label =
-                    clip.platform === "Instagram" &&
-                    clip.alternates?.some((option) => option.platform === "Bluesky")
-                      ? "Bluesky"
-                      : clip.platform;
+                  const label = displayClipPlatform(clip);
                   return (
                     <button
                       type="button"
@@ -456,7 +571,11 @@ function IssueDetail({
                           </span>
                         )}
                         <span className="moreClipPlay">
-                          <Play size={12} fill="currentColor" />
+                          {isVideoClip(clip) ? (
+                            <Play size={12} fill="currentColor" />
+                          ) : (
+                            <LinkIcon size={12} strokeWidth={2.5} />
+                          )}
                         </span>
                       </span>
                       <span className="moreClipMeta">
@@ -479,16 +598,18 @@ function IssueDetail({
             </ul>
           </section>
 
-          <section className="sourceCard">
-            <div>
-              <span>{issue.source.kind}</span>
-              <strong>{issue.source.publisher}</strong>
-              <small>Primary campaign source</small>
-            </div>
-            <a href={issue.source.url} target="_blank" rel="noreferrer">
-              {issue.source.label} <ExternalLink size={15} />
-            </a>
-          </section>
+          {[issue.source, ...(issue.additionalSources ?? [])].map((source, index) => (
+            <section className="sourceCard" key={source.url}>
+              <div>
+                <span>{source.kind}</span>
+                <strong>{source.publisher}</strong>
+                <small>{index === 0 ? "Primary campaign source" : "Additional campaign source"}</small>
+              </div>
+              <a href={source.url} target="_blank" rel="noreferrer">
+                {source.label} <ExternalLink size={15} />
+              </a>
+            </section>
+          ))}
 
           {relatedIssues.length ? (
             <section className="relatedIssues" aria-label="Related positions">
@@ -512,8 +633,16 @@ function IssueDetail({
             </section>
           ) : null}
 
+          <section className="getInvolved" aria-label="Get involved">
+            <p className="sectionLabel">GET INVOLVED</p>
+            <div className="getInvolvedLinks">
+              <ActionLinks />
+            </div>
+          </section>
+
           <p className="detailNote">
-            This page summarizes the linked campaign source. Open the original for full context.
+            This page summarizes the linked campaign {issue.additionalSources?.length ? "sources" : "source"}.
+            Open the {issue.additionalSources?.length ? "originals" : "original"} for full context.
           </p>
         </div>
       </article>
@@ -523,12 +652,14 @@ function IssueDetail({
 
 function BlueskyEmbed({
   url,
-  instagramUrl,
-  title
+  fallbackInstagramUrl,
+  title,
+  isVideo = true
 }: {
   url: string;
-  instagramUrl: string;
+  fallbackInstagramUrl?: string;
   title: string;
+  isVideo?: boolean;
 }) {
   const frameId = React.useId().replaceAll(":", "");
   const frameRef = React.useRef<HTMLIFrameElement>(null);
@@ -601,7 +732,22 @@ function BlueskyEmbed({
   }, [frameId]);
 
   if (status === "unavailable") {
-    return <InstagramEmbed url={instagramUrl} title={title} />;
+    if (fallbackInstagramUrl) {
+      return <InstagramEmbed url={fallbackInstagramUrl} title={title} />;
+    }
+
+    return (
+      <a className="externalClip" href={url} target="_blank" rel="noreferrer">
+        <span className="externalClipIcon">
+          {isVideo ? <Play size={27} fill="currentColor" /> : <LinkIcon size={27} strokeWidth={2.5} />}
+        </span>
+        <span>
+          <small>{isVideo ? "WATCH ON BLUESKY" : "OPEN ON BLUESKY"}</small>
+          <strong>{title}</strong>
+        </span>
+        <ExternalLink size={20} />
+      </a>
+    );
   }
 
   return (
@@ -609,7 +755,7 @@ function BlueskyEmbed({
       {status === "loading" ? (
         <div className="socialEmbedLoading" role="status">
           <span />
-          Loading Bluesky video…
+          {isVideo ? "Loading Bluesky video…" : "Loading Bluesky post…"}
         </div>
       ) : null}
       {iframeUrl ? (
@@ -618,7 +764,7 @@ function BlueskyEmbed({
           className="blueskyEmbedFrame"
           src={iframeUrl}
           style={{ height }}
-          title={`Bluesky video: ${title}`}
+          title={isVideo ? `Bluesky video: ${title}` : `Bluesky post: ${title}`}
           allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
           loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
@@ -679,16 +825,6 @@ function InstagramEmbed({ url, title }: { url: string; title: string }) {
         </div>
       ) : null}
     </div>
-  );
-}
-
-function LogoMark() {
-  return (
-    <svg className="logoMark" viewBox="0 0 46 46" aria-hidden="true">
-      <path d="M23 2 43 13v20L23 44 3 33V13L23 2Z" fill="currentColor" opacity=".12" />
-      <path d="m12 28 11-15 11 15h-6l-5-7-5 7h-6Z" fill="currentColor" />
-      <path d="M17 31h12v4H17z" fill="currentColor" />
-    </svg>
   );
 }
 
