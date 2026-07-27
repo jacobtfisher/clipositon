@@ -27,9 +27,18 @@ function assertClip(clip: NonNullable<(typeof positionIssues)[number]["clip"]>) 
   if (clip.platform === "YouTube") {
     assert.match(clip.youtubeId ?? "", /^[\w-]{11}$/);
     assert.match(clip.duration ?? "", /^\d+:\d{2}$/);
-    assert.equal(clip.url, `https://www.youtube.com/watch?v=${clip.youtubeId}`);
+    const expected = new URL(`https://www.youtube.com/watch?v=${clip.youtubeId}`);
+    if (clip.startSeconds && clip.startSeconds > 0) {
+      expected.searchParams.set("t", `${Math.floor(clip.startSeconds)}s`);
+    }
+    assert.equal(clip.url, expected.toString());
+    if (clip.startSeconds !== undefined) {
+      assert.ok(clip.startSeconds > 0);
+      assert.equal(clip.startSeconds, Math.floor(clip.startSeconds));
+    }
   } else {
     assert.equal(clip.youtubeId, undefined);
+    assert.equal(clip.startSeconds, undefined);
   }
 
   for (const alternate of clip.alternates ?? []) {
@@ -44,6 +53,10 @@ test("every issue is sourced and searchable", () => {
 
   for (const issue of positionIssues) {
     assert.match(issue.source.url, /^https:\/\//);
+    for (const additional of issue.additionalSources ?? []) {
+      assert.match(additional.url, /^https:\/\//);
+      assert.notEqual(additional.url, issue.source.url);
+    }
     assert.ok(issue.summary.length > 40);
     assert.ok(issue.points.length >= 2);
     assert.ok(issue.tags.length >= 3);
