@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "rm -rf dist && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit -p tsconfig.json",
     "test": "tsx --test shared/*.test.ts",
