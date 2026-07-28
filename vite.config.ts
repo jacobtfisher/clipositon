@@ -2,7 +2,7 @@ import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig, type Plugin } from "vite";
 import { activeDeploymentKey, candidateConfig } from "./shared/candidate-config";
-import { positionIssues, type PositionIssue } from "./shared/positions";
+import { positionIssues } from "./shared/positions";
 import { allShortSlugs, slugForIssue } from "./shared/slugs";
 
 const repoRoot = import.meta.dirname;
@@ -11,6 +11,7 @@ const siteBase = deployment.siteBase;
 const artifactMountPath = deployment.artifactMountPath;
 const siteOrigin = deployment.siteOrigin.replace(/\/$/, "");
 const shortUrlOrigin = deployment.shortUrlOrigin.replace(/\/$/, "");
+const socialImageUrl = `${siteOrigin}${siteBase}${site.socialImage.path}`;
 if (!siteBase.startsWith(artifactMountPath)) {
   throw new Error(
     `Deployment siteBase "${siteBase}" must be within artifactMountPath "${artifactMountPath}".`
@@ -28,42 +29,25 @@ function escapeHtml(value: string): string {
     .replaceAll('"', "&quot;");
 }
 
-function youtubeIdFromUrl(url: string): string | undefined {
-  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]{11})/);
-  return match?.[1];
-}
-
-function ogImageForIssue(issue: PositionIssue): string | undefined {
-  if (issue.clip?.youtubeId) {
-    return `https://i.ytimg.com/vi/${issue.clip.youtubeId}/hqdefault.jpg`;
-  }
-  const youtubeAlternate = issue.clip?.alternates?.find((option) => option.platform === "YouTube");
-  if (youtubeAlternate) {
-    const id = youtubeIdFromUrl(youtubeAlternate.url);
-    if (id) return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-  }
-  const moreYoutube = issue.moreClips?.find((clip) => clip.youtubeId);
-  if (moreYoutube?.youtubeId) {
-    return `https://i.ytimg.com/vi/${moreYoutube.youtubeId}/hqdefault.jpg`;
-  }
-  return undefined;
-}
-
 function redirectPageHtml(opts: {
   title: string;
   description: string;
   canonicalPath: string;
   canonicalUrl?: string;
   targetPath: string;
-  ogImage?: string;
+  ogImage: string;
 }): string {
   const absoluteCanonical = opts.canonicalUrl ?? `${siteOrigin}${opts.canonicalPath}`;
   const absoluteTarget = `${siteOrigin}${opts.targetPath}`;
-  const ogImage = opts.ogImage
-    ? `    <meta property="og:image" content="${escapeHtml(opts.ogImage)}" />
+  const ogImage = `    <meta property="og:image" content="${escapeHtml(opts.ogImage)}" />
+    <meta property="og:image:secure_url" content="${escapeHtml(opts.ogImage)}" />
+    <meta property="og:image:type" content="${site.socialImage.type}" />
+    <meta property="og:image:width" content="${site.socialImage.width}" />
+    <meta property="og:image:height" content="${site.socialImage.height}" />
+    <meta property="og:image:alt" content="${escapeHtml(site.socialImage.alt)}" />
     <meta name="twitter:image" content="${escapeHtml(opts.ogImage)}" />
-`
-    : "";
+    <meta name="twitter:image:alt" content="${escapeHtml(site.socialImage.alt)}" />
+`;
 
   return `<!doctype html>
 <html lang="en">
@@ -80,7 +64,7 @@ function redirectPageHtml(opts: {
     <meta property="og:title" content="${escapeHtml(opts.title)}" />
     <meta property="og:description" content="${escapeHtml(opts.description)}" />
     <meta property="og:url" content="${escapeHtml(absoluteCanonical)}" />
-${ogImage}    <meta name="twitter:card" content="${opts.ogImage ? "summary_large_image" : "summary"}" />
+${ogImage}    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(opts.title)}" />
     <meta name="twitter:description" content="${escapeHtml(opts.description)}" />
     <script>
@@ -114,7 +98,8 @@ function githubPagesRootFiles(): Plugin {
             title: site.name,
             description: site.description,
             canonicalPath: siteBase,
-            targetPath: siteBase
+            targetPath: siteBase,
+            ogImage: socialImageUrl
           })
         );
       }
@@ -134,7 +119,7 @@ function githubPagesRootFiles(): Plugin {
             canonicalPath: `/${canonicalSlug}`,
             canonicalUrl: `${shortUrlOrigin}/${canonicalSlug}`,
             targetPath: `${siteBase}#${issue.id}`,
-            ogImage: ogImageForIssue(issue)
+            ogImage: socialImageUrl
           })
         );
       }
@@ -168,6 +153,23 @@ function productionHardening(): Plugin {
     transformIndexHtml: {
       order: "pre",
       handler(html, ctx) {
+        const socialMetadata = `    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="${escapeHtml(site.name)}" />
+    <meta property="og:title" content="${escapeHtml(site.name)}" />
+    <meta property="og:description" content="${escapeHtml(site.description)}" />
+    <meta property="og:url" content="${escapeHtml(`${siteOrigin}${siteBase}`)}" />
+    <meta property="og:image" content="${escapeHtml(socialImageUrl)}" />
+    <meta property="og:image:secure_url" content="${escapeHtml(socialImageUrl)}" />
+    <meta property="og:image:type" content="${site.socialImage.type}" />
+    <meta property="og:image:width" content="${site.socialImage.width}" />
+    <meta property="og:image:height" content="${site.socialImage.height}" />
+    <meta property="og:image:alt" content="${escapeHtml(site.socialImage.alt)}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${escapeHtml(site.name)}" />
+    <meta name="twitter:description" content="${escapeHtml(site.description)}" />
+    <meta name="twitter:image" content="${escapeHtml(socialImageUrl)}" />
+    <meta name="twitter:image:alt" content="${escapeHtml(site.socialImage.alt)}" />
+`;
         const brandedHtml = html
           .replace(
             /<meta name="theme-color" content="[^"]*" \/>/,
@@ -177,7 +179,8 @@ function productionHardening(): Plugin {
             /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
             `<meta name="description" content="${escapeHtml(site.description)}" />`
           )
-          .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(site.name)}</title>`);
+          .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(site.name)}</title>`)
+          .replace("</head>", `${socialMetadata}  </head>`);
 
         // Outside-root entry needs /@fs in serve; keep ../src for the production build.
         if (ctx.server) {

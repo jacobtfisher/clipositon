@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import test from "node:test";
 import {
   DEFAULT_CANDIDATE_KEY,
@@ -39,6 +41,16 @@ test("candidate configurations contain valid deployment and campaign metadata", 
     assert.equal(config.key.length > 0, true);
     assert.match(config.site.reviewedOn, /^\d{4}-\d{2}-\d{2}$/);
     assert.match(config.site.themeColor, /^#[\da-f]{6}$/i);
+    assert.match(config.site.socialImage.path, /^[^/].+\.(?:jpe?g|png|webp)$/i);
+    assert.match(config.site.socialImage.type, /^image\/(?:jpeg|png|webp)$/);
+    assert.equal(config.site.socialImage.width, 1200);
+    assert.equal(config.site.socialImage.height, 630);
+    assert.equal(config.site.socialImage.alt.length > 0, true);
+    assert.equal(
+      existsSync(resolve("cliposition/public", config.site.socialImage.path)),
+      true,
+      `missing social image: ${config.site.socialImage.path}`
+    );
     for (const url of [
       config.candidate.campaignUrl,
       config.actions.vote.url,

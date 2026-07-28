@@ -25,6 +25,13 @@ export type CandidateDefinition = {
   site: {
     name: string;
     description: string;
+    socialImage: {
+      path: string;
+      type: "image/jpeg" | "image/png" | "image/webp";
+      width: number;
+      height: number;
+      alt: string;
+    };
     kicker: string;
     headline: string;
     intro: string;
@@ -74,6 +81,13 @@ export const candidateConfigs = {
     site: {
       name: "Where Abdul Stands",
       description: "A searchable, sourced guide to Abdul El-Sayed's positions in his own words.",
+      socialImage: {
+        path: "social/where-abdul-stands.jpg",
+        type: "image/jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Where Abdul Stands — Hear it from him."
+      },
       kicker: "WHERE ABDUL STANDS",
       headline: "Hear it from him.",
       intro:
