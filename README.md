@@ -41,6 +41,7 @@ npm run list:bluesky   # list recent Bluesky video posts for clip research
 
 ```
 cliposition/index.html      # app entry (built by Vite)
+cliposition/public/social/  # 1200x630 Open Graph / social-sharing artwork
 src/positions/main.tsx      # the app
 src/positions/styles.css    # styles
 src/positions/thumbnails/   # local clip thumbnails (metadata-stripped)
@@ -59,8 +60,11 @@ vite.config.ts              # build config + GitHub Pages / short-URL / hardenin
 
 Each position gets a short, shareable link at the apex domain, e.g.
 `tools4abdul.com/medicare`. These are static redirect pages generated at build
-time (with per-issue link-preview metadata) that deep-link into the app. The
-slug map lives in [`shared/slugs.ts`](shared/slugs.ts).
+time (with per-issue titles and descriptions) that deep-link into the app.
+The homepage and issue links use the active candidate's configured 1200x630
+social card for Open Graph and X large-image previews. The slug map lives in
+[`shared/slugs.ts`](shared/slugs.ts), and the social-image configuration lives
+in [`shared/candidate-config.ts`](shared/candidate-config.ts).
 
 ## Analytics
 
