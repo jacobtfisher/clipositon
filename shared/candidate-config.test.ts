@@ -57,7 +57,9 @@ test("candidate configurations contain valid deployment and campaign metadata", 
 
 test("deployment configurations contain valid public URLs", () => {
   for (const deployment of Object.values(deploymentConfigs)) {
+    assert.match(deployment.artifactMountPath, /^\/(?:[^/]+\/)*$/);
     assert.match(deployment.siteBase, /^\/(?:[^/]+\/)*$/);
+    assert.equal(deployment.siteBase.startsWith(deployment.artifactMountPath), true);
     assert.equal(new URL(deployment.siteOrigin).protocol, "https:");
     assert.equal(new URL(deployment.shortUrlOrigin).protocol, "https:");
 

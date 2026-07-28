@@ -8,9 +8,17 @@ import { allShortSlugs, slugForIssue } from "./shared/slugs";
 const repoRoot = import.meta.dirname;
 const { deployment, site } = candidateConfig;
 const siteBase = deployment.siteBase;
+const artifactMountPath = deployment.artifactMountPath;
 const siteOrigin = deployment.siteOrigin.replace(/\/$/, "");
 const shortUrlOrigin = deployment.shortUrlOrigin.replace(/\/$/, "");
-const siteOutputDirectory = siteBase.replace(/^\/|\/$/g, "");
+if (!siteBase.startsWith(artifactMountPath)) {
+  throw new Error(
+    `Deployment siteBase "${siteBase}" must be within artifactMountPath "${artifactMountPath}".`
+  );
+}
+const siteOutputDirectory = siteBase
+  .slice(artifactMountPath.length)
+  .replace(/^\/|\/$/g, "");
 
 function escapeHtml(value: string): string {
   return value
@@ -99,7 +107,7 @@ function githubPagesRootFiles(): Plugin {
         writeFileSync(resolve(dist, "CNAME"), `${deployment.customDomain}\n`);
       }
       writeFileSync(resolve(dist, ".nojekyll"), "");
-      if (siteBase !== "/") {
+      if (siteBase !== artifactMountPath) {
         writeFileSync(
           resolve(dist, "index.html"),
           redirectPageHtml({

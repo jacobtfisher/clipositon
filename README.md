@@ -90,6 +90,7 @@ Available deployment profiles:
 
 - `tools4abdul` — `https://tools4abdul.com/cliposition/`
 - `ringleader-pages` — `https://ringleader.github.io/clipositon/`
+- `heartvalley-abdul` — `https://heartvalleysprings.com/abdul/positions/`
 
 The canonical source repository is
 [`ringleader/clipositon`](https://github.com/ringleader/clipositon). The

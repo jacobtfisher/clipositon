@@ -1,4 +1,6 @@
 export type DeploymentConfig = {
+  /** Public URL path corresponding to the root of the uploaded build artifact. */
+  artifactMountPath: string;
   siteBase: string;
   siteOrigin: string;
   shortUrlOrigin: string;
@@ -104,6 +106,7 @@ export const candidateConfigs = {
 
 export const deploymentConfigs = {
   tools4abdul: {
+    artifactMountPath: "/",
     siteBase: "/cliposition/",
     siteOrigin: "https://tools4abdul.com",
     shortUrlOrigin: "https://tools4abdul.com",
@@ -114,9 +117,16 @@ export const deploymentConfigs = {
     }
   },
   "ringleader-pages": {
+    artifactMountPath: "/clipositon/",
     siteBase: "/clipositon/",
     siteOrigin: "https://ringleader.github.io",
     shortUrlOrigin: "https://ringleader.github.io/clipositon"
+  },
+  "heartvalley-abdul": {
+    artifactMountPath: "/abdul/positions/",
+    siteBase: "/abdul/positions/",
+    siteOrigin: "https://heartvalleysprings.com",
+    shortUrlOrigin: "https://heartvalleysprings.com/abdul/positions"
   }
 } satisfies Record<string, DeploymentConfig>;
 
