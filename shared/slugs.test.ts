@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { candidateConfig } from "./candidate-config.js";
 import { positionIssues } from "./positions.js";
 import {
   allShortSlugs,
@@ -31,7 +32,10 @@ test("slug lookup round-trips", () => {
     const slug = slugForIssue(issue.id);
     assert.ok(slug);
     assert.equal(issueIdForSlug(slug), issue.id);
-    assert.equal(shortUrlForIssue(issue.id), `https://tools4abdul.com/${slug}`);
+    assert.equal(
+      shortUrlForIssue(issue.id),
+      `${candidateConfig.deployment.shortUrlOrigin}/${slug}`
+    );
   }
 });
 

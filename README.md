@@ -45,6 +45,7 @@ src/positions/main.tsx      # the app
 src/positions/styles.css    # styles
 src/positions/thumbnails/   # local clip thumbnails (metadata-stripped)
 shared/positions.ts         # the position library (source of truth for content)
+shared/candidate-config.ts  # build-time candidate branding, links, and deployment settings
 shared/slugs.ts             # short-URL slug <-> issue id map
 shared/bluesky.ts           # Bluesky oEmbed/iframe helpers
 shared/instagram.ts         # Instagram embed helpers
@@ -69,13 +70,33 @@ no cookies and collects no personal data. The dashboard lives at
 
 ## Deployment
 
+The deployed candidate is selected at build time with
+`CLIPOSITION_CANDIDATE`. The host is selected independently with
+`CLIPOSITION_DEPLOYMENT`. Local development defaults to candidate `abdul` and
+deployment profile `tools4abdul`. There is no candidate or host selector in the
+browser.
+
+```bash
+CLIPOSITION_CANDIDATE=abdul CLIPOSITION_DEPLOYMENT=tools4abdul npm run build
+```
+
+GitHub Pages reads the same values from the repository variables
+`CLIPOSITION_CANDIDATE` and `CLIPOSITION_DEPLOYMENT`. Candidate identity stays
+separate from host paths, canonical URLs, custom domains, and analytics in
+[`shared/candidate-config.ts`](shared/candidate-config.ts). Unknown candidate or
+deployment keys fail the build rather than silently deploying the wrong site.
+
+Available deployment profiles:
+
+- `tools4abdul` — `https://tools4abdul.com/cliposition/`
+- `ringleader-pages` — `https://ringleader.github.io/clipositon/`
+
 The canonical source repository is
 [`ringleader/clipositon`](https://github.com/ringleader/clipositon). The
 `tools4abdul.com` Pages site is currently owned and deployed by
 [`jacobtfisher/clipositon`](https://github.com/jacobtfisher/clipositon).
 
-The Pages workflow runs automatically in the current deployment-owner fork. It
-is gated off in other forks and in the canonical repository to avoid competing
-custom-domain deployments. To migrate deployment to Ringleader, first move the
-Pages custom domain, then set the Ringleader repository variable
-`ENABLE_PAGES_DEPLOY=true`.
+The Pages workflow runs automatically in both known repositories. Jacob's
+deployment-owner fork uses `tools4abdul`; Ringleader uses `ringleader-pages`,
+which does not emit a custom-domain CNAME and cannot compete for
+`tools4abdul.com`. Other forks can opt in with `ENABLE_PAGES_DEPLOY=true`.

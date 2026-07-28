@@ -16,8 +16,11 @@ concurrency:
 
 jobs:
   build:
-    if: github.repository == 'jacobtfisher/clipositon' || vars.ENABLE_PAGES_DEPLOY == 'true'
+    if: github.repository == 'jacobtfisher/clipositon' || github.repository == 'ringleader/clipositon' || vars.ENABLE_PAGES_DEPLOY == 'true'
     runs-on: ubuntu-latest
+    env:
+      CLIPOSITION_CANDIDATE: ${{ vars.CLIPOSITION_CANDIDATE || 'abdul' }}
+      CLIPOSITION_DEPLOYMENT: ${{ vars.CLIPOSITION_DEPLOYMENT || (github.repository == 'jacobtfisher/clipositon' && 'tools4abdul') || 'ringleader-pages' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

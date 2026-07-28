@@ -1,13 +1,16 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig, type Plugin } from "vite";
+import { activeDeploymentKey, candidateConfig } from "./shared/candidate-config";
 import { positionIssues, type PositionIssue } from "./shared/positions";
 import { allShortSlugs, slugForIssue } from "./shared/slugs";
 
 const repoRoot = import.meta.dirname;
-const siteBase = "/cliposition/";
-const customDomain = "tools4abdul.com";
-const siteOrigin = `https://${customDomain}`;
+const { deployment, site } = candidateConfig;
+const siteBase = deployment.siteBase;
+const siteOrigin = deployment.siteOrigin.replace(/\/$/, "");
+const shortUrlOrigin = deployment.shortUrlOrigin.replace(/\/$/, "");
+const siteOutputDirectory = siteBase.replace(/^\/|\/$/g, "");
 
 function escapeHtml(value: string): string {
   return value
@@ -42,10 +45,11 @@ function redirectPageHtml(opts: {
   title: string;
   description: string;
   canonicalPath: string;
+  canonicalUrl?: string;
   targetPath: string;
   ogImage?: string;
 }): string {
-  const absoluteCanonical = `${siteOrigin}${opts.canonicalPath}`;
+  const absoluteCanonical = opts.canonicalUrl ?? `${siteOrigin}${opts.canonicalPath}`;
   const absoluteTarget = `${siteOrigin}${opts.targetPath}`;
   const ogImage = opts.ogImage
     ? `    <meta property="og:image" content="${escapeHtml(opts.ogImage)}" />
@@ -64,7 +68,7 @@ function redirectPageHtml(opts: {
     <title>${escapeHtml(opts.title)}</title>
     <meta name="description" content="${escapeHtml(opts.description)}" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Where Abdul Stands" />
+    <meta property="og:site_name" content="${escapeHtml(site.name)}" />
     <meta property="og:title" content="${escapeHtml(opts.title)}" />
     <meta property="og:description" content="${escapeHtml(opts.description)}" />
     <meta property="og:url" content="${escapeHtml(absoluteCanonical)}" />
@@ -85,20 +89,27 @@ ${ogImage}    <meta name="twitter:card" content="${opts.ogImage ? "summary_large
 function githubPagesRootFiles(): Plugin {
   return {
     name: "github-pages-root-files",
+    buildStart() {
+      rmSync(resolve(repoRoot, "dist"), { recursive: true, force: true });
+    },
     closeBundle() {
       const dist = resolve(repoRoot, "dist");
       mkdirSync(dist, { recursive: true });
-      writeFileSync(resolve(dist, "CNAME"), `${customDomain}\n`);
+      if (deployment.customDomain) {
+        writeFileSync(resolve(dist, "CNAME"), `${deployment.customDomain}\n`);
+      }
       writeFileSync(resolve(dist, ".nojekyll"), "");
-      writeFileSync(
-        resolve(dist, "index.html"),
-        redirectPageHtml({
-          title: "Where Abdul Stands",
-          description: "A searchable, sourced guide to Abdul El-Sayed's positions in his own words.",
-          canonicalPath: siteBase,
-          targetPath: siteBase
-        })
-      );
+      if (siteBase !== "/") {
+        writeFileSync(
+          resolve(dist, "index.html"),
+          redirectPageHtml({
+            title: site.name,
+            description: site.description,
+            canonicalPath: siteBase,
+            targetPath: siteBase
+          })
+        );
+      }
 
       const issuesById = new Map(positionIssues.map((issue) => [issue.id, issue]));
       for (const { slug, issueId } of allShortSlugs()) {
@@ -110,9 +121,10 @@ function githubPagesRootFiles(): Plugin {
         writeFileSync(
           resolve(dir, "index.html"),
           redirectPageHtml({
-            title: `${issue.title} — Where Abdul Stands`,
+            title: `${issue.title} — ${site.name}`,
             description: issue.summary,
             canonicalPath: `/${canonicalSlug}`,
+            canonicalUrl: `${shortUrlOrigin}/${canonicalSlug}`,
             targetPath: `${siteBase}#${issue.id}`,
             ogImage: ogImageForIssue(issue)
           })
@@ -123,14 +135,20 @@ function githubPagesRootFiles(): Plugin {
 }
 
 function productionHardening(): Plugin {
+  const analyticsOrigin = deployment.analytics
+    ? new URL(deployment.analytics.endpoint).origin
+    : undefined;
+  const analyticsScriptOrigin = deployment.analytics
+    ? new URL(deployment.analytics.scriptUrl).origin
+    : undefined;
   const csp = [
     "default-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",
-    "img-src 'self' data: https://i.ytimg.com https://tools4abdul.goatcounter.com",
+    `img-src 'self' data: https://i.ytimg.com${analyticsOrigin ? ` ${analyticsOrigin}` : ""}`,
     "style-src 'self' 'unsafe-inline'",
-    "script-src 'self' https://gc.zgo.at",
-    "connect-src 'self' https://embed.bsky.app https://tools4abdul.goatcounter.com",
+    `script-src 'self'${analyticsScriptOrigin ? ` ${analyticsScriptOrigin}` : ""}`,
+    `connect-src 'self' https://embed.bsky.app${analyticsOrigin ? ` ${analyticsOrigin}` : ""}`,
     "frame-src https://www.youtube-nocookie.com https://www.instagram.com https://embed.bsky.app",
     "upgrade-insecure-requests"
   ].join("; ");
@@ -142,21 +160,36 @@ function productionHardening(): Plugin {
     transformIndexHtml: {
       order: "pre",
       handler(html, ctx) {
+        const brandedHtml = html
+          .replace(
+            /<meta name="theme-color" content="[^"]*" \/>/,
+            `<meta name="theme-color" content="${escapeHtml(site.themeColor)}" />`
+          )
+          .replace(
+            /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
+            `<meta name="description" content="${escapeHtml(site.description)}" />`
+          )
+          .replace(/<title>.*?<\/title>/, `<title>${escapeHtml(site.name)}</title>`);
+
         // Outside-root entry needs /@fs in serve; keep ../src for the production build.
         if (ctx.server) {
-          return html.replace(
+          return brandedHtml.replace(
             'src="../src/positions/main.tsx"',
             `src="/@fs/${entryFsPath}"`
           );
         }
-        return html.replace(
+        const analyticsScript = deployment.analytics
+          ? `    <script
+      data-goatcounter="${escapeHtml(deployment.analytics.endpoint)}"
+      async
+      src="${escapeHtml(deployment.analytics.scriptUrl)}"
+    ></script>
+`
+          : "";
+        return brandedHtml.replace(
           "</head>",
           `    <meta http-equiv="Content-Security-Policy" content="${csp}" />
-    <script
-      data-goatcounter="https://tools4abdul.goatcounter.com/count"
-      async
-      src="https://gc.zgo.at/count.js"
-    ></script>
+${analyticsScript}
   </head>`
         );
       }
@@ -167,6 +200,10 @@ function productionHardening(): Plugin {
 export default defineConfig({
   root: resolve(repoRoot, "cliposition"),
   base: siteBase,
+  define: {
+    __CLIPOSITION_CANDIDATE__: JSON.stringify(candidateConfig.key),
+    __CLIPOSITION_DEPLOYMENT__: JSON.stringify(activeDeploymentKey)
+  },
   publicDir: resolve(repoRoot, "cliposition/public"),
   server: {
     fs: {
@@ -174,7 +211,9 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: resolve(repoRoot, "dist/cliposition"),
+    outDir: siteOutputDirectory
+      ? resolve(repoRoot, "dist", siteOutputDirectory)
+      : resolve(repoRoot, "dist"),
     emptyOutDir: true
   },
   plugins: [productionHardening(), githubPagesRootFiles()]

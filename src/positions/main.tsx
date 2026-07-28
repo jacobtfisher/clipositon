@@ -23,14 +23,11 @@ import {
   type PositionCategory,
   type PositionIssue
 } from "../../shared/positions";
+import { candidateConfig } from "../../shared/candidate-config";
 import { getBlueskyIframeUrl, getBlueskyOEmbedUrl } from "../../shared/bluesky";
 import { getInstagramEmbedUrl } from "../../shared/instagram";
 import { shortUrlForIssue } from "../../shared/slugs";
 import "./styles.css";
-
-// Campaign action destinations surfaced as prominent CTAs.
-const VOTE_INFO_URL = "https://abdulforsenate.com/vote/";
-const VOLUNTEER_URL = "https://abdulforsenate.com/volunteer-for-abdul/";
 
 type CategoryFilter = "All" | PositionCategory;
 type SourceFilter = "all" | "clips";
@@ -53,8 +50,8 @@ const embeddedClipCount = positionIssues.reduce((total, issue) => {
   return total + clips.filter(isEmbeddableClip).length;
 }, 0);
 
-// Abdul's core campaign pillars lead the library (and get the featured card treatment).
-const pinnedIssueIds = ["money-out-of-politics", "money-in-your-pocket", "medicare-for-all"];
+// The active deployment's core campaign pillars lead the library.
+const pinnedIssueIds = candidateConfig.content.pinnedIssueIds;
 const orderedIssues: PositionIssue[] = [
   ...pinnedIssueIds
     .map((id) => positionIssues.find((issue) => issue.id === id))
@@ -63,14 +60,16 @@ const orderedIssues: PositionIssue[] = [
 ];
 
 function ActionLinks({ variant = "buttons" }: { variant?: "buttons" | "links" }) {
+  const { vote, volunteer } = candidateConfig.actions;
+
   if (variant === "links") {
     return (
       <>
-        <a className="actionTextLink" href={VOTE_INFO_URL} target="_blank" rel="noreferrer">
-          <Vote size={17} strokeWidth={2.5} /> <span>How to vote</span>
+        <a className="actionTextLink" href={vote.url} target="_blank" rel="noreferrer">
+          <Vote size={17} strokeWidth={2.5} /> <span>{vote.label}</span>
         </a>
-        <a className="actionTextLink" href={VOLUNTEER_URL} target="_blank" rel="noreferrer">
-          <HeartHandshake size={17} strokeWidth={2.5} /> <span>Volunteer</span>
+        <a className="actionTextLink" href={volunteer.url} target="_blank" rel="noreferrer">
+          <HeartHandshake size={17} strokeWidth={2.5} /> <span>{volunteer.label}</span>
         </a>
       </>
     );
@@ -78,15 +77,22 @@ function ActionLinks({ variant = "buttons" }: { variant?: "buttons" | "links" })
 
   return (
     <>
-      <a className="actionLink primary" href={VOTE_INFO_URL} target="_blank" rel="noreferrer">
-        <Vote size={18} strokeWidth={2.5} /> How to vote
+      <a className="actionLink primary" href={vote.url} target="_blank" rel="noreferrer">
+        <Vote size={18} strokeWidth={2.5} /> {vote.label}
       </a>
-      <a className="actionLink" href={VOLUNTEER_URL} target="_blank" rel="noreferrer">
-        <HeartHandshake size={18} strokeWidth={2.5} /> Volunteer
+      <a className="actionLink" href={volunteer.url} target="_blank" rel="noreferrer">
+        <HeartHandshake size={18} strokeWidth={2.5} /> {volunteer.label}
       </a>
     </>
   );
 }
+
+const reviewedDateLabel = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  timeZone: "UTC"
+}).format(new Date(`${candidateConfig.site.reviewedOn}T00:00:00Z`));
 
 const displayClipPlatform = (clip: NonNullable<PositionIssue["clip"]>) => {
   if (isBlueskyClip(clip.platform)) return "Bluesky";
@@ -196,26 +202,30 @@ function App() {
   return (
     <div className="positionApp">
       <header className="siteHeader">
-        <a className="wordmark" href="https://abdulforsenate.com/" target="_blank" rel="noreferrer" aria-label="Abdul for U.S. Senate">
+        <a
+          className="wordmark"
+          href={candidateConfig.candidate.campaignUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={candidateConfig.candidate.campaignName}
+        >
           <span>
-            <b>ABDUL</b>
-            <small>FOR U.S. SENATE</small>
+            <b>{candidateConfig.candidate.wordmarkPrimary}</b>
+            <small>{candidateConfig.candidate.wordmarkSecondary}</small>
           </span>
         </a>
         <div className="sourcePromise">
           <Check size={14} strokeWidth={3} />
-          In his own words
+          {candidateConfig.site.sourcePromise}
         </div>
       </header>
 
       <main className="libraryShell">
         <section className="hero">
           <div className="heroCopy">
-            <p className="kicker">WHERE ABDUL STANDS</p>
-            <h1>Hear it from him.</h1>
-            <p className="heroIntro">
-              Pick an issue and see where Abdul stands. His own words, linked to the original source. Made by volunteers.
-            </p>
+            <p className="kicker">{candidateConfig.site.kicker}</p>
+            <h1>{candidateConfig.site.headline}</h1>
+            <p className="heroIntro">{candidateConfig.site.intro}</p>
             <div className="heroActions">
               <ActionLinks variant="links" />
             </div>
@@ -277,7 +287,7 @@ function App() {
             <SlidersHorizontal size={15} />
             <span>{filtered.length} {filtered.length === 1 ? "result" : "results"}</span>
           </div>
-          <p>Last reviewed July 24, 2026</p>
+          <p>Last reviewed {reviewedDateLabel}</p>
         </section>
 
         {filtered.length ? (
@@ -299,15 +309,10 @@ function App() {
 
         <footer className="libraryFooter">
           <div>
-            <p>
-              Created by volunteers. Not officially affiliated with or endorsed by the
-              Abdul for U.S. Senate campaign. It is not independent fact-checking. Minor
-              errors may slip in. For his official positions, refer directly to the
-              campaign’s own materials.
-            </p>
+            <p>{candidateConfig.site.disclosure}</p>
           </div>
           <a href={positionLibrarySource.url} target="_blank" rel="noreferrer">
-            Campaign priorities <ArrowUpRight size={15} />
+            {candidateConfig.site.librarySourceLabel} <ArrowUpRight size={15} />
           </a>
         </footer>
       </main>
@@ -341,7 +346,9 @@ function IssueCard({ issue, index, onOpen }: { issue: PositionIssue; index: numb
               <div className="socialMediaLabel">
                 {clipIsVideo ? <Film size={28} /> : <LinkIcon size={28} />}
                 <span>{displayPlatform}</span>
-                <strong>{clipIsVideo ? "RECENT CAMPAIGN CLIP" : "IN HIS OWN WORDS"}</strong>
+                <strong>
+                  {clipIsVideo ? "RECENT CAMPAIGN CLIP" : candidateConfig.site.ownWordsLabel}
+                </strong>
               </div>
             )}
             <span className="playBadge">
@@ -390,7 +397,10 @@ function IssueDetail({
   const [copied, setCopied] = React.useState(false);
   const [copiedShort, setCopiedShort] = React.useState(false);
   const [activeClipUrl, setActiveClipUrl] = React.useState(issue.clip?.url ?? "");
-  const productionShortUrl = shortUrlForIssue(issue.id);
+  const productionShortUrl = shortUrlForIssue(
+    issue.id,
+    candidateConfig.deployment.shortUrlOrigin
+  );
   const shortUrlLabel = productionShortUrl?.replace(/^https?:\/\//, "");
   const shareUrl =
     shortUrlForIssue(issue.id, window.location.origin) ??
@@ -415,7 +425,11 @@ function IssueDetail({
 
   const share = async () => {
     if (navigator.share) {
-      await navigator.share({ title: `${issue.title} — Where Abdul Stands`, text: issue.summary, url: shareUrl });
+      await navigator.share({
+        title: `${issue.title} — ${candidateConfig.site.name}`,
+        text: issue.summary,
+        url: shareUrl
+      });
       return;
     }
     await navigator.clipboard.writeText(shareUrl);
@@ -525,7 +539,8 @@ function IssueDetail({
                 <div>
                   {isVideoClip(activeClip) ? <Film size={16} /> : <LinkIcon size={16} />}
                   <span>
-                    IN HIS OWN WORDS · {activeClip.duration ?? displayClipPlatform(activeClip)}
+                    {candidateConfig.site.ownWordsLabel} ·{" "}
+                    {activeClip.duration ?? displayClipPlatform(activeClip)}
                   </span>
                 </div>
                 <blockquote>“{activeClip.quote}”</blockquote>
@@ -546,8 +561,11 @@ function IssueDetail({
           ) : null}
 
           {clipOptions.length > 1 ? (
-            <section className="moreClips" aria-label="More clips in his own words">
-              <p className="sectionLabel">MORE IN HIS WORDS</p>
+            <section
+              className="moreClips"
+              aria-label={`More clips: ${candidateConfig.site.sourcePromise}`}
+            >
+              <p className="sectionLabel">{candidateConfig.site.moreWordsLabel}</p>
               <div className="moreClipsStrip">
                 {clipOptions.map((clip) => {
                   const selected = clip.url === activeClip?.url;
@@ -590,7 +608,7 @@ function IssueDetail({
           ) : null}
 
           <section className="positionPoints">
-            <p className="sectionLabel">WHAT HE HAS SAID</p>
+            <p className="sectionLabel">{candidateConfig.site.positionSectionLabel}</p>
             <ul>
               {issue.points.map((point) => (
                 <li key={point}><Check size={16} strokeWidth={3} /><span>{point}</span></li>

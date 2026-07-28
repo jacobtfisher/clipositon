@@ -1,4 +1,5 @@
 import { positionIssues } from "./positions.js";
+import { candidateConfig } from "./candidate-config.js";
 
 /** Paths reserved by the build / site that must never be issue slugs. */
 export const reservedSlugs = new Set([
@@ -92,7 +93,10 @@ export function allShortSlugs(): Array<{ slug: string; issueId: string }> {
   return [...issueIdBySlug.entries()].map(([slug, issueId]) => ({ slug, issueId }));
 }
 
-export function shortUrlForIssue(issueId: string, origin = "https://tools4abdul.com"): string | undefined {
+export function shortUrlForIssue(
+  issueId: string,
+  origin = candidateConfig.deployment.shortUrlOrigin
+): string | undefined {
   const slug = slugForIssue(issueId);
   return slug ? `${origin.replace(/\/$/, "")}/${slug}` : undefined;
 }
