@@ -92,6 +92,17 @@ Available deployment profiles:
 - `ringleader-pages` — `https://ringleader.github.io/clipositon/`
 - `heartvalley-abdul` — `https://heartvalleysprings.com/abdul/positions/`
 
+Deploy the Abdul build to Heart Valley Springs with:
+
+```powershell
+npm run deploy
+```
+
+The command uses the saved FileZilla site named `HVS`, validates its hostname,
+runs tests and typechecking, builds the `heartvalley-abdul` profile, backs up
+the current remote index, uploads the entry point last, and verifies the live
+page and generated JavaScript asset.
+
 The canonical source repository is
 [`ringleader/clipositon`](https://github.com/ringleader/clipositon). The
 `tools4abdul.com` Pages site is currently owned and deployed by

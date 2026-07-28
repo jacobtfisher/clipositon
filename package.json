@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
+    "deploy": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-heartvalley.ps1",
     "preview": "vite preview",
     "check": "tsc --noEmit -p tsconfig.json",
     "test": "tsx --test shared/*.test.ts",
